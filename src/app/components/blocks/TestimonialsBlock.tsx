@@ -1,0 +1,64 @@
+import { useNavigate } from 'react-router-dom'
+import { themeBg, themeStatCard, type Theme } from './themeUtils'
+
+interface Testimonial {
+  _id: string
+  quote: string
+  clientName: string
+  projectReference?: string
+  projectSlug?: string
+}
+
+interface Props {
+  theme?: Theme
+  eyebrow?: string
+  heading?: string
+  testimonials?: Testimonial[]
+}
+
+export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimonials }: Props) {
+  const navigate = useNavigate()
+  if (!testimonials?.length) return null
+
+  return (
+    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+      <div className="max-w-4xl mx-auto px-6 lg:px-12">
+        {(eyebrow || heading) && (
+          <div className="text-center mb-16">
+            {eyebrow && (
+              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+            )}
+            {heading && (
+              <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
+                {heading}
+              </h2>
+            )}
+          </div>
+        )}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {testimonials.map((t) => (
+            <div
+              key={t._id}
+              className={`p-10 border-l-4 border-[#B8946A] ${themeStatCard(theme)}`}
+              style={{ clipPath: 'polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%)' }}
+            >
+              <div className="text-5xl mb-6 text-[#B8946A] opacity-20">"</div>
+              <p className="text-lg mb-8 leading-relaxed">{t.quote}</p>
+              <div className="pl-4">
+                <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>{t.clientName}</div>
+                {t.projectReference && (
+                  <div
+                    className={`text-sm opacity-70 mt-1 ${t.projectSlug ? 'cursor-pointer hover:text-[#B8946A] transition-colors' : ''}`}
+                    onClick={() => t.projectSlug && navigate(`/projects/${t.projectSlug}`)}
+                  >
+                    {t.projectReference}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

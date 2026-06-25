@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+studio/node_modules/
+
+# Build output
+dist/
+studio/dist/
+
+# Environment & secrets — NEVER commit these
+.env
+.env.local
+.env.*.local
+
+# Vercel (legacy — safe to ignore even after migration)
+.vercel/
+
+# Sanity
+studio/.sanity/
+
+# Vite
+node_modules/.vite/
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

@@ -1,0 +1,18 @@
+/* Hide the auto-generated "All fields" tab that Sanity always adds when a
+   document uses field groups. Sanity offers no config option to remove it. */
+[data-testid='group-tab-all-fields'] {
+  display: none !important;
+}
+
+/* Hide the sanity-plugin-seo "Advanced SERP Preview / Pro Coming Soon" promo
+   card. The plugin gives no option to disable it and the card has no class or
+   testid hook — but it uniquely contains a lock icon (data-sanity-icon="lock")
+   inside a rounded card. We target that card via :has() (baseline since 2023,
+   fully supported in the modern browser the Studio runs in).
+
+   The selector matches a div that (a) has rounded corners and overflow hidden
+   like the card, and (b) contains the lock icon — scoping it tightly so it
+   only ever hits this promo block. */
+div[style*='border-radius: 14px'][style*='overflow: hidden']:has(svg[data-sanity-icon='lock']) {
+  display: none !important;
+}
