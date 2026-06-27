@@ -36,7 +36,7 @@ export function MaintenanceScreen({ heading, message, showContact, bgImage }: Pr
       />
 
       <div className="relative z-10 text-center px-6 py-24 max-w-3xl">
-        <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} className="h-20 w-auto brightness-0 invert mx-auto mb-12 opacity-90" />
+        <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} width={200} height={200} className="h-20 w-auto brightness-0 invert mx-auto mb-12 opacity-90" />
 
         <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">Maintenance</div>
         <h1

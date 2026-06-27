@@ -18,7 +18,7 @@ export function Footer() {
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           <div className="text-center">
-            <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} className="h-32 w-auto brightness-0 invert mb-6 mx-auto opacity-70" />
+            <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} width={200} height={200} className="h-32 w-auto brightness-0 invert mb-6 mx-auto opacity-70" />
           </div>
           <div>
             <p className="opacity-70 leading-relaxed">{settings?.tagline || 'Premium residential construction across Melbourne. Built with precision, designed to last.'}</p>

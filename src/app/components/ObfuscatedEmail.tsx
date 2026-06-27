@@ -37,11 +37,15 @@ export function ObfuscatedEmail({ email, className }: Props) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={className}
-      aria-label="Email us"
       rel="nofollow"
     >
+      {/* No aria-label: the accessible name is derived from the visible text
+          below, so the two always match (satisfies WCAG 2.5.3 Label in Name).
+          The address stays split across separate span nodes, so a regex over
+          the raw HTML source still can't match a contiguous email literal —
+          the obfuscation is preserved. */}
       <span>{user}</span>
-      <span aria-hidden="true">{'\u0040'}</span>
+      <span>{'\u0040'}</span>
       <span>{domain}</span>
     </a>
   )

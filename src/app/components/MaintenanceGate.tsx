@@ -7,32 +7,61 @@ interface Props {
   children: React.ReactNode
 }
 
-const BYPASS_KEY = 'siari-maintenance-bypass'
+const BYPASS_KEY = 'siari-preview-access'
 
-// Wraps the whole site. When maintenance mode is enabled in Site Settings,
-// every visitor sees the MaintenanceScreen instead of the site — UNLESS they
-// have the bypass flag set for their browser session.
+// The secret that unlocks preview access. Set VITE_PREVIEW_KEY in your env
+// (locally in .env.local and in the Cloudflare Pages project). If it's unset,
+// preview bypass is disabled entirely (fail closed — no accidental open door).
+const PREVIEW_KEY = import.meta.env.VITE_PREVIEW_KEY || ''
+
+// Wraps the whole site. When maintenance mode is on in Site Settings, every
+// visitor sees the MaintenanceScreen — UNLESS they've unlocked preview access.
 //
-// To bypass (so you can view the live site while maintenance is on):
-//   visit any URL with ?preview=true appended, e.g.
-//   https://siari-build-website.vercel.app/?preview=true
-// The flag persists for the rest of that browser session (until the tab is
-// closed). To clear it manually, visit ?preview=false.
+// HOW AN AUTHORISED PERSON PREVIEWS THE LIVE SITE DURING MAINTENANCE
+//   Visit any page with the secret key appended once:
+//     https://siaribuild.com.au/?preview=YOUR_SECRET_KEY
+//   On a correct key the browser remembers it (localStorage), so you can then
+//   browse the entire site normally — every page, across sessions — while the
+//   public still sees the maintenance screen. No need to re-add the key.
+//   To turn preview off again on that browser: visit ?preview=off
+//
+// Works identically on localhost and production.
 export function MaintenanceGate({ children }: Props) {
-  const { data: settings, loading } = useSanity<any>(SITE_SETTINGS_QUERY)
+  const { data: settings, loading } = useSanity<{
+    maintenanceEnabled?: boolean
+    maintenanceHeading?: string
+    maintenanceMessage?: string
+    maintenanceShowContact?: boolean
+    maintenanceImage?: string
+  }>(SITE_SETTINGS_QUERY)
+
   const [bypass, setBypass] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const preview = params.get('preview')
 
-    if (preview === 'true') {
-      sessionStorage.setItem(BYPASS_KEY, '1')
-    } else if (preview === 'false') {
-      sessionStorage.removeItem(BYPASS_KEY)
+    if (preview !== null) {
+      if (preview === 'off') {
+        // Explicit opt-out
+        localStorage.removeItem(BYPASS_KEY)
+      } else if (PREVIEW_KEY && preview === PREVIEW_KEY) {
+        // Correct secret — unlock and remember
+        localStorage.setItem(BYPASS_KEY, '1')
+      }
+      // Any other value (wrong key) is ignored — no unlock, no error leak.
+
+      // Strip the ?preview param from the URL so the secret isn't left sitting
+      // in the address bar / browser history / shared screenshots.
+      params.delete('preview')
+      const clean =
+        window.location.pathname +
+        (params.toString() ? `?${params}` : '') +
+        window.location.hash
+      window.history.replaceState({}, '', clean)
     }
 
-    setBypass(sessionStorage.getItem(BYPASS_KEY) === '1')
+    setBypass(localStorage.getItem(BYPASS_KEY) === '1')
   }, [])
 
   if (loading) {
@@ -54,5 +83,49 @@ export function MaintenanceGate({ children }: Props) {
     )
   }
 
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      {settings?.maintenanceEnabled && bypass && <PreviewBadge />}
+    </>
+  )
+}
+
+// Small fixed badge shown ONLY to a preview viewer while maintenance is on, so
+// they always know the public is seeing the maintenance screen, not the site.
+// Normal visitors never reach this (they're served the MaintenanceScreen).
+function PreviewBadge() {
+  const [hidden, setHidden] = useState(false)
+  if (hidden) return null
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        bottom: '16px',
+        left: '16px',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        background: '#111111',
+        color: '#F5F3EF',
+        border: '1px solid #B8946A',
+        padding: '8px 12px',
+        fontSize: '12px',
+        letterSpacing: '0.05em',
+        borderRadius: '2px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+      }}
+    >
+      <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#B8946A', display: 'inline-block' }} />
+      <span>Preview mode — public sees maintenance</span>
+      <button
+        onClick={() => setHidden(true)}
+        aria-label="Dismiss preview indicator"
+        style={{ background: 'none', border: 'none', color: '#C8C5BE', cursor: 'pointer', fontSize: '14px', lineHeight: 1, padding: 0 }}
+      >
+        ✕
+      </button>
+    </div>
+  )
 }
