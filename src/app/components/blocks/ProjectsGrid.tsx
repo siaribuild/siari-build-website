@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSanity } from '../../hooks/useSanity'
 import { PROJECTS_QUERY, CATEGORIES_QUERY } from '../../lib/queries'
 import { themeBg, type Theme } from './themeUtils'
+import { img } from '../../lib/image'
 
 interface Props { theme?: Theme }
 
@@ -85,7 +86,7 @@ export function ProjectsGrid({ theme = 'light' }: Props) {
                       absolutely-positioned img replaces the previous CSS
                       background so the browser can manage loading. */}
                   <img
-                    src={project.heroImage}
+                    src={img(project.heroImage, { w: 800 })}
                     alt={project.title}
                     loading="lazy"
                     decoding="async"

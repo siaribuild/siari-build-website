@@ -7,6 +7,7 @@ import { useSanity } from '../hooks/useSanity'
 import { PROJECT_QUERY, OTHER_PROJECTS_QUERY } from '../lib/queries'
 import { Seo } from '../components/Seo'
 import { NotFoundPage } from './NotFoundPage'
+import { img as cdnImg } from '../lib/image'
 
 export function ProjectDetailPage() {
   const { projectId } = useParams()
@@ -57,7 +58,7 @@ export function ProjectDetailPage() {
       <section className="relative min-h-[70vh] flex items-end overflow-hidden bg-[#111111]">
         <motion.div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${project.heroImage})` }}
+          style={{ backgroundImage: `url(${cdnImg(project.heroImage, { w: 1920 })})` }}
           initial={{ scale: 1.05 }} animate={{ scale: 1 }} transition={{ duration: 2.5, ease: 'easeOut' }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
@@ -153,7 +154,7 @@ export function ProjectDetailPage() {
                   key={i}
                   className="relative h-[400px] bg-cover bg-center cursor-pointer group"
                   onClick={() => setLightboxImage(i)}
-                  style={{ backgroundImage: `url(${img.url})`, clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
+                  style={{ backgroundImage: `url(${cdnImg(img.url, { w: 1000 })})`, clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
                 >
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
                 </div>
@@ -178,7 +179,7 @@ export function ProjectDetailPage() {
               {visibleProjects.map((p: any) => (
                 <div key={p._id} className="group cursor-pointer" onClick={() => navigate(`/projects/${p.slug}`)}>
                   <div className="relative h-[350px] overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}>
-                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]" style={{ backgroundImage: `url(${p.heroImage})` }} />
+                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]" style={{ backgroundImage: `url(${cdnImg(p.heroImage, { w: 800 })})` }} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute top-0 left-0 p-4 text-[#F5F3EF] text-sm opacity-90">{p.details?.location} • {p.details?.year}</div>
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-[#F5F3EF]">
@@ -204,7 +205,7 @@ export function ProjectDetailPage() {
           <button className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover:text-[#B8946A] z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + project.gallery.length) % project.gallery.length : null) }}><ChevronLeft size={32} /></button>
           <button className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover:text-[#B8946A] z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % project.gallery.length : null) }}><ChevronRight size={32} /></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2">{lightboxImage + 1} / {project.gallery.length}</div>
-          <img src={project.gallery[lightboxImage].url} alt="" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
+          <img src={cdnImg(project.gallery[lightboxImage].url, { w: 2000, q: 82 })} alt="" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </>

@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSanity } from '../../hooks/useSanity'
 import { FEATURED_PROJECTS_QUERY } from '../../lib/queries'
 import { themeBg, type Theme } from './themeUtils'
+import { img } from '../../lib/image'
 
 interface Props {
   theme?: Theme
@@ -58,7 +59,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
           >
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              style={{ backgroundImage: `url(${first.heroImage})` }}
+              style={{ backgroundImage: `url(${img(first.heroImage, { w: 1400 })})` }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
             <div className="absolute top-0 left-0 p-6 text-[#F5F3EF] z-10">
@@ -81,7 +82,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
               >
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  style={{ backgroundImage: `url(${project.heroImage})` }}
+                  style={{ backgroundImage: `url(${img(project.heroImage, { w: 1000 })})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
                 <div className="absolute top-0 left-0 p-6 text-[#F5F3EF] z-10">

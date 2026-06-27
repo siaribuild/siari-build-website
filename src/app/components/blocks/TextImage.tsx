@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { themeBg, themeStatCard, themePrimaryBtn, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
+import { img } from '../../lib/image'
 
 interface Stat { value: string; label: string }
 
@@ -31,7 +32,7 @@ export function TextImage({ theme = 'light', imagePosition = 'left', image, eyeb
             className={`relative h-[500px] lg:h-[700px] overflow-hidden order-1 ${imageCol}`}
             style={{ clipPath: 'polygon(0 0, calc(100% - 60px) 0, 100% 60px, 100% 100%, 0 100%)' }}
           >
-            <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${image})` }}>
+            <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${img(image, { w: 1200 })})` }}>
               <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-transparent" />
             </div>
           </div>

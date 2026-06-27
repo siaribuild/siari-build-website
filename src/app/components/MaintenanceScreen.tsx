@@ -3,6 +3,7 @@ import { Phone, Mail } from 'lucide-react'
 import { useSanity } from '../hooks/useSanity'
 import { SITE_SETTINGS_QUERY } from '../lib/queries'
 import { ObfuscatedEmail } from './ObfuscatedEmail'
+import { img } from '../lib/image'
 import logo from '../../imports/logo-black-200-2.png'
 
 interface Props {
@@ -22,7 +23,7 @@ export function MaintenanceScreen({ heading, message, showContact, bgImage }: Pr
       {bgImage && (
         <motion.div
           className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: `url(${bgImage})` }}
+          style={{ backgroundImage: `url(${img(bgImage, { w: 1920 })})` }}
           initial={{ scale: 1.05 }}
           animate={{ scale: 1 }}
           transition={{ duration: 2.5, ease: 'easeOut' }}

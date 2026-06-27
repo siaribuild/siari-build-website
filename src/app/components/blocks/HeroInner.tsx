@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { renderMultiline } from './renderMultiline'
+import { img } from '../../lib/image'
 
 const heightMap = {
   half: 'min-h-[40vh]',
@@ -19,7 +20,7 @@ export function HeroInner({ height = 'half', eyebrow, heading, subheading, backg
     <section className={`relative ${heightMap[height]} flex items-center justify-center overflow-hidden bg-[#111111] text-[#F5F3EF]`}>
       <motion.div
         className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        style={{ backgroundImage: `url(${img(backgroundImage, { w: 1920 })})` }}
         initial={{ scale: 1.05 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2.5, ease: 'easeOut' }}

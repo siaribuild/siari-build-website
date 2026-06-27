@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import { renderMultiline } from './renderMultiline'
+import { img } from '../../lib/image'
 
 interface Props {
   eyebrow?: string
@@ -24,7 +25,7 @@ export function HeroHome({
     <section className="relative h-screen flex items-center overflow-hidden">
       <motion.div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        style={{ backgroundImage: `url(${img(backgroundImage, { w: 1920 })})` }}
         initial={{ scale: 1.05 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2.5, ease: 'easeOut' }}

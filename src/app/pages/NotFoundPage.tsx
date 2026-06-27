@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { useSanity } from '../hooks/useSanity'
 import { SITE_SETTINGS_QUERY } from '../lib/queries'
 import { Seo } from '../components/Seo'
+import { img } from '../lib/image'
 
 export function NotFoundPage() {
   const { data: settings } = useSanity<any>(SITE_SETTINGS_QUERY)
@@ -20,7 +21,7 @@ export function NotFoundPage() {
         {bgImage && (
           <motion.div
             className="absolute inset-0 bg-cover bg-center opacity-25"
-            style={{ backgroundImage: `url(${bgImage})` }}
+            style={{ backgroundImage: `url(${img(bgImage, { w: 1920 })})` }}
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 2.5, ease: 'easeOut' }}
