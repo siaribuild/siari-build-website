@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSanity } from '../hooks/useSanity'
-import { SITE_SETTINGS_QUERY } from '../lib/queries'
+import { useSanity } from '../../hooks/useSanity'
+import { SITE_SETTINGS_QUERY } from '../../lib/queries'
 
 interface Props {
   height?: 'small' | 'medium' | 'large'
