@@ -18,7 +18,7 @@ interface Env {
   RESEND_API_KEY: string
   CONTACT_EMAIL: string
   TURNSTILE_SECRET_KEY: string
-  MAIL_FROM?: string
+  MAIL_FROM: string
 }
 
 const LIMITS = {
