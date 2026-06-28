@@ -121,7 +121,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   })
 
   const resend = new Resend(env.RESEND_API_KEY)
-  const mailFrom = env.MAIL_FROM || 'SIARI BUILD Website <onboarding@resend.dev>'
+  const mailFrom = env.MAIL_FROM
 
   try {
     await sanity.create({
