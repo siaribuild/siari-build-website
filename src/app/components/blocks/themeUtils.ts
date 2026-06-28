@@ -75,6 +75,13 @@ export function themePrimaryBtn(theme: Theme = 'light') {
   }[theme]
 }
 
+// Section background as a fill CLASS — used to paint a shape (e.g. the icon
+// square) the same colour as the block background, so it reads as a cut-out
+// through the card (which inverts to a different colour).
+export function themeSectionFill(theme: Theme = 'light') {
+  return { light: 'bg-white', gray: 'bg-[#F5F3EF]', dark: 'bg-[#111111]' }[theme]
+}
+
 // Raw section background colour — used to detect consecutive same-colour blocks
 // so they can be visually joined. light=white and gray=cream are deliberately
 // different, so only truly identical backgrounds collapse together.
