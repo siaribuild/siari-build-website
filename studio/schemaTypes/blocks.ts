@@ -97,6 +97,7 @@ export const heroInner = defineType({
       type: 'string',
       options: {
         list: [
+          {title: 'Tall (70vh)', value: 'tall'},
           {title: 'Half screen (40vh)', value: 'half'},
           {title: 'Compact (30vh)', value: 'compact'},
         ],
@@ -312,6 +313,21 @@ export const textImage = defineType({
       initialValue: 'left',
     }),
     defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
+    defineField({
+      name: 'imageSize',
+      title: 'Image Height',
+      type: 'string',
+      description: 'Starting height of the image. It stays responsive — this just sets how tall it sits on desktop.',
+      options: {
+        list: [
+          {title: 'Tall', value: 'tall'},
+          {title: 'Medium', value: 'medium'},
+          {title: 'Short', value: 'short'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'tall',
+    }),
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
     headingField(),
     defineField({name: 'text', title: 'Text', type: 'blockContent'}),

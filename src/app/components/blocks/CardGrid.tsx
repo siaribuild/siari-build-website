@@ -1,4 +1,4 @@
-import { themeBg, themeCard, themeIconTile, themeIconMaskColor, sectionPad, type Theme } from './themeUtils'
+import { themeBg, themeCard, themeIconMaskColor, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 
 interface Card {
@@ -65,7 +65,7 @@ export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns, jo
                 style={{ clipPath: compact ? COMPACT_CLIP : FULL_CLIP }}
               >
                 {card.icon && !compact && (
-                  <div className={`mb-6 p-4 inline-block ${themeIconTile(theme)}`} style={{ clipPath: TILE_CLIP }}>
+                  <div className="mb-6 p-4 inline-block bg-transparent" style={{ clipPath: TILE_CLIP }}>
                     <span aria-hidden="true" className={`block w-8 h-8 ${themeIconMaskColor(theme)}`} style={maskStyle(card.icon)} />
                   </div>
                 )}

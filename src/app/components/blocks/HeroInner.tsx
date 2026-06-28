@@ -3,12 +3,13 @@ import { renderMultiline } from './renderMultiline'
 import { img } from '../../lib/image'
 
 const heightMap = {
+  tall: 'min-h-[70vh]',
   half: 'min-h-[40vh]',
   compact: 'min-h-[30vh]',
 }
 
 interface Props {
-  height?: 'half' | 'compact'
+  height?: 'tall' | 'half' | 'compact'
   eyebrow?: string
   heading: string
   subheading?: string

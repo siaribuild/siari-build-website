@@ -81,6 +81,7 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
     theme,
     columns,
     imagePosition,
+    imageSize,
     "image": image.asset->url,
     text[] { ..., _type == "block" => { ... } },
     ctaLabel, ctaLink,

@@ -110,6 +110,7 @@ export function PageBuilder({ sections }: Props) {
                 joinTop={joinTop}
                 joinBottom={joinBottom}
                 imagePosition={s.imagePosition}
+                imageSize={s.imageSize}
                 image={s.image}
                 eyebrow={s.eyebrow}
                 heading={s.heading}
