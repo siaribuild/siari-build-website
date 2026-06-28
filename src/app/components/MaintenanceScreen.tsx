@@ -41,7 +41,7 @@ export function MaintenanceScreen({ heading, message, showContact, bgImage }: Pr
 
         <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">Maintenance</div>
         <h1
-          className="mb-6"
+          className="mb-6 uppercase"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.02em' }}
         >
           {heading || "WE'LL BE RIGHT BACK"}

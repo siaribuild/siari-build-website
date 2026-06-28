@@ -39,7 +39,11 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
   notFoundHeading,
   notFoundMessage,
   notFoundButtonLabel,
-  "notFoundImage": notFoundImage.asset->url
+  "notFoundImage": notFoundImage.asset->url,
+  mapsApiKey,
+  mapLocation,
+  mapZoom,
+  mapAddressLabel
 }`
 
 // ─── Navigation (header menu, footer menu, social links) ──────────────────────

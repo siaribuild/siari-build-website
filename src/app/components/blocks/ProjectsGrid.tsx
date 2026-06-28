@@ -46,7 +46,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom }: Props) {
   return (
     <>
       {/* Filter — only shows categories that actually have projects */}
-      <section className={`${joinTop ? 'pt-8' : 'pt-12'} pb-12 border-b border-[#C8C5BE]/30 ${themeBg(theme)}`}>
+      <section className={`${joinTop ? 'pt-8' : 'pt-12'} pb-12 border-b border-[#C8C5BE]/30 bg-white`}>
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
           <div className="flex flex-wrap gap-4 justify-center">
             <button

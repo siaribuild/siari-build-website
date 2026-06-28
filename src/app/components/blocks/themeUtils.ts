@@ -46,6 +46,17 @@ export function themeIconColor(theme: Theme = 'light') {
   }[theme]
 }
 
+// Same intent as themeIconColor, but as background-color — used when an uploaded
+// SVG is painted via CSS mask (an <img>-loaded SVG can't inherit currentColor,
+// so we mask the shape and colour it with the background instead).
+export function themeIconMaskColor(theme: Theme = 'light') {
+  return {
+    light: 'bg-[#111111] group-hover:bg-[#F5F3EF]',
+    gray: 'bg-[#111111]',
+    dark: 'bg-[#B8946A]',
+  }[theme]
+}
+
 // Stat card background (stat cards stay cream on light/gray, darker on dark)
 export function themeStatCard(theme: Theme = 'light') {
   return {

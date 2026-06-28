@@ -37,7 +37,7 @@ export function NotFoundPage() {
         <div className="relative z-10 text-center px-6 py-24">
           <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">Error 404</div>
           <h1
-            className="mb-6"
+            className="mb-6 uppercase"
             style={{ fontSize: 'clamp(3.5rem, 12vw, 9rem)', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }}
           >
             {heading}

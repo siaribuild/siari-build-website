@@ -614,7 +614,7 @@ export const contactFormBlock = defineType({
 
 // ─────────────────────────────────────────────
 // MAP BLOCK
-// Google Maps embed (URL from Site Settings)
+// Google Map — location, key, and styling come from Site Settings → Google Maps
 // ─────────────────────────────────────────────
 export const mapBlock = defineType({
   name: 'mapBlock',
@@ -638,7 +638,7 @@ export const mapBlock = defineType({
   ],
   preview: {
     prepare() {
-      return {title: 'Google Map', subtitle: 'Embed URL from Site Settings'}
+      return {title: 'Google Map', subtitle: 'Location & key from Site Settings → Google Maps'}
     },
   },
 })

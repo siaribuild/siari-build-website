@@ -10,6 +10,7 @@ import { TestimonialsBlock } from './TestimonialsBlock'
 import { CtaBlock } from './CtaBlock'
 import { ContactFormBlock } from './ContactFormBlock'
 import { RichText } from './RichText'
+import { MapBlock } from './MapBlock'
 import { themeBgColor, type Theme } from './themeUtils'
 
 // Resolve a block's effective background colour so the renderer can tell when
@@ -164,8 +165,7 @@ export function PageBuilder({ sections }: Props) {
             return <RichText key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} content={s.content} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'mapBlock':
-            // Reserved — Google Map embed block not yet implemented on the frontend.
-            return null
+            return <MapBlock key={key} height={s.height} />
 
           default:
             return null

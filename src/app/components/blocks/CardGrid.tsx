@@ -1,4 +1,4 @@
-import { themeBg, themeCard, themeCardHover, themeIconTile, sectionPad, type Theme } from './themeUtils'
+import { themeBg, themeCard, themeCardHover, themeIconTile, themeIconMaskColor, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 
 interface Card {
@@ -51,7 +51,20 @@ export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns, jo
                   className={`mb-6 p-4 inline-block transition-colors ${themeIconTile(theme)}`}
                   style={{ clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%)' }}
                 >
-                  <img src={card.icon} alt="" className="w-8 h-8 object-contain" />
+                  <span
+                    aria-hidden="true"
+                    className={`block w-8 h-8 transition-colors ${themeIconMaskColor(theme)}`}
+                    style={{
+                      WebkitMaskImage: `url(${card.icon})`,
+                      maskImage: `url(${card.icon})`,
+                      WebkitMaskRepeat: 'no-repeat',
+                      maskRepeat: 'no-repeat',
+                      WebkitMaskPosition: 'center',
+                      maskPosition: 'center',
+                      WebkitMaskSize: 'contain',
+                      maskSize: 'contain',
+                    }}
+                  />
                 </div>
               )}
               <h3 className="mb-3" style={{ fontSize: '1.25rem', fontWeight: 600 }}>{card.title}</h3>
