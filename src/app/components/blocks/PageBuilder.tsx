@@ -4,7 +4,7 @@ import { FeaturedProjects } from './FeaturedProjects'
 import { ProjectsGrid } from './ProjectsGrid'
 import { CardGrid } from './CardGrid'
 import { TextImage } from './TextImage'
-import { StatsRow } from './StatsRow'
+import { CardGridText } from './CardGridText'
 import { OurStory } from './OurStory'
 import { TestimonialsBlock } from './TestimonialsBlock'
 import { CtaBlock } from './CtaBlock'
@@ -19,7 +19,6 @@ import { themeBgColor, type Theme } from './themeUtils'
 const DEFAULT_THEME: Record<string, Theme> = {
   featuredProjects: 'dark',
   ctaBlock: 'gray',
-  statsRow: 'gray',
 }
 function bgOf(section?: { _type: string; [k: string]: unknown }): string | null {
   if (!section) return null
@@ -97,32 +96,13 @@ export function PageBuilder({ sections }: Props) {
           case 'projectsGrid':
             return <ProjectsGrid key={key} theme={s.theme} joinTop={joinTop} joinBottom={joinBottom} />
 
-          case 'cardGrid2':
-            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={2} joinTop={joinTop} joinBottom={joinBottom} />
-          case 'cardGrid3':
-            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={3} joinTop={joinTop} joinBottom={joinBottom} />
-          case 'cardGrid4':
-            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={4} joinTop={joinTop} joinBottom={joinBottom} />
+          case 'cardGrid':
+            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={s.columns || 3} joinTop={joinTop} joinBottom={joinBottom} />
+
+          case 'cardGridText':
+            return <CardGridText key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={s.columns || 3} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'textImage':
-            return (
-              <TextImage
-                key={key}
-                theme={s.theme}
-                joinTop={joinTop}
-                joinBottom={joinBottom}
-                imagePosition={s.imagePosition}
-                image={s.image}
-                eyebrow={s.eyebrow}
-                heading={s.heading}
-                text={s.text}
-                ctaLabel={s.ctaLabel}
-                ctaLink={s.ctaLink}
-              />
-            )
-
-          case 'textImageStats2':
-          case 'textImageStats3':
             return (
               <TextImage
                 key={key}
@@ -140,8 +120,6 @@ export function PageBuilder({ sections }: Props) {
               />
             )
 
-          case 'statsRow':
-            return <StatsRow key={key} theme={s.theme} stats={s.stats || []} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'ourStory':
             return (

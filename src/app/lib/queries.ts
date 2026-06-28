@@ -79,6 +79,7 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
     secondaryButtonLabel, secondaryButtonLink,
     height,
     theme,
+    columns,
     imagePosition,
     "image": image.asset->url,
     text[] { ..., _type == "block" => { ... } },
@@ -86,6 +87,7 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
     stats[] { value, label },
     cards[] {
       "icon": icon.asset->url,
+      label,
       title,
       text
     },

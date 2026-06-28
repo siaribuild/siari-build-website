@@ -7,6 +7,10 @@ import { img } from '../../lib/image'
 
 interface Stat { value: string; label: string }
 
+// Literal classes so Tailwind's JIT actually generates them (a `grid-cols-${n}`
+// template string would be purged).
+const statColMap: Record<number, string> = { 1: 'grid-cols-1', 2: 'grid-cols-2', 3: 'grid-cols-3' }
+
 interface Props {
   theme?: Theme
   joinTop?: boolean
@@ -55,7 +59,7 @@ export function TextImage({ theme = 'light', imagePosition = 'left', image, eyeb
             )}
 
             {stats && stats.length > 0 && (
-              <div className={`mt-12 grid grid-cols-${stats.length} gap-6`}>
+              <div className={`mt-12 grid ${statColMap[Math.min(stats.length, 3)] || 'grid-cols-3'} gap-6`}>
                 {stats.map((stat, i) => (
                   <div
                     key={i}

@@ -193,18 +193,27 @@ export const projectsGrid = defineType({
 // ─────────────────────────────────────────────
 // CARD GRID — 2 COLUMNS
 // ─────────────────────────────────────────────
-export const cardGrid2 = defineType({
-  name: 'cardGrid2',
-  title: 'Card Grid — 2 Columns',
+const columnsField = defineField({
+  name: 'columns',
+  title: 'Columns',
+  type: 'number',
+  options: {list: [{title: '2', value: 2}, {title: '3', value: 3}, {title: '4', value: 4}], layout: 'radio'},
+  initialValue: 3,
+})
+
+// ─────────────────────────────────────────────
+// CARD GRID (IMAGE) — icon cards, 2/3/4 columns.
+// Cards with body text render full; cards with only a title render compact.
+// ─────────────────────────────────────────────
+export const cardGrid = defineType({
+  name: 'cardGrid',
+  title: 'Card Grid (Image)',
   type: 'object',
   fields: [
     themeField,
-    defineField({
-      name: 'eyebrow',
-      title: 'Eyebrow Text',
-      type: 'string',
-    }),
+    defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
     headingField(),
+    columnsField,
     defineField({
       name: 'cards',
       title: 'Cards',
@@ -213,14 +222,15 @@ export const cardGrid2 = defineType({
         defineArrayMember({
           type: 'object',
           fields: [
-            defineField({
-              name: 'icon',
-              title: 'Icon',
-              type: 'image',
-              description: 'Upload an SVG or PNG icon',
-            }),
+            defineField({name: 'icon', title: 'Icon', type: 'image', description: 'Upload a single-colour SVG icon'}),
             defineField({name: 'title', title: 'Title', type: 'string'}),
-            defineField({name: 'text', title: 'Text', type: 'text', rows: 3}),
+            defineField({
+              name: 'text',
+              title: 'Text',
+              type: 'text',
+              rows: 3,
+              description: 'Optional. Leave empty for a compact card (icon + title only).',
+            }),
           ],
           preview: {select: {title: 'title'}},
         }),
@@ -230,26 +240,23 @@ export const cardGrid2 = defineType({
   preview: {
     select: {title: 'heading'},
     prepare({title}) {
-      return {title: 'Card Grid — 2 Col', subtitle: title}
+      return {title: 'Card Grid (Image)', subtitle: title}
     },
   },
 })
 
 // ─────────────────────────────────────────────
-// CARD GRID — 3 COLUMNS
+// CARD GRID (TEXT) — numbered/lettered cards (no icon), 2/3/4 columns.
 // ─────────────────────────────────────────────
-export const cardGrid3 = defineType({
-  name: 'cardGrid3',
-  title: 'Card Grid — 3 Columns',
+export const cardGridText = defineType({
+  name: 'cardGridText',
+  title: 'Card Grid (Text)',
   type: 'object',
   fields: [
     themeField,
-    defineField({
-      name: 'eyebrow',
-      title: 'Eyebrow Text',
-      type: 'string',
-    }),
+    defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
     headingField(),
+    columnsField,
     defineField({
       name: 'cards',
       title: 'Cards',
@@ -259,15 +266,16 @@ export const cardGrid3 = defineType({
           type: 'object',
           fields: [
             defineField({
-              name: 'icon',
-              title: 'Icon',
-              type: 'image',
-              description: 'Upload an SVG or PNG icon',
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'Up to 3 characters, e.g. "01" or "A".',
+              validation: (Rule) => Rule.max(3),
             }),
             defineField({name: 'title', title: 'Title', type: 'string'}),
             defineField({name: 'text', title: 'Text', type: 'text', rows: 3}),
           ],
-          preview: {select: {title: 'title'}},
+          preview: {select: {title: 'title', subtitle: 'label'}},
         }),
       ],
     }),
@@ -275,52 +283,7 @@ export const cardGrid3 = defineType({
   preview: {
     select: {title: 'heading'},
     prepare({title}) {
-      return {title: 'Card Grid — 3 Col', subtitle: title}
-    },
-  },
-})
-
-// ─────────────────────────────────────────────
-// CARD GRID — 4 COLUMNS
-// ─────────────────────────────────────────────
-export const cardGrid4 = defineType({
-  name: 'cardGrid4',
-  title: 'Card Grid — 4 Columns',
-  type: 'object',
-  fields: [
-    themeField,
-    defineField({
-      name: 'eyebrow',
-      title: 'Eyebrow Text',
-      type: 'string',
-    }),
-    headingField(),
-    defineField({
-      name: 'cards',
-      title: 'Cards',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'icon',
-              title: 'Icon',
-              type: 'image',
-              description: 'Upload an SVG or PNG icon',
-            }),
-            defineField({name: 'title', title: 'Title', type: 'string'}),
-            defineField({name: 'text', title: 'Text', type: 'text', rows: 3}),
-          ],
-          preview: {select: {title: 'title'}},
-        }),
-      ],
-    }),
-  ],
-  preview: {
-    select: {title: 'heading'},
-    prepare({title}) {
-      return {title: 'Card Grid — 4 Col', subtitle: title}
+      return {title: 'Card Grid (Text)', subtitle: title}
     },
   },
 })
@@ -352,48 +315,12 @@ export const textImage = defineType({
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
     headingField(),
     defineField({name: 'text', title: 'Text', type: 'blockContent'}),
-    defineField({name: 'ctaLabel', title: 'Button Label', type: 'string'}),
-    defineField({name: 'ctaLink', title: 'Button Link', type: 'string'}),
-  ],
-  preview: {
-    select: {title: 'heading'},
-    prepare({title}) {
-      return {title: 'Text + Image', subtitle: title}
-    },
-  },
-})
-
-// ─────────────────────────────────────────────
-// TEXT + IMAGE + 2 STATS
-// ─────────────────────────────────────────────
-export const textImageStats2 = defineType({
-  name: 'textImageStats2',
-  title: 'Text + Image + 2 Stats',
-  type: 'object',
-  fields: [
-    themeField,
-    defineField({
-      name: 'imagePosition',
-      title: 'Image Position',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Left', value: 'left'},
-          {title: 'Right', value: 'right'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'left',
-    }),
-    defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
-    defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    headingField(),
-    defineField({name: 'text', title: 'Text', type: 'blockContent'}),
     defineField({
       name: 'stats',
-      title: 'Stats (2)',
+      title: 'Stats',
       type: 'array',
-      validation: (Rule) => Rule.max(2).min(2),
+      description: 'Optional. Up to 3 stat cards, shown in a single row inside the text column.',
+      validation: (Rule) => Rule.max(3),
       of: [
         defineArrayMember({
           type: 'object',
@@ -411,93 +338,7 @@ export const textImageStats2 = defineType({
   preview: {
     select: {title: 'heading'},
     prepare({title}) {
-      return {title: 'Text + Image + 2 Stats', subtitle: title}
-    },
-  },
-})
-
-// ─────────────────────────────────────────────
-// TEXT + IMAGE + 3 STATS
-// ─────────────────────────────────────────────
-export const textImageStats3 = defineType({
-  name: 'textImageStats3',
-  title: 'Text + Image + 3 Stats',
-  type: 'object',
-  fields: [
-    themeField,
-    defineField({
-      name: 'imagePosition',
-      title: 'Image Position',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Left', value: 'left'},
-          {title: 'Right', value: 'right'},
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'left',
-    }),
-    defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
-    defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    headingField(),
-    defineField({name: 'text', title: 'Text', type: 'blockContent'}),
-    defineField({
-      name: 'stats',
-      title: 'Stats (3)',
-      type: 'array',
-      validation: (Rule) => Rule.max(3).min(3),
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({name: 'value', title: 'Value', type: 'string', description: 'e.g. 200+'}),
-            defineField({name: 'label', title: 'Label', type: 'string', description: 'e.g. Projects'}),
-          ],
-          preview: {select: {title: 'value', subtitle: 'label'}},
-        }),
-      ],
-    }),
-    defineField({name: 'ctaLabel', title: 'Button Label', type: 'string'}),
-    defineField({name: 'ctaLink', title: 'Button Link', type: 'string'}),
-  ],
-  preview: {
-    select: {title: 'heading'},
-    prepare({title}) {
-      return {title: 'Text + Image + 3 Stats', subtitle: title}
-    },
-  },
-})
-
-// ─────────────────────────────────────────────
-// STATS ROW
-// Standalone full-width row of stat cards
-// ─────────────────────────────────────────────
-export const statsRow = defineType({
-  name: 'statsRow',
-  title: 'Stats Row',
-  type: 'object',
-  fields: [
-    themeField,
-    defineField({
-      name: 'stats',
-      title: 'Stats',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({name: 'value', title: 'Value', type: 'string', description: 'e.g. 15+'}),
-            defineField({name: 'label', title: 'Label', type: 'string', description: 'e.g. Years Experience'}),
-          ],
-          preview: {select: {title: 'value', subtitle: 'label'}},
-        }),
-      ],
-    }),
-  ],
-  preview: {
-    prepare() {
-      return {title: 'Stats Row'}
+      return {title: 'Text + Image', subtitle: title}
     },
   },
 })
