@@ -121,7 +121,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   })
 
   const resend = new Resend(env.RESEND_API_KEY)
-  const mailFrom = env.MAIL_FROM
 
   try {
     await sanity.create({
@@ -136,7 +135,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     })
 
     await resend.emails.send({
-      from: mailFrom,
+      from: env.MAIL_FROM,
       to: env.CONTACT_EMAIL,
       replyTo: email,
       subject: `New enquiry from ${firstName} ${lastName} — ${projectType || 'General'}`.slice(0, 200),
