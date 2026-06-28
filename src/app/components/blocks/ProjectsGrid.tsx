@@ -5,7 +5,7 @@ import { PROJECTS_QUERY, CATEGORIES_QUERY } from '../../lib/queries'
 import { themeBg, type Theme } from './themeUtils'
 import { img } from '../../lib/image'
 
-interface Props { theme?: Theme }
+interface Props { theme?: Theme; joinTop?: boolean; joinBottom?: boolean }
 
 // How many projects to show initially and per "Load More" click.
 const BATCH = 6
@@ -13,7 +13,7 @@ const BATCH = 6
 // leaving an awkward tiny final batch behind another click.
 const LOAD_ALL_THRESHOLD = 9
 
-export function ProjectsGrid({ theme = 'light' }: Props) {
+export function ProjectsGrid({ theme = 'light', joinTop, joinBottom }: Props) {
   const navigate = useNavigate()
   const { data: projects } = useSanity<any[]>(PROJECTS_QUERY)
   // Only categories that have at least one project are returned by this query
@@ -46,7 +46,7 @@ export function ProjectsGrid({ theme = 'light' }: Props) {
   return (
     <>
       {/* Filter — only shows categories that actually have projects */}
-      <section className={`py-12 border-b border-[#C8C5BE]/30 ${themeBg(theme)}`}>
+      <section className={`${joinTop ? 'pt-8' : 'pt-12'} pb-12 border-b border-[#C8C5BE]/30 ${themeBg(theme)}`}>
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
           <div className="flex flex-wrap gap-4 justify-center">
             <button
@@ -71,7 +71,7 @@ export function ProjectsGrid({ theme = 'light' }: Props) {
       </section>
 
       {/* Grid */}
-      <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+      <section className={`pt-24 lg:pt-32 ${joinBottom ? 'pb-8' : 'pb-24 lg:pb-32'} ${themeBg(theme)}`}>
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visible.map((project: any) => (

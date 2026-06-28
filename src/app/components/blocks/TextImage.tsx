@@ -1,7 +1,7 @@
 import { PortableText } from '@portabletext/react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
-import { themeBg, themeStatCard, themePrimaryBtn, type Theme } from './themeUtils'
+import { themeBg, themeStatCard, themePrimaryBtn, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 import { img } from '../../lib/image'
 
@@ -9,6 +9,8 @@ interface Stat { value: string; label: string }
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   imagePosition?: 'left' | 'right'
   image: string
   eyebrow?: string
@@ -19,13 +21,13 @@ interface Props {
   ctaLink?: string
 }
 
-export function TextImage({ theme = 'light', imagePosition = 'left', image, eyebrow, heading, text, stats, ctaLabel, ctaLink }: Props) {
+export function TextImage({ theme = 'light', imagePosition = 'left', image, eyebrow, heading, text, stats, ctaLabel, ctaLink, joinTop, joinBottom }: Props) {
   const navigate = useNavigate()
   const imageCol = imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'
   const textCol = imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1'
 
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div

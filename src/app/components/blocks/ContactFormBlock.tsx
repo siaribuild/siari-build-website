@@ -4,15 +4,17 @@ import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { useSanity } from '../../hooks/useSanity'
 import { SITE_SETTINGS_QUERY, ALL_CATEGORIES_QUERY } from '../../lib/queries'
 import { ObfuscatedEmail } from '../ObfuscatedEmail'
-import { themeBg, type Theme } from './themeUtils'
+import { themeBg, sectionPad, type Theme } from './themeUtils'
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   formHeading?: string
   infoHeading?: string
 }
 
-export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Message', infoHeading = 'Contact Info' }: Props) {
+export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Message', infoHeading = 'Contact Info', joinTop, joinBottom }: Props) {
   const { data: settings } = useSanity<any>(SITE_SETTINGS_QUERY)
   // All categories shown here (not just ones with existing projects) — a new
   // project type may not have a published project yet but should still be selectable.
@@ -76,7 +78,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
   const inputStyle = { clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }
 
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
 

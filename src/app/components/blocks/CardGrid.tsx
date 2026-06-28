@@ -1,4 +1,5 @@
-import { themeBg, themeCard, themeCardHover, themeIconTile, type Theme } from './themeUtils'
+import { themeBg, themeCard, themeCardHover, themeIconTile, sectionPad, type Theme } from './themeUtils'
+import { renderMultiline } from './renderMultiline'
 
 interface Card {
   icon?: string
@@ -8,6 +9,8 @@ interface Card {
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   eyebrow?: string
   heading?: string
   cards: Card[]
@@ -20,9 +23,9 @@ const colMap = {
   4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
 }
 
-export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns }: Props) {
+export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns, joinTop, joinBottom }: Props) {
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {(eyebrow || heading) && (
           <div className="text-center mb-16">
@@ -31,7 +34,7 @@ export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns }: 
             )}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
-                {heading}
+                {renderMultiline(heading)}
               </h2>
             )}
           </div>

@@ -1,4 +1,5 @@
 import {defineField, defineType, defineArrayMember} from 'sanity'
+import {headingField} from './headingField'
 
 // ─────────────────────────────────────────────
 // Shared theme field (reused across all blocks)
@@ -34,13 +35,7 @@ export const heroHome = defineType({
       type: 'string',
       description: 'Small label above the heading e.g. "SIARI BUILD"',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      description: 'Main large heading e.g. "BUILT WITH PRECISION."',
-      validation: (Rule) => Rule.required(),
-    }),
+    headingField({required: true, description: 'Main large heading, e.g. "BUILT WITH PRECISION."'}),
     defineField({
       name: 'subheading',
       title: 'Subheading',
@@ -116,12 +111,7 @@ export const heroInner = defineType({
       type: 'string',
       description: 'Small label above the heading e.g. "About Us"',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
+    headingField({required: true}),
     defineField({
       name: 'subheading',
       title: 'Subheading',
@@ -160,12 +150,7 @@ export const featuredProjects = defineType({
       type: 'string',
       description: 'e.g. "Portfolio"',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      description: 'e.g. "FEATURED PROJECTS"',
-    }),
+    headingField({description: 'e.g. "FEATURED PROJECTS"'}),
     defineField({
       name: 'ctaLabel',
       title: 'CTA Button Label',
@@ -219,16 +204,11 @@ export const cardGrid2 = defineType({
       title: 'Eyebrow Text',
       type: 'string',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-    }),
+    headingField(),
     defineField({
       name: 'cards',
       title: 'Cards',
       type: 'array',
-      validation: (Rule) => Rule.max(2),
       of: [
         defineArrayMember({
           type: 'object',
@@ -269,16 +249,11 @@ export const cardGrid3 = defineType({
       title: 'Eyebrow Text',
       type: 'string',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-    }),
+    headingField(),
     defineField({
       name: 'cards',
       title: 'Cards',
       type: 'array',
-      validation: (Rule) => Rule.max(3),
       of: [
         defineArrayMember({
           type: 'object',
@@ -319,16 +294,11 @@ export const cardGrid4 = defineType({
       title: 'Eyebrow Text',
       type: 'string',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-    }),
+    headingField(),
     defineField({
       name: 'cards',
       title: 'Cards',
       type: 'array',
-      validation: (Rule) => Rule.max(4),
       of: [
         defineArrayMember({
           type: 'object',
@@ -380,7 +350,7 @@ export const textImage = defineType({
     }),
     defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    defineField({name: 'heading', title: 'Heading', type: 'string'}),
+    headingField(),
     defineField({name: 'text', title: 'Text', type: 'blockContent'}),
     defineField({name: 'ctaLabel', title: 'Button Label', type: 'string'}),
     defineField({name: 'ctaLink', title: 'Button Link', type: 'string'}),
@@ -417,7 +387,7 @@ export const textImageStats2 = defineType({
     }),
     defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    defineField({name: 'heading', title: 'Heading', type: 'string'}),
+    headingField(),
     defineField({name: 'text', title: 'Text', type: 'blockContent'}),
     defineField({
       name: 'stats',
@@ -470,7 +440,7 @@ export const textImageStats3 = defineType({
     }),
     defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    defineField({name: 'heading', title: 'Heading', type: 'string'}),
+    headingField(),
     defineField({name: 'text', title: 'Text', type: 'blockContent'}),
     defineField({
       name: 'stats',
@@ -543,7 +513,7 @@ export const ourStory = defineType({
   fields: [
     themeField,
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    defineField({name: 'heading', title: 'Heading', type: 'string'}),
+    headingField(),
     defineField({name: 'text', title: 'Text', type: 'blockContent'}),
     defineField({
       name: 'stats',
@@ -581,7 +551,7 @@ export const testimonialsBlock = defineType({
   fields: [
     themeField,
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    defineField({name: 'heading', title: 'Heading', type: 'string'}),
+    headingField(),
     defineField({
       name: 'testimonials',
       title: 'Testimonials',
@@ -609,7 +579,7 @@ export const ctaBlock = defineType({
   fields: [
     themeField,
     defineField({name: 'eyebrow', title: 'Eyebrow Text', type: 'string'}),
-    defineField({name: 'heading', title: 'Heading', type: 'string', description: 'e.g. "READY TO START YOUR PROJECT?"'}),
+    headingField({description: 'e.g. "READY TO START YOUR PROJECT?"'}),
     defineField({name: 'body', title: 'Body Text', type: 'text', rows: 2}),
     defineField({name: 'buttonLabel', title: 'Button Label', type: 'string', description: 'e.g. "Get In Touch"'}),
     defineField({name: 'buttonLink', title: 'Button Link', type: 'string', description: 'e.g. /contact'}),

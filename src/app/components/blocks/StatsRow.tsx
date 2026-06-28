@@ -1,12 +1,12 @@
-import { themeBg, themeStatCard, type Theme } from './themeUtils'
+import { themeBg, themeStatCard, sectionPad, type Theme } from './themeUtils'
 
 interface Stat { value: string; label: string }
-interface Props { theme?: Theme; stats: Stat[] }
+interface Props { theme?: Theme; stats: Stat[]; joinTop?: boolean; joinBottom?: boolean }
 
-export function StatsRow({ theme = 'gray', stats }: Props) {
+export function StatsRow({ theme = 'gray', stats, joinTop, joinBottom }: Props) {
   const cols = Math.min(stats.length, 4)
   return (
-    <section className={`py-16 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom, 'pt-16', 'pb-16')} ${themeBg(theme)}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         <div className={`grid grid-cols-2 md:grid-cols-${cols} gap-6`}>
           {stats.map((stat, i) => (

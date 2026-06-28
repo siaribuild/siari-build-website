@@ -63,3 +63,22 @@ export function themePrimaryBtn(theme: Theme = 'light') {
     dark: 'bg-[#B8946A] text-[#F5F3EF] hover:bg-[#F5F3EF] hover:text-[#111111]',
   }[theme]
 }
+
+// Raw section background colour — used to detect consecutive same-colour blocks
+// so they can be visually joined. light=white and gray=cream are deliberately
+// different, so only truly identical backgrounds collapse together.
+export function themeBgColor(theme: Theme = 'light') {
+  return { light: '#ffffff', gray: '#F5F3EF', dark: '#111111' }[theme]
+}
+
+// Vertical padding for a section. When a block sits directly against another
+// block of the SAME background colour, the touching edge collapses to 32px (pt/pb-8)
+// so the two read as one continuous section instead of two stacked ones.
+export function sectionPad(
+  joinTop?: boolean,
+  joinBottom?: boolean,
+  fullTop = 'pt-24 lg:pt-32',
+  fullBottom = 'pb-24 lg:pb-32',
+) {
+  return `${joinTop ? 'pt-8' : fullTop} ${joinBottom ? 'pb-8' : fullBottom}`
+}

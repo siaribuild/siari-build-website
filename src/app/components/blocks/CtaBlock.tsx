@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom'
-import { themeBg, themePrimaryBtn, type Theme } from './themeUtils'
+import { themeBg, themePrimaryBtn, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   eyebrow?: string
   heading?: string
   body?: string
@@ -11,11 +13,11 @@ interface Props {
   buttonLink?: string
 }
 
-export function CtaBlock({ theme = 'gray', eyebrow, heading, body, buttonLabel, buttonLink }: Props) {
+export function CtaBlock({ theme = 'gray', eyebrow, heading, body, buttonLabel, buttonLink, joinTop, joinBottom }: Props) {
   const navigate = useNavigate()
 
   return (
-    <section className={`py-32 lg:py-40 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom, 'pt-32 lg:pt-40', 'pb-32 lg:pb-40')} ${themeBg(theme)}`}>
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12 text-center">
         {eyebrow && (
           <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>

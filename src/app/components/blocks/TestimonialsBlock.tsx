@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { themeBg, themeStatCard, type Theme } from './themeUtils'
+import { themeBg, themeStatCard, sectionPad, type Theme } from './themeUtils'
+import { renderMultiline } from './renderMultiline'
 
 interface Testimonial {
   _id: string
@@ -11,17 +12,19 @@ interface Testimonial {
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   eyebrow?: string
   heading?: string
   testimonials?: Testimonial[]
 }
 
-export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimonials }: Props) {
+export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimonials, joinTop, joinBottom }: Props) {
   const navigate = useNavigate()
   if (!testimonials?.length) return null
 
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-4xl mx-auto px-6 lg:px-12">
         {(eyebrow || heading) && (
           <div className="text-center mb-16">
@@ -30,7 +33,7 @@ export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimoni
             )}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
-                {heading}
+                {renderMultiline(heading)}
               </h2>
             )}
           </div>

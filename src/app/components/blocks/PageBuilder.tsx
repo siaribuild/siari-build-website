@@ -10,6 +10,22 @@ import { TestimonialsBlock } from './TestimonialsBlock'
 import { CtaBlock } from './CtaBlock'
 import { ContactFormBlock } from './ContactFormBlock'
 import { RichText } from './RichText'
+import { themeBgColor, type Theme } from './themeUtils'
+
+// Resolve a block's effective background colour so the renderer can tell when
+// two consecutive blocks share a background and should be visually joined.
+// Heroes and the (unrendered) map block never participate.
+const DEFAULT_THEME: Record<string, Theme> = {
+  featuredProjects: 'dark',
+  ctaBlock: 'gray',
+  statsRow: 'gray',
+}
+function bgOf(section?: { _type: string; [k: string]: unknown }): string | null {
+  if (!section) return null
+  const t = section._type
+  if (t === 'heroHome' || t === 'heroInner' || t === 'mapBlock') return null
+  return themeBgColor(((section as any).theme as Theme) || DEFAULT_THEME[t] || 'light')
+}
 
 interface Section {
   _type: string
@@ -26,9 +42,14 @@ export function PageBuilder({ sections }: Props) {
 
   return (
     <>
-      {sections.map((section) => {
+      {sections.map((section, i) => {
         const key = section._key
         const s = section as any
+
+        // Join a block to its neighbour when both share a background colour.
+        const myBg = bgOf(section)
+        const joinTop = myBg !== null && bgOf(sections[i - 1]) === myBg
+        const joinBottom = myBg !== null && bgOf(sections[i + 1]) === myBg
 
         switch (section._type) {
           case 'heroHome':
@@ -63,6 +84,8 @@ export function PageBuilder({ sections }: Props) {
               <FeaturedProjects
                 key={key}
                 theme={s.theme}
+                joinTop={joinTop}
+                joinBottom={joinBottom}
                 eyebrow={s.eyebrow}
                 heading={s.heading}
                 ctaLabel={s.ctaLabel}
@@ -71,20 +94,22 @@ export function PageBuilder({ sections }: Props) {
             )
 
           case 'projectsGrid':
-            return <ProjectsGrid key={key} theme={s.theme} />
+            return <ProjectsGrid key={key} theme={s.theme} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'cardGrid2':
-            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={2} />
+            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={2} joinTop={joinTop} joinBottom={joinBottom} />
           case 'cardGrid3':
-            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={3} />
+            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={3} joinTop={joinTop} joinBottom={joinBottom} />
           case 'cardGrid4':
-            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={4} />
+            return <CardGrid key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} cards={s.cards || []} columns={4} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'textImage':
             return (
               <TextImage
                 key={key}
                 theme={s.theme}
+                joinTop={joinTop}
+                joinBottom={joinBottom}
                 imagePosition={s.imagePosition}
                 image={s.image}
                 eyebrow={s.eyebrow}
@@ -101,6 +126,8 @@ export function PageBuilder({ sections }: Props) {
               <TextImage
                 key={key}
                 theme={s.theme}
+                joinTop={joinTop}
+                joinBottom={joinBottom}
                 imagePosition={s.imagePosition}
                 image={s.image}
                 eyebrow={s.eyebrow}
@@ -113,28 +140,28 @@ export function PageBuilder({ sections }: Props) {
             )
 
           case 'statsRow':
-            return <StatsRow key={key} theme={s.theme} stats={s.stats || []} />
+            return <StatsRow key={key} theme={s.theme} stats={s.stats || []} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'ourStory':
             return (
-              <OurStory key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} text={s.text} stats={s.stats} />
+              <OurStory key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} text={s.text} stats={s.stats} joinTop={joinTop} joinBottom={joinBottom} />
             )
 
           case 'testimonialsBlock':
             return (
-              <TestimonialsBlock key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} testimonials={s.testimonials} />
+              <TestimonialsBlock key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} testimonials={s.testimonials} joinTop={joinTop} joinBottom={joinBottom} />
             )
 
           case 'ctaBlock':
             return (
-              <CtaBlock key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} body={s.body} buttonLabel={s.buttonLabel} buttonLink={s.buttonLink} />
+              <CtaBlock key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} body={s.body} buttonLabel={s.buttonLabel} buttonLink={s.buttonLink} joinTop={joinTop} joinBottom={joinBottom} />
             )
 
           case 'contactFormBlock':
-            return <ContactFormBlock key={key} theme={s.theme} formHeading={s.formHeading} infoHeading={s.infoHeading} />
+            return <ContactFormBlock key={key} theme={s.theme} formHeading={s.formHeading} infoHeading={s.infoHeading} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'richTextBlock':
-            return <RichText key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} content={s.content} />
+            return <RichText key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} content={s.content} joinTop={joinTop} joinBottom={joinBottom} />
 
           case 'mapBlock':
             // Reserved — Google Map embed block not yet implemented on the frontend.

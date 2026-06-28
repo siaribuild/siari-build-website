@@ -1,18 +1,21 @@
 import { useNavigate } from 'react-router-dom'
 import { useSanity } from '../../hooks/useSanity'
 import { FEATURED_PROJECTS_QUERY } from '../../lib/queries'
-import { themeBg, type Theme } from './themeUtils'
+import { themeBg, sectionPad, type Theme } from './themeUtils'
+import { renderMultiline } from './renderMultiline'
 import { img } from '../../lib/image'
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   eyebrow?: string
   heading?: string
   ctaLabel?: string
   ctaLink?: string
 }
 
-export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, ctaLink }: Props) {
+export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, ctaLink, joinTop, joinBottom }: Props) {
   const navigate = useNavigate()
   const { data: projects, loading } = useSanity<any[]>(FEATURED_PROJECTS_QUERY)
 
@@ -27,7 +30,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
       : 'border-2 border-[#111111] text-[#111111] hover:bg-[#B8946A] hover:border-[#B8946A] hover:text-[#F5F3EF]'
 
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-end mb-16">
           <div>
@@ -36,7 +39,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
             )}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
-                {heading}
+                {renderMultiline(heading)}
               </h2>
             )}
           </div>

@@ -1,18 +1,21 @@
 import { PortableText } from '@portabletext/react'
-import { themeBg, type Theme } from './themeUtils'
+import { themeBg, sectionPad, type Theme } from './themeUtils'
+import { renderMultiline } from './renderMultiline'
 import { portableTextComponents } from './portableTextComponents'
 
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   eyebrow?: string
   heading?: string
   content?: any[]
 }
 
-export function RichText({ theme = 'light', eyebrow, heading, content }: Props) {
+export function RichText({ theme = 'light', eyebrow, heading, content, joinTop, joinBottom }: Props) {
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
-      <div className="max-w-3xl mx-auto px-6 lg:px-12">
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {eyebrow && (
           <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
         )}
@@ -21,7 +24,7 @@ export function RichText({ theme = 'light', eyebrow, heading, content }: Props) 
             className="mb-10 uppercase"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1.05, letterSpacing: '-0.02em' }}
           >
-            {heading}
+            {renderMultiline(heading)}
           </h1>
         )}
         {content && (

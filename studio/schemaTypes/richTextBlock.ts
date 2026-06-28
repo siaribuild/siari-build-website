@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {headingField} from './headingField'
 
 // Standalone long-form text block for the page builder — for pages like
 // Privacy Policy, Terms of Service, or any prose-heavy content. Reuses the
@@ -30,12 +31,7 @@ export const richTextBlock = defineType({
       type: 'string',
       description: 'Optional small label above the heading',
     }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      description: 'Optional section heading',
-    }),
+    headingField({description: 'Optional section heading'}),
     defineField({
       name: 'content',
       title: 'Content',

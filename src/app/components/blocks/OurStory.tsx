@@ -1,18 +1,21 @@
 import { PortableText } from '@portabletext/react'
-import { themeBg, themeStatCard, type Theme } from './themeUtils'
+import { themeBg, themeStatCard, sectionPad, type Theme } from './themeUtils'
+import { renderMultiline } from './renderMultiline'
 
 interface Stat { value: string; label: string }
 interface Props {
   theme?: Theme
+  joinTop?: boolean
+  joinBottom?: boolean
   eyebrow?: string
   heading?: string
   text?: any[]
   stats?: Stat[]
 }
 
-export function OurStory({ theme = 'light', eyebrow, heading, text, stats }: Props) {
+export function OurStory({ theme = 'light', eyebrow, heading, text, stats, joinTop, joinBottom }: Props) {
   return (
-    <section className={`py-24 lg:py-32 ${themeBg(theme)}`}>
+    <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -21,7 +24,7 @@ export function OurStory({ theme = 'light', eyebrow, heading, text, stats }: Pro
             )}
             {heading && (
               <h2 className="mb-8 uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1.1 }}>
-                {heading}
+                {renderMultiline(heading)}
               </h2>
             )}
             {text && (
