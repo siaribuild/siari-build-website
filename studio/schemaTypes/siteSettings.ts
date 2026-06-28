@@ -9,6 +9,7 @@ export const siteSettings = defineType({
     {name: 'maintenance', title: 'Maintenance Mode'},
     {name: 'maintenancePage', title: 'Maintenance Page'},
     {name: 'errorPage', title: 'Error Page'},
+    {name: 'footer', title: 'Footer'},
   ],
   fields: [
     // ── General ──
@@ -17,6 +18,21 @@ export const siteSettings = defineType({
     defineField({name: 'phone', title: 'Phone', type: 'string', group: 'general'}),
     defineField({name: 'email', title: 'Email', type: 'string', group: 'general'}),
     defineField({name: 'address', title: 'Address', type: 'text', rows: 3, group: 'general'}),
+    // ── Footer (bottom bar) ──
+    defineField({
+      name: 'copyrightText',
+      title: 'Copyright Text',
+      type: 'string',
+      group: 'footer',
+      description: 'Shown after the year and business name, e.g. "All rights reserved." The year and business name are added automatically.',
+    }),
+    defineField({
+      name: 'legalLine',
+      title: 'Legal Line (ABN / Licence)',
+      type: 'string',
+      group: 'footer',
+      description: 'The small print at the very bottom, e.g. "ABN 12 345 678 901 | Builder License VIC 123456"',
+    }),
     defineField({
       name: 'workingHours',
       title: 'Working Hours',

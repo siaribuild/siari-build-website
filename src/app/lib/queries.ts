@@ -28,6 +28,8 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
   phone,
   email,
   address,
+  copyrightText,
+  legalLine,
   workingHours,
   maintenanceEnabled,
   maintenanceHeading,

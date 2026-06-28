@@ -64,8 +64,8 @@ export function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-[#F5F3EF]/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-sm opacity-50">© {new Date().getFullYear()} {settings?.siteName || 'SIARI BUILD'}. All rights reserved.</div>
-          <div className="text-sm opacity-50">ABN 12 345 678 901 | Builder License VIC 123456</div>
+          <div className="text-sm opacity-50">© {new Date().getFullYear()} {settings?.siteName || 'SIARI BUILD'}. {settings?.copyrightText || 'All rights reserved.'}</div>
+          <div className="text-sm opacity-50">{settings?.legalLine || 'ABN 12 345 678 901 | Builder License VIC 123456'}</div>
         </div>
       </div>
     </footer>
