@@ -65,6 +65,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
               style={{ backgroundImage: `url(${img(first.heroImage, { w: 1400 })})` }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
+            <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-black/70 to-transparent group-hover:from-black/50 transition-all duration-500 pointer-events-none" />
             <div className="absolute top-0 left-0 p-6 text-[#F5F3EF] z-10">
               <div className="text-sm opacity-90">{first.details?.location} • {first.details?.year}</div>
             </div>
@@ -88,6 +89,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
                   style={{ backgroundImage: `url(${img(project.heroImage, { w: 1000 })})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
+                <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-black/70 to-transparent group-hover:from-black/50 transition-all duration-500 pointer-events-none" />
                 <div className="absolute top-0 left-0 p-6 text-[#F5F3EF] z-10">
                   <div className="text-sm opacity-90">{project.details?.location} • {project.details?.year}</div>
                 </div>
