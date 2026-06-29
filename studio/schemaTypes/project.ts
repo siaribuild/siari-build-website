@@ -7,6 +7,7 @@ export const project = defineType({
   type: 'document',
   groups: [
     {name: 'content', title: 'Content', default: true},
+    {name: 'details', title: 'Details'},
     {name: 'seo', title: 'SEO'},
   ],
   fields: [
@@ -77,8 +78,8 @@ export const project = defineType({
       name: 'details',
       title: 'Project Details',
       type: 'object',
-      options: {collapsible: true, collapsed: false},
-      group: 'content',
+      options: {collapsible: false},
+      group: 'details',
       fields: [
         defineField({name: 'year', title: 'Year', type: 'string', description: 'e.g. 2024'}),
         defineField({name: 'location', title: 'Location', type: 'string', description: 'e.g. Brighton, VIC'}),

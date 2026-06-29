@@ -17,12 +17,22 @@ export const contactSubmission = defineType({
     select: {
       firstName: 'firstName',
       lastName: 'lastName',
-      email: 'email',
+      submittedAt: 'submittedAt',
     },
-    prepare({firstName, lastName, email}) {
+    prepare({firstName, lastName, submittedAt}) {
+      const name = [firstName, lastName].filter(Boolean).join(' ') || 'Unnamed'
+      const when = submittedAt
+        ? new Date(submittedAt).toLocaleString('en-AU', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        : 'No date'
       return {
-        title: [firstName, lastName].filter(Boolean).join(' ') || 'Unnamed',
-        subtitle: email,
+        title: when,
+        subtitle: name,
       }
     },
   },
