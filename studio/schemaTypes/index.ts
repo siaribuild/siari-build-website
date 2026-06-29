@@ -1,4 +1,5 @@
 import {blockContent} from './blockContent'
+import {link} from './link'
 
 import {
   heroHome,
@@ -26,6 +27,7 @@ import {richTextBlock} from './richTextBlock'
 
 export const schemaTypes = [
   blockContent,
+  link,
 
   heroHome,
   heroInner,

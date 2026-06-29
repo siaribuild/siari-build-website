@@ -21,6 +21,20 @@ const SEO_FRAGMENT = `
   }
 `
 
+// ─── Reusable link projection (internal reference dereferenced to type + slug) ─
+const LINK = `{
+    kind,
+    href,
+    newTab,
+    internal->{ _type, "slug": slug.current }
+  }`
+
+// markDefs projection that dereferences inline link annotations inside Portable Text
+const PT_MARKDEFS = `markDefs[]{
+    ...,
+    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }
+  }`
+
 // ─── Site Settings ───────────────────────────────────────────────────────────
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
   siteName,
@@ -74,16 +88,22 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
     _key,
     eyebrow, heading, subheading,
     "backgroundImage": backgroundImage.asset->url,
-    primaryButtonLabel, primaryButtonLink,
-    secondaryButtonLabel, secondaryButtonLink,
+    primaryButtonLabel,
+    primaryButtonLink ${LINK},
+    secondaryButtonLabel,
+    secondaryButtonLink ${LINK},
     height,
     theme,
     columns,
     imagePosition,
     imageSize,
     "image": image.asset->url,
-    text[] { ..., _type == "block" => { ... } },
-    ctaLabel, ctaLink,
+    text[]{
+      ...,
+      ${PT_MARKDEFS}
+    },
+    ctaLabel,
+    ctaLink ${LINK},
     stats[] { value, label },
     cards[] {
       "icon": icon.asset->url,
@@ -91,7 +111,8 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
       title,
       text
     },
-    buttonLabel, buttonLink,
+    buttonLabel,
+    buttonLink ${LINK},
     body,
     content[] {
       ...,
@@ -99,7 +120,7 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
         ...,
         "asset": asset->{ url }
       },
-      markDefs[] { ... }
+      ${PT_MARKDEFS}
     },
     testimonials[]-> {
       _id,
@@ -164,7 +185,10 @@ export const PROJECT_QUERY = `*[_type == "project" && slug.current == $slug][0] 
   _id,
   title,
   "slug": slug.current,
-  description,
+  description[]{
+    ...,
+    ${PT_MARKDEFS}
+  },
   "heroImage": heroImage.asset->url,
   details {
     year,

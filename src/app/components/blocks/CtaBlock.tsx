@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom'
+import { SmartLink } from '../SmartLink'
+import type { SanityLink } from '../../lib/links'
 import { themeBg, themePrimaryBtn, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 
@@ -10,12 +11,10 @@ interface Props {
   heading?: string
   body?: string
   buttonLabel?: string
-  buttonLink?: string
+  buttonLink?: SanityLink | null
 }
 
 export function CtaBlock({ theme = 'gray', eyebrow, heading, body, buttonLabel, buttonLink, joinTop, joinBottom }: Props) {
-  const navigate = useNavigate()
-
   return (
     <section className={`${sectionPad(joinTop, joinBottom, 'pt-32 lg:pt-40', 'pb-32 lg:pb-40')} ${themeBg(theme)}`}>
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12 text-center">
@@ -29,13 +28,13 @@ export function CtaBlock({ theme = 'gray', eyebrow, heading, body, buttonLabel, 
         )}
         {body && <p className="text-xl mb-12 max-w-2xl mx-auto opacity-70">{body}</p>}
         {buttonLabel && (
-          <button
-            onClick={() => buttonLink && navigate(buttonLink)}
-            className={`px-12 py-5 text-sm tracking-wider uppercase transition-all ${themePrimaryBtn(theme)}`}
+          <SmartLink
+            link={buttonLink}
+            className={`inline-block px-12 py-5 text-sm tracking-wider uppercase transition-all ${themePrimaryBtn(theme)}`}
             style={{ clipPath: 'polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px))' }}
           >
             {buttonLabel}
-          </button>
+          </SmartLink>
         )}
       </div>
     </section>

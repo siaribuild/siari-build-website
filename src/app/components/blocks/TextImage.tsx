@@ -1,5 +1,6 @@
 import { PortableText } from '@portabletext/react'
-import { useNavigate } from 'react-router-dom'
+import { SmartLink } from '../SmartLink'
+import { resolveHref, type SanityLink } from '../../lib/links'
 import { ArrowRight } from 'lucide-react'
 import { themeBg, themeStatCard, themePrimaryBtn, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
@@ -30,15 +31,14 @@ interface Props {
   text?: any[]
   stats?: Stat[]
   ctaLabel?: string
-  ctaLink?: string
+  ctaLink?: SanityLink | null
 }
 
 export function TextImage({ theme = 'light', imagePosition = 'left', imageSize = 'tall', image, eyebrow, heading, text, stats, ctaLabel, ctaLink, joinTop, joinBottom }: Props) {
-  const navigate = useNavigate()
   const imageCol = imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'
   const textCol = imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1'
   // When the block is just a heading (no eyebrow, stats, or button), let it run large.
-  const minimal = !eyebrow && (!stats || stats.length === 0) && !(ctaLabel && ctaLink)
+  const minimal = !eyebrow && (!stats || stats.length === 0) && !(ctaLabel && resolveHref(ctaLink))
   const headingStyle = minimal
     ? { fontSize: 'clamp(3rem, 8vw, 5.5rem)', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }
     : { fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 700, lineHeight: 1, letterSpacing: '-0.02em' }
@@ -86,15 +86,15 @@ export function TextImage({ theme = 'light', imagePosition = 'left', imageSize =
               </div>
             )}
 
-            {ctaLabel && ctaLink && (
-              <button
-                onClick={() => navigate(ctaLink)}
+            {ctaLabel && (
+              <SmartLink
+                link={ctaLink}
                 className={`mt-10 px-10 py-4 text-sm tracking-wider uppercase transition-all inline-flex items-center gap-3 ${themePrimaryBtn(theme)}`}
                 style={{ clipPath: 'polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px))' }}
               >
                 {ctaLabel}
                 <ArrowRight size={18} />
-              </button>
+              </SmartLink>
             )}
           </div>
         </div>

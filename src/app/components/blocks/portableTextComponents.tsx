@@ -1,4 +1,6 @@
 import { type PortableTextComponents } from '@portabletext/react'
+import { Link } from 'react-router-dom'
+import { resolveHref } from '../../lib/links'
 
 // Shared Portable Text rendering config used by every block that renders
 // rich content (RichText block, project description, etc.). Defining it once
@@ -57,16 +59,23 @@ export const portableTextComponents: PortableTextComponents = {
     strong: ({ children }) => <strong style={{ fontWeight: 700 }}>{children}</strong>,
     em: ({ children }) => <em>{children}</em>,
     link: ({ children, value }) => {
-      const newTab = value?.openInNewTab
+      const resolved = resolveHref(value as any)
+      // Incomplete link → render the text without an anchor.
+      if (!resolved) return <>{children}</>
+      const cls = 'text-[#B8946A] underline hover:opacity-70 transition-opacity'
+      const target = resolved.newTab ? '_blank' : undefined
+      const rel = resolved.newTab ? 'noopener noreferrer' : undefined
+      if (resolved.external) {
+        return (
+          <a href={resolved.href} target={target} rel={rel} className={cls}>
+            {children}
+          </a>
+        )
+      }
       return (
-        <a
-          href={value?.href}
-          target={newTab ? '_blank' : undefined}
-          rel={newTab ? 'noopener noreferrer' : undefined}
-          className="text-[#B8946A] underline hover:opacity-70 transition-opacity"
-        >
+        <Link to={resolved.href} target={target} rel={rel} className={cls}>
           {children}
-        </a>
+        </Link>
       )
     },
   },

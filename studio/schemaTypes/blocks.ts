@@ -55,24 +55,14 @@ export const heroHome = defineType({
       type: 'string',
       description: 'e.g. "Start Your Project"',
     }),
-    defineField({
-      name: 'primaryButtonLink',
-      title: 'Primary Button Link',
-      type: 'string',
-      description: 'e.g. /contact or #contact',
-    }),
+    defineField({name: 'primaryButtonLink', title: 'Primary Button Link', type: 'link'}),
     defineField({
       name: 'secondaryButtonLabel',
       title: 'Secondary Button Label',
       type: 'string',
       description: 'e.g. "View Projects"',
     }),
-    defineField({
-      name: 'secondaryButtonLink',
-      title: 'Secondary Button Link',
-      type: 'string',
-      description: 'e.g. /projects',
-    }),
+    defineField({name: 'secondaryButtonLink', title: 'Secondary Button Link', type: 'link'}),
   ],
   preview: {
     select: {title: 'heading'},
@@ -158,12 +148,7 @@ export const featuredProjects = defineType({
       type: 'string',
       description: 'e.g. "View All Projects"',
     }),
-    defineField({
-      name: 'ctaLink',
-      title: 'CTA Button Link',
-      type: 'string',
-      description: 'e.g. /projects',
-    }),
+    defineField({name: 'ctaLink', title: 'CTA Button Link', type: 'link'}),
   ],
   preview: {
     select: {title: 'heading'},
@@ -349,7 +334,7 @@ export const textImage = defineType({
       ],
     }),
     defineField({name: 'ctaLabel', title: 'Button Label', type: 'string'}),
-    defineField({name: 'ctaLink', title: 'Button Link', type: 'string'}),
+    defineField({name: 'ctaLink', title: 'Button Link', type: 'link'}),
   ],
   preview: {
     select: {title: 'heading'},
@@ -439,7 +424,7 @@ export const ctaBlock = defineType({
     headingField({description: 'e.g. "READY TO START YOUR PROJECT?"'}),
     defineField({name: 'body', title: 'Body Text', type: 'text', rows: 2}),
     defineField({name: 'buttonLabel', title: 'Button Label', type: 'string', description: 'e.g. "Get In Touch"'}),
-    defineField({name: 'buttonLink', title: 'Button Link', type: 'string', description: 'e.g. /contact'}),
+    defineField({name: 'buttonLink', title: 'Button Link', type: 'link'}),
   ],
   preview: {
     select: {title: 'heading'},

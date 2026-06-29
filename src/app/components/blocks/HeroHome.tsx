@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
-import { useNavigate } from 'react-router-dom'
+import { SmartLink } from '../SmartLink'
+import type { SanityLink } from '../../lib/links'
 import { renderMultiline } from './renderMultiline'
 import { img } from '../../lib/image'
 
@@ -9,9 +10,9 @@ interface Props {
   subheading?: string
   backgroundImage: string
   primaryButtonLabel?: string
-  primaryButtonLink?: string
+  primaryButtonLink?: SanityLink | null
   secondaryButtonLabel?: string
-  secondaryButtonLink?: string
+  secondaryButtonLink?: SanityLink | null
 }
 
 export function HeroHome({
@@ -19,8 +20,6 @@ export function HeroHome({
   primaryButtonLabel, primaryButtonLink,
   secondaryButtonLabel, secondaryButtonLink,
 }: Props) {
-  const navigate = useNavigate()
-
   return (
     <section className="relative h-screen flex items-center overflow-hidden">
       <motion.div
@@ -48,22 +47,22 @@ export function HeroHome({
             )}
             <div className="flex flex-wrap gap-4">
               {primaryButtonLabel && (
-                <button
-                  onClick={() => primaryButtonLink && navigate(primaryButtonLink)}
-                  className="bg-[#B8946A] text-[#F5F3EF] px-10 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#F5F3EF] hover:text-[#111111]"
+                <SmartLink
+                  link={primaryButtonLink}
+                  className="inline-block bg-[#B8946A] text-[#F5F3EF] px-10 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#F5F3EF] hover:text-[#111111]"
                   style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
                 >
                   {primaryButtonLabel}
-                </button>
+                </SmartLink>
               )}
               {secondaryButtonLabel && (
-                <button
-                  onClick={() => secondaryButtonLink && navigate(secondaryButtonLink)}
-                  className="border-2 border-[#F5F3EF] text-[#F5F3EF] px-10 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#F5F3EF] hover:text-[#111111]"
+                <SmartLink
+                  link={secondaryButtonLink}
+                  className="inline-block border-2 border-[#F5F3EF] text-[#F5F3EF] px-10 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#F5F3EF] hover:text-[#111111]"
                   style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
                 >
                   {secondaryButtonLabel}
-                </button>
+                </SmartLink>
               )}
             </div>
           </div>

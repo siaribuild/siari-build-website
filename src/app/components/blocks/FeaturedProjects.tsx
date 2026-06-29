@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom'
+import { SmartLink } from '../SmartLink'
+import type { SanityLink } from '../../lib/links'
 import { useSanity } from '../../hooks/useSanity'
 import { FEATURED_PROJECTS_QUERY } from '../../lib/queries'
 import { themeBg, sectionPad, type Theme } from './themeUtils'
@@ -12,7 +14,7 @@ interface Props {
   eyebrow?: string
   heading?: string
   ctaLabel?: string
-  ctaLink?: string
+  ctaLink?: SanityLink | null
 }
 
 export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, ctaLink, joinTop, joinBottom }: Props) {
@@ -44,13 +46,13 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
             )}
           </div>
           {ctaLabel && (
-            <button
-              onClick={() => ctaLink && navigate(ctaLink)}
-              className={`px-8 py-3 text-sm tracking-wider uppercase transition-all ${outlineBtn}`}
+            <SmartLink
+              link={ctaLink}
+              className={`inline-block px-8 py-3 text-sm tracking-wider uppercase transition-all ${outlineBtn}`}
               style={{ clipPath: 'polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px))' }}
             >
               {ctaLabel}
-            </button>
+            </SmartLink>
           )}
         </div>
 

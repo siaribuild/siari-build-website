@@ -21,31 +21,8 @@ export const blockContent = defineType({
           {title: 'Strong', value: 'strong'},
           {title: 'Emphasis', value: 'em'},
         ],
-        annotations: [
-          {
-            name: 'link',
-            type: 'object',
-            title: 'Link',
-            fields: [
-              {
-                name: 'href',
-                type: 'url',
-                title: 'URL',
-                validation: (Rule: any) =>
-                  Rule.uri({
-                    scheme: ['http', 'https', 'mailto', 'tel'],
-                    allowRelative: true,
-                  }),
-              },
-              {
-                name: 'openInNewTab',
-                type: 'boolean',
-                title: 'Open in new tab',
-                initialValue: false,
-              },
-            ],
-          },
-        ],
+        // Inline hyperlink — reuses the shared `link` object (internal ref or external URL)
+        annotations: [{type: 'link', title: 'Link'}],
       },
     }),
     defineArrayMember({
