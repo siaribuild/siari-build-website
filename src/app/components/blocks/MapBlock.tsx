@@ -63,7 +63,7 @@ export function MapBlock({ height = 'medium' }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [failed, setFailed] = useState(false)
 
-  const apiKey: string | undefined = settings?.mapsApiKey
+  const apiKey = (import.meta.env as any).VITE_GOOGLE_MAPS_API_KEY as string | undefined
   const loc = settings?.mapLocation as { lat?: number; lng?: number } | undefined
   const zoom: number = settings?.mapZoom || 15
   const label: string | undefined = settings?.mapAddressLabel
@@ -103,35 +103,8 @@ export function MapBlock({ height = 'medium' }: Props) {
     }
   }, [hasMap, apiKey, loc?.lat, loc?.lng, zoom, label])
 
-  // Directions link target: prefer the typed address, else the coordinates.
-  const dirTarget = label
-    ? encodeURIComponent(label)
-    : loc?.lat != null
-    ? `${loc.lat},${loc.lng}`
-    : null
-
-  // Not configured (or failed to load): a clean cream placeholder rather than a
-  // broken/blank area. Shows the address + a directions link when available.
-  if (!hasMap || failed) {
-    return (
-      <section className="w-full bg-[#F5F3EF]" style={{ height: px }}>
-        <div className="h-full flex flex-col items-center justify-center text-center px-6">
-          <div className="text-sm tracking-[0.3em] uppercase text-[#B8946A] mb-3">Find Us</div>
-          {label && <p className="text-[#111111] text-lg max-w-md">{label}</p>}
-          {dirTarget && (
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${dirTarget}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-block bg-[#111111] text-[#F5F3EF] px-8 py-3 text-sm tracking-wider uppercase transition-all hover:bg-[#B8946A]"
-            >
-              Get Directions
-            </a>
-          )}
-        </div>
-      </section>
-    )
-  }
+  // Not configured (no API key or no pin) — hide the block entirely.
+  if (!hasMap || failed) return null
 
   return (
     <section className="w-full" style={{ height: px }}>

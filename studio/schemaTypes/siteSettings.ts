@@ -118,14 +118,6 @@ export const siteSettings = defineType({
     }),
     // ── Google Maps ──
     defineField({
-      name: 'mapsApiKey',
-      title: 'Google Maps API Key',
-      type: 'string',
-      group: 'maps',
-      description:
-        'A Google Maps JavaScript API key. In the Google Cloud console, enable the "Maps JavaScript API" and restrict the key to your domain (siaribuild.com.au) so it can\'t be used elsewhere.',
-    }),
-    defineField({
       name: 'mapLocation',
       title: 'Map Location (Pin)',
       type: 'geopoint',

@@ -4,6 +4,7 @@ import {structureTool} from 'sanity/structure'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import {seoMetaFields} from 'sanity-plugin-seo'
 import {schemaTypes} from './schemaTypes'
+import {duplicateWithoutRank} from './actions/duplicateWithoutRank'
 
 export default defineConfig({
   name: 'default',
@@ -87,5 +88,14 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+  },
+
+  document: {
+    // For orderable types, swap the default Duplicate for one that doesn't copy
+    // the order value — see actions/duplicateWithoutRank.
+    actions: (prev, {schemaType}) =>
+      ['project', 'page', 'projectCategory'].includes(schemaType)
+        ? prev.map((action) => (action.action === 'duplicate' ? duplicateWithoutRank : action))
+        : prev,
   },
 })

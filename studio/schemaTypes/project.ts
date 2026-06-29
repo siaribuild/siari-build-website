@@ -39,6 +39,18 @@ export const project = defineType({
       type: 'array',
       description: 'Use heading styles for section titles, normal text for paragraphs, and bullet lists for key features',
       group: 'content',
+      initialValue: [
+        {_type: 'block', _key: 'tplOverviewH', style: 'h2', markDefs: [], children: [{_type: 'span', _key: 'tplOverviewHs', text: 'Overview', marks: []}]},
+        {_type: 'block', _key: 'tplOverviewP', style: 'normal', markDefs: [], children: [{_type: 'span', _key: 'tplOverviewPs', text: '', marks: []}]},
+        {_type: 'block', _key: 'tplChallengeH', style: 'h3', markDefs: [], children: [{_type: 'span', _key: 'tplChallengeHs', text: 'The Challenge', marks: []}]},
+        {_type: 'block', _key: 'tplChallengeP', style: 'normal', markDefs: [], children: [{_type: 'span', _key: 'tplChallengePs', text: '', marks: []}]},
+        {_type: 'block', _key: 'tplSolutionH', style: 'h3', markDefs: [], children: [{_type: 'span', _key: 'tplSolutionHs', text: 'Our Solution', marks: []}]},
+        {_type: 'block', _key: 'tplSolutionP', style: 'normal', markDefs: [], children: [{_type: 'span', _key: 'tplSolutionPs', text: '', marks: []}]},
+        {_type: 'block', _key: 'tplFeaturesH', style: 'h3', markDefs: [], children: [{_type: 'span', _key: 'tplFeaturesHs', text: 'Key Features', marks: []}]},
+        {_type: 'block', _key: 'tplFeat1', style: 'normal', listItem: 'bullet', level: 1, markDefs: [], children: [{_type: 'span', _key: 'tplFeat1s', text: 'Item 1', marks: []}]},
+        {_type: 'block', _key: 'tplFeat2', style: 'normal', listItem: 'bullet', level: 1, markDefs: [], children: [{_type: 'span', _key: 'tplFeat2s', text: 'Item 2', marks: []}]},
+        {_type: 'block', _key: 'tplFeat3', style: 'normal', listItem: 'bullet', level: 1, markDefs: [], children: [{_type: 'span', _key: 'tplFeat3s', text: 'Item 3', marks: []}]},
+      ],
       of: [
         {
           type: 'block',
@@ -75,6 +87,7 @@ export const project = defineType({
           title: 'Category',
           type: 'reference',
           to: [{type: 'projectCategory'}],
+          options: {disableNew: true},
         }),
         defineField({name: 'client', title: 'Client', type: 'string', description: 'e.g. Private Residence'}),
         defineField({name: 'duration', title: 'Duration', type: 'string', description: 'e.g. 14 months'}),

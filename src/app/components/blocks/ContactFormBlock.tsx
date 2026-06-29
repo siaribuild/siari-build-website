@@ -113,8 +113,8 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 </div>
                 <div>
                   <label className="block mb-2 text-sm tracking-wider uppercase">Project Type</label>
-                  <select name="projectType" value={form.projectType} onChange={handleChange} className={inputClass} style={inputStyle}>
-                    <option value="">{defaultProjectType ? `${defaultProjectType} (default)` : 'Select a type...'}</option>
+                  <select name="projectType" value={form.projectType || defaultProjectType} onChange={handleChange} className={inputClass} style={inputStyle}>
+                    {!defaultProjectType && <option value="">Select a type...</option>}
                     {categories?.map((c: any) => (
                       <option key={c._id} value={c.title}>{c.title}</option>
                     ))}

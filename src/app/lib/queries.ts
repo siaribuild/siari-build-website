@@ -40,7 +40,6 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0] {
   notFoundMessage,
   notFoundButtonLabel,
   "notFoundImage": notFoundImage.asset->url,
-  mapsApiKey,
   mapLocation,
   mapZoom,
   mapAddressLabel
