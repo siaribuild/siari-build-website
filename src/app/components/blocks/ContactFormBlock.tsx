@@ -123,7 +123,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 </div>
                 <div>
                   <label className="block mb-2 text-sm tracking-wider uppercase">Message</label>
-                  <textarea name="message" value={form.message} onChange={handleChange} required rows={6} className={`${inputClass} resize-none`} style={inputStyle} />
+                  <textarea name="message" placeholder="The more you tell us, the more useful our first reply will be — but a few lines is plenty to start." value={form.message} onChange={handleChange} required rows={6} className={`${inputClass} resize-none`} style={inputStyle} />
                 </div>
 
                 <div>
@@ -142,7 +142,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                   className="bg-[#111111] text-[#F5F3EF] px-12 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#B8946A] disabled:opacity-50"
                   style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
                 >
-                  {status === 'sending' ? 'Sending...' : 'Send Message'}
+                  {status === 'sending' ? 'Sending...' : 'Send It Through'}
                 </button>
                 {errorMsg && <p className="text-red-600 text-sm">{errorMsg}</p>}
               </form>
