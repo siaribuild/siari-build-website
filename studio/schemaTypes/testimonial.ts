@@ -29,6 +29,7 @@ export const testimonial = defineType({
       title: 'Link to Project',
       type: 'reference',
       to: [{type: 'project'}],
+      options: {disableNew: true},
       description: 'Optional — links the testimonial label to the actual project page',
     }),
   ],

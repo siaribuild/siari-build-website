@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { SmartLink } from '../SmartLink'
 import { themeBg, themeStatCard, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 
@@ -20,7 +20,6 @@ interface Props {
 }
 
 export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimonials, joinTop, joinBottom }: Props) {
-  const navigate = useNavigate()
   if (!testimonials?.length) return null
 
   return (
@@ -50,12 +49,16 @@ export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimoni
               <div className="pl-4">
                 <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>{t.clientName}</div>
                 {t.projectReference && (
-                  <div
-                    className={`text-sm opacity-70 mt-1 ${t.projectSlug ? 'cursor-pointer hover:text-[#B8946A] transition-colors' : ''}`}
-                    onClick={() => t.projectSlug && navigate(`/projects/${t.projectSlug}`)}
-                  >
-                    {t.projectReference}
-                  </div>
+                  t.projectSlug ? (
+                    <SmartLink
+                      link={{ kind: 'internal', internal: { _type: 'project', slug: t.projectSlug } }}
+                      className="inline-block text-sm opacity-70 mt-1 hover:text-[#B8946A] transition-colors"
+                    >
+                      {t.projectReference}
+                    </SmartLink>
+                  ) : (
+                    <div className="text-sm opacity-70 mt-1">{t.projectReference}</div>
+                  )
                 )}
               </div>
             </div>

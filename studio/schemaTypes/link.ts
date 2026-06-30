@@ -13,6 +13,7 @@ export const link = defineType({
   name: 'link',
   title: 'Link',
   type: 'object',
+  initialValue: {kind: 'internal'},
   fields: [
     defineField({
       name: 'kind',
@@ -59,6 +60,8 @@ export const link = defineType({
       title: 'Open in a new tab',
       type: 'boolean',
       initialValue: false,
+      // Only meaningful for external links; internal navigation stays in-app.
+      hidden: ({parent}) => parent?.kind !== 'external',
     }),
   ],
 })

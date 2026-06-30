@@ -43,5 +43,5 @@ export function resolveHref(link?: SanityLink | null): ResolvedLink | null {
   } else {
     href = target.slug === 'home' ? '/' : `/${target.slug}`
   }
-  return {href, external: false, newTab: !!link.newTab}
+  return {href, external: false, newTab: false}
 }
