@@ -132,10 +132,10 @@ export function ProjectDetailPage() {
               </div>
 
               <div className="bg-[#111111] text-[#F5F3EF] p-8 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)' }}>
-                <h3 className="mb-4" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Interested in a similar project?</h3>
-                <p className="mb-6 opacity-80">Let's discuss how we can bring your vision to life.</p>
+                <h3 className="mb-4" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Want something like this?</h3>
+                <p className="mb-6 opacity-80">Every project starts with a conversation. Tell us what you're picturing.</p>
                 <Link to="/contact" className="inline-block bg-[#B8946A] text-[#F5F3EF] px-8 py-3 text-sm tracking-wider uppercase transition-all hover:bg-[#F5F3EF] hover:text-[#111111]" style={{ clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))' }}>
-                  Get In Touch
+                  Start Your Project
                 </Link>
               </div>
             </div>
@@ -192,7 +192,7 @@ export function ProjectDetailPage() {
               ))}
             </div>
             <div className="text-center mt-12">
-              <Link to="/projects" className="inline-block bg-[#111111] text-[#F5F3EF] px-12 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}>Back to Portfolio</Link>
+              <Link to="/projects" className="inline-block bg-[#111111] text-[#F5F3EF] px-12 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}>Back to Projects</Link>
             </div>
           </div>
         </section>
