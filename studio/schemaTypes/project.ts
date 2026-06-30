@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {BareField} from '../components/BareField'
 import {orderRankField} from '@sanity/orderable-document-list'
 
 export const project = defineType({
@@ -78,8 +79,8 @@ export const project = defineType({
       name: 'details',
       title: 'Project Details',
       type: 'object',
-      options: {collapsible: false},
       group: 'details',
+      components: {field: BareField},
       fields: [
         defineField({name: 'year', title: 'Year', type: 'string', description: 'e.g. 2024'}),
         defineField({name: 'location', title: 'Location', type: 'string', description: 'e.g. Brighton, VIC'}),
