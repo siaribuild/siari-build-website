@@ -42,7 +42,14 @@ export function Footer() {
             <div className="space-y-3 opacity-70">
               {settings?.address && <p className="whitespace-pre-line">{settings.address}</p>}
               {settings?.email && <ObfuscatedEmail email={settings.email} className="block hover:text-[#B8946A] transition-all" />}
-              {settings?.phone && <p>{settings.phone}</p>}
+              {settings?.phone && (
+                <a
+                  href={`tel:${String(settings.phone).replace(/[^\d+]/g, '')}`}
+                  className="block hover:text-[#B8946A] transition-all"
+                >
+                  {settings.phone}
+                </a>
+              )}
             </div>
           </div>
           <div>

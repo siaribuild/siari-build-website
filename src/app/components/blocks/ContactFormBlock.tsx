@@ -123,7 +123,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 </div>
                 <div>
                   <label className="block mb-2 text-sm tracking-wider uppercase">Message</label>
-                  <textarea name="message" placeholder="The more you tell us, the more useful our first reply will be — but a few lines is plenty to start." value={form.message} onChange={handleChange} required rows={6} className={`${inputClass} resize-none`} style={inputStyle} />
+                  <textarea name="message" value={form.message} onChange={handleChange} required rows={6} className={`${inputClass} resize-none`} style={inputStyle} />
                 </div>
 
                 <div>
@@ -142,7 +142,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                   className="bg-[#111111] text-[#F5F3EF] px-12 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#B8946A] disabled:opacity-50"
                   style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
                 >
-                  {status === 'sending' ? 'Sending...' : 'Send It Through'}
+                  {status === 'sending' ? 'Sending...' : 'Send Message'}
                 </button>
                 {errorMsg && <p className="text-red-600 text-sm">{errorMsg}</p>}
               </form>
@@ -157,7 +157,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 <InfoCard icon={<MapPin className="text-[#B8946A]" size={24} />} title="Address" value={settings.address} />
               )}
               {settings?.phone && (
-                <InfoCard icon={<Phone className="text-[#B8946A]" size={24} />} title="Phone" value={settings.phone} />
+                <InfoCard icon={<Phone className="text-[#B8946A]" size={24} />} title="Phone" value={settings.phone} href={`tel:${String(settings.phone).replace(/[^\d+]/g, '')}`} />
               )}
               {settings?.email && (
                 <div className="bg-[#F5F3EF] p-6 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
@@ -183,7 +183,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
   )
 }
 
-function InfoCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
+function InfoCard({ icon, title, value, href }: { icon: React.ReactNode; title: string; value: string; href?: string }) {
   return (
     <div className="bg-[#F5F3EF] p-6 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
       <div className="flex items-start gap-4">
@@ -192,7 +192,11 @@ function InfoCard({ icon, title, value }: { icon: React.ReactNode; title: string
         </div>
         <div>
           <h3 className="mb-1" style={{ fontSize: '1.125rem', fontWeight: 600 }}>{title}</h3>
-          <p className="opacity-70 whitespace-pre-line">{value}</p>
+          {href ? (
+            <a href={href} className="opacity-70 whitespace-pre-line hover:opacity-100 hover:text-[#B8946A] transition-colors">{value}</a>
+          ) : (
+            <p className="opacity-70 whitespace-pre-line">{value}</p>
+          )}
         </div>
       </div>
     </div>

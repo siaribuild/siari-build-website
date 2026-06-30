@@ -1,4 +1,5 @@
 import { SmartLink } from '../SmartLink'
+import { resolveHref, type SanityLink } from '../../lib/links'
 import { themeBg, themeStatCard, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 
@@ -6,8 +7,8 @@ interface Testimonial {
   _id: string
   quote: string
   clientName: string
-  projectReference?: string
-  projectSlug?: string
+  linkText?: string
+  link?: SanityLink | null
 }
 
 interface Props {
@@ -38,31 +39,34 @@ export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimoni
           </div>
         )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {testimonials.map((t) => (
-            <div
-              key={t._id}
-              className={`p-10 border-l-4 border-[#B8946A] ${themeStatCard(theme)}`}
-              style={{ clipPath: 'polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%)' }}
-            >
-              <div className="text-5xl mb-6 text-[#B8946A] opacity-20">"</div>
-              <p className="text-lg mb-8 leading-relaxed">{t.quote}</p>
-              <div className="pl-4">
-                <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>{t.clientName}</div>
-                {t.projectReference && (
-                  t.projectSlug ? (
-                    <SmartLink
-                      link={{ kind: 'internal', internal: { _type: 'project', slug: t.projectSlug } }}
-                      className="inline-block text-sm opacity-70 mt-1 hover:text-[#B8946A] transition-colors"
-                    >
-                      {t.projectReference}
-                    </SmartLink>
-                  ) : (
-                    <div className="text-sm opacity-70 mt-1">{t.projectReference}</div>
-                  )
-                )}
+          {testimonials.map((t) => {
+            const linked = t.linkText ? resolveHref(t.link) : null
+            return (
+              <div
+                key={t._id}
+                className={`p-10 border-l-4 border-[#B8946A] ${themeStatCard(theme)}`}
+                style={{ clipPath: 'polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%)' }}
+              >
+                <div className="text-5xl mb-6 text-[#B8946A] opacity-20">"</div>
+                <p className="text-lg mb-8 leading-relaxed">{t.quote}</p>
+                <div className="pl-4">
+                  <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>{t.clientName}</div>
+                  {t.linkText && (
+                    linked ? (
+                      <SmartLink
+                        link={t.link}
+                        className="inline-block text-sm opacity-70 mt-1 hover:opacity-100 hover:text-[#B8946A] transition-colors"
+                      >
+                        {t.linkText}
+                      </SmartLink>
+                    ) : (
+                      <div className="text-sm opacity-70 mt-1">{t.linkText}</div>
+                    )
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
