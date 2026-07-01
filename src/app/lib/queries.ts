@@ -126,8 +126,7 @@ export const PAGE_QUERY = `*[_type == "page" && slug.current == $slug][0] {
       _id,
       quote,
       clientName,
-      linkText,
-      link${LINK}
+      link->{ _type, "slug": slug.current, title }
     },
     formHeading, infoHeading,
   },

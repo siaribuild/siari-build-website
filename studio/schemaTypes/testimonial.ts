@@ -19,19 +19,15 @@ export const testimonial = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'linkText',
-      title: 'Link Text',
-      type: 'string',
-      description: 'Label shown under the name — e.g. Brighton Residence',
-    }),
-    defineField({
       name: 'link',
       title: 'Link',
-      type: 'link',
-      description: 'Where the label points — typically the project page',
+      type: 'reference',
+      to: [{type: 'page'}, {type: 'project'}],
+      options: {disableNew: true},
+      description: 'Links to a page or project — its title is shown as the label under the name',
     }),
   ],
   preview: {
-    select: {title: 'clientName', subtitle: 'linkText'},
+    select: {title: 'clientName', subtitle: 'quote'},
   },
 })
