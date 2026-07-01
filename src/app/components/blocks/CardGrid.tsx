@@ -46,7 +46,7 @@ export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns, jo
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {(eyebrow || heading) && (
           <div className="text-center mb-16">
-            {eyebrow && <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>}
+            {eyebrow && <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
                 {renderMultiline(heading)}
@@ -61,7 +61,7 @@ export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns, jo
             return (
               <div
                 key={i}
-                className={`${themeCard(theme)} p-8 border-l-4 border-[#B8946A]`}
+                className={`${themeCard(theme)} p-8 brand-border-left`}
                 style={{ clipPath: compact ? COMPACT_CLIP : FULL_CLIP }}
               >
                 {card.icon && !compact && (
@@ -70,7 +70,7 @@ export function CardGrid({ theme = 'light', eyebrow, heading, cards, columns, jo
                   </div>
                 )}
                 {card.icon && compact && (
-                  <span aria-hidden="true" className="block w-7 h-7 mb-4 bg-[#B8946A]" style={maskStyle(card.icon)} />
+                  <span aria-hidden="true" className="block w-7 h-7 mb-4 rule-accent" style={maskStyle(card.icon)} />
                 )}
                 <h3 className="mb-3" style={{ fontSize: compact ? '1.125rem' : '1.25rem', fontWeight: 600 }}>{card.title}</h3>
                 {card.text && <p className="opacity-70 text-sm leading-relaxed">{card.text}</p>}

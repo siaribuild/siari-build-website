@@ -80,7 +80,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom }: Props) {
                 className="group cursor-pointer"
                 onClick={() => navigate(`/projects/${project.slug}`)}
               >
-                <div className="relative h-[400px] overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}>
+                <div className="on-media relative h-[400px] overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}>
                   {/* Native <img> with lazy loading so off-screen project
                       images aren't fetched until they're scrolled near. The
                       absolutely-positioned img replaces the previous CSS
@@ -98,9 +98,9 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom }: Props) {
                     <div className="text-sm opacity-90">{project.details?.location} • {project.details?.year}</div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-[#F5F3EF]">
-                    <div className="text-xs tracking-[0.2em] uppercase mb-2 text-[#B8946A]">{project.details?.category}</div>
+                    <div className="text-xs tracking-[0.2em] uppercase mb-2 text-accent">{project.details?.category}</div>
                     <h3 style={{ fontSize: '1.5rem', fontWeight: 700, lineHeight: 1.1 }}>{project.title}</h3>
-                    <div className="h-1 bg-[#B8946A] w-12 mt-2 group-hover:w-full transition-all duration-500" />
+                    <div className="h-1 rule-accent w-12 mt-2 group-hover:w-full transition-all duration-500" />
                   </div>
                 </div>
               </div>
@@ -111,7 +111,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom }: Props) {
             <div className="mt-16 text-center">
               <button
                 onClick={loadMore}
-                className="px-12 py-4 text-sm tracking-wider uppercase transition-all bg-[#111111] text-[#F5F3EF] hover:bg-[#B8946A]"
+                className="btn-primary px-12 py-4 text-sm tracking-wider uppercase transition-all"
                 style={{ clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))' }}
               >
                 Load more ({remaining} remaining)

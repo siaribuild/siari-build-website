@@ -26,17 +26,12 @@ const colMap: Record<number, string> = {
 const CLIP = 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)'
 
 export function CardGridText({ theme = 'light', eyebrow, heading, cards, columns, joinTop, joinBottom }: Props) {
-  // On dark sections the faded label reads as bronze; on light it's near-black.
-  // The dark opacity is higher so its presence roughly matches the light card.
-  const isDark = theme === 'dark'
-  const labelColor = isDark ? '#B8946A' : '#111111'
-  const labelOpacity = isDark ? 0.35 : 0.1
   return (
     <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {(eyebrow || heading) && (
           <div className="text-center mb-16">
-            {eyebrow && <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>}
+            {eyebrow && <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
                 {renderMultiline(heading)}
@@ -48,12 +43,12 @@ export function CardGridText({ theme = 'light', eyebrow, heading, cards, columns
           {cards.map((card, i) => (
             <div
               key={i}
-              className={`relative ${themeCard(theme)} p-8 border-l-4 border-[#B8946A]`}
+              className={`relative ${themeCard(theme)} p-8 brand-border-left`}
               style={{ clipPath: CLIP }}
             >
               {card.label && (
                 // Large faded label (e.g. "01") — bronze on dark, near-black on light.
-                <div className="leading-none mb-6" style={{ fontSize: '4.5rem', fontWeight: 700, color: labelColor, opacity: labelOpacity }}>
+                <div className="card-label leading-none mb-6" style={{ fontSize: '4.5rem' }}>
                   {card.label}
                 </div>
               )}

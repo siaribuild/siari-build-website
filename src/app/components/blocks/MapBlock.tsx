@@ -31,14 +31,24 @@ const BRAND_MAP_STYLE = [
   { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#9a9488' }] },
 ]
 
-// Bronze teardrop pin to match the accent.
-const PIN = {
-  path: 'M12 0C7.582 0 4 3.582 4 8c0 5.25 8 16 8 16s8-10.75 8-16c0-4.418-3.582-8-8-8z',
-  fillColor: '#B8946A',
-  fillOpacity: 1,
-  strokeColor: '#111111',
-  strokeWeight: 1.25,
-  scale: 1.6,
+// Bronze teardrop pin to match the brand. Colours read from the CSS tokens
+// (--brand-primary / --surface-black) so the pin follows the 3-shade system
+// and the legacy fallback with no code change.
+function cssToken(name: string, fallback: string): string {
+  if (typeof window === 'undefined') return fallback
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  return v || fallback
+}
+const PIN_PATH = 'M12 0C7.582 0 4 3.582 4 8c0 5.25 8 16 8 16s8-10.75 8-16c0-4.418-3.582-8-8-8z'
+function pinIcon() {
+  return {
+    path: PIN_PATH,
+    fillColor: cssToken('--brand-primary', '#B8946A'),
+    fillOpacity: 1,
+    strokeColor: cssToken('--surface-black', '#111111'),
+    strokeWeight: 1.25,
+    scale: 1.6,
+  }
 }
 
 let mapsPromise: Promise<any> | null = null
@@ -89,7 +99,7 @@ export function MapBlock({ height = 'medium' }: Props) {
         const marker = new google.maps.Marker({
           position: center,
           map,
-          icon: { ...PIN, anchor: new google.maps.Point(12, 24) },
+          icon: { ...pinIcon(), anchor: new google.maps.Point(12, 24) },
           title: label || '',
         })
         if (label) {

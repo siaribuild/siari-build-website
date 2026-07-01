@@ -62,7 +62,7 @@ export const portableTextComponents: PortableTextComponents = {
       const resolved = resolveHref(value as any)
       // Incomplete link → render the text without an anchor.
       if (!resolved) return <>{children}</>
-      const cls = 'text-[#B8946A] underline hover:opacity-70 transition-opacity'
+      const cls = 'text-accent underline hover:opacity-70 transition-opacity'
       const target = resolved.newTab ? '_blank' : undefined
       const rel = resolved.newTab ? 'noopener noreferrer' : undefined
       if (resolved.external) {

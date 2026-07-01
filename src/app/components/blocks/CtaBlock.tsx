@@ -19,7 +19,7 @@ export function CtaBlock({ theme = 'gray', eyebrow, heading, body, buttonLabel, 
     <section className={`${sectionPad(joinTop, joinBottom, 'pt-32 lg:pt-40', 'pb-32 lg:pb-40')} ${themeBg(theme)}`}>
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12 text-center">
         {eyebrow && (
-          <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+          <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
         )}
         {heading && (
           <h2

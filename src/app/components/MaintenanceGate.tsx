@@ -67,7 +67,7 @@ export function MaintenanceGate({ children }: Props) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#111111]">
-        <div className="w-8 h-8 border-2 border-[#B8946A] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-brand border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -109,7 +109,7 @@ function PreviewBadge() {
         gap: '10px',
         background: '#111111',
         color: '#F5F3EF',
-        border: '1px solid #B8946A',
+        border: '1px solid var(--brand-primary)',
         padding: '8px 12px',
         fontSize: '12px',
         letterSpacing: '0.05em',
@@ -117,7 +117,7 @@ function PreviewBadge() {
         boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
       }}
     >
-      <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#B8946A', display: 'inline-block' }} />
+      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--brand-primary)', display: 'inline-block' }} />
       <span>Preview mode — public sees maintenance</span>
       <button
         onClick={() => setHidden(true)}

@@ -1,0 +1,458 @@
+/* ============================================================================
+   SIARI BUILD — Brand styling system (class-based, token-driven)
+   ----------------------------------------------------------------------------
+   Everything visual (colour, surfaces, cards, buttons, accents) is expressed
+   as semantic classes that read from CSS custom properties. Layout (grid,
+   flex, spacing) stays with utility classes in the markup; only *brand /
+   colour* styling lives here so it can be themed from one place.
+
+   ── THE 3-SHADE PRIMARY SYSTEM ─────────────────────────────────────────────
+   You tune three swatches (below). They exist to hit WCAG contrast on every
+   background WITHOUT changing the brand:
+
+     --brand-primary          solid brand colour  → buttons, borders, fills
+     --brand-accent-on-dark   accent on DARK bg   → eyebrows, lines (6.7:1)
+     --brand-accent-on-light  accent on LIGHT bg  → eyebrows, lines (≥4.5:1)
+
+   Components never pick a shade directly. They read --accent (which each
+   section theme points at the correct on-dark / on-light shade) and
+   --brand-primary. Change a section's background class and every child
+   recolours itself correctly.
+
+   ── FALLBACK GUARANTEE ─────────────────────────────────────────────────────
+   Set all three swatches to #B8946A (see .brand-legacy) and the site renders
+   pixel-identical to the original single-bronze design.
+   ============================================================================ */
+
+:root {
+  /* ---- THE THREE BRAND SWATCHES (the only knobs you normally touch) ------ */
+  --brand-primary: #9F7C53;          /* buttons, borders, solid fills        */
+  --brand-accent-on-dark: #B8946A;   /* eyebrows / thin accents on dark bg   */
+  --brand-accent-on-light: #8B6940;  /* eyebrows / thin accents on light bg  */
+
+  /* ---- Neutral surfaces & ink (brand-neutral, rarely changed) ------------ */
+  --surface-white: #ffffff;
+  --surface-cream: #F5F3EF;
+  --surface-black: #111111;
+  --surface-black-2: #1a1a1a;        /* card on dark sections                */
+  --surface-black-3: #222222;        /* card hover on dark sections          */
+  --surface-black-deep: #0a0a0a;     /* footer                               */
+  --surface-black-drawer: #141414;   /* mobile drawer                        */
+  --hairline: #C8C5BE;               /* form borders / quiet dividers        */
+
+  --ink: #111111;                    /* text on light surfaces               */
+  --ink-inverse: #F5F3EF;            /* text on dark surfaces                 */
+
+  /* ---- Contextual defaults (light context) ------------------------------
+     Any brand class used OUTSIDE an explicit .section--* / .on-media scope
+     falls back to these, so nothing renders with an undefined variable.
+     Section scopes below override them. */
+  --bg: var(--surface-white);
+  --fg: var(--ink);
+  --accent: var(--brand-accent-on-light);
+  --card-bg: var(--surface-cream);
+  --card-fg: var(--ink);
+  --card-hover-bg: var(--surface-black);
+  --card-hover-fg: var(--ink-inverse);
+  --stat-bg: var(--surface-cream);
+  --stat-fg: var(--ink);
+  --section-fill: var(--surface-white);
+  --icon-tile-bg: var(--surface-cream);
+  --icon-tile-hover-bg: var(--brand-primary);
+  --icon-fg: var(--ink);
+  --icon-fg-hover: var(--ink-inverse);
+  --btn-bg: var(--surface-black);
+  --btn-fg: var(--ink-inverse);
+  --btn-hover-bg: var(--brand-primary);
+  --btn-hover-fg: var(--ink-inverse);
+  --btn-outline-border: var(--ink);
+  --btn-outline-fg: var(--ink);
+
+  /* ---- Signature angular corner cuts (clip-paths) ------------------------ */
+  --cut-6:  polygon(0 0, calc(100% - 6px) 0,  100% 6px,  100% 100%, 0 100%);
+  --cut-12: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  --cut-16: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  --cut-20: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+  --cut-24: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+  --cut-30: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
+  --cut-36: polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%);
+  --cut-45: polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%);
+  --cut-60: polygon(0 0, calc(100% - 60px) 0, 100% 60px, 100% 100%, 0 100%);
+  /* Two-corner (top-right + bottom-left) button cut, size 8/10/15 */
+  --cut-btn-8:  polygon(0 0, calc(100% - 8px) 0,  100% 8px,  100% 100%, 8px 100%,  0 calc(100% - 8px));
+  --cut-btn-10: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  --cut-btn-15: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+/* ============================================================================
+   SECTION THEMES
+   Put ONE of these on a block wrapper. Each maps the contextual variables that
+   every child component reads. This is what makes a block's children "render
+   differently" based on the block's background setting.
+   ============================================================================ */
+
+.section--light,
+.section--gray,
+.section--dark {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* LIGHT — white section, dark ink; cards invert to cream; accents darken. */
+.section--light {
+  --bg: var(--surface-white);
+  --fg: var(--ink);
+  --accent: var(--brand-accent-on-light);
+
+  --card-bg: var(--surface-cream);
+  --card-fg: var(--ink);
+  --card-hover-bg: var(--surface-black);
+  --card-hover-fg: var(--ink-inverse);
+
+  --stat-bg: var(--surface-cream);
+  --stat-fg: var(--ink);
+
+  --section-fill: var(--surface-white);
+  --icon-tile-bg: var(--surface-cream);
+  --icon-tile-hover-bg: var(--brand-primary);
+  --icon-fg: var(--ink);
+  --icon-fg-hover: var(--ink-inverse);
+
+  /* Solid CTA on light: black button, bronze on hover. */
+  --btn-bg: var(--surface-black);
+  --btn-fg: var(--ink-inverse);
+  --btn-hover-bg: var(--brand-primary);
+  --btn-hover-fg: var(--ink-inverse);
+
+  /* Outline CTA on light: dark outline → bronze fill on hover. */
+  --btn-outline-border: var(--ink);
+  --btn-outline-fg: var(--ink);
+}
+
+/* GRAY — cream section, dark ink; cards invert to white. */
+.section--gray {
+  --bg: var(--surface-cream);
+  --fg: var(--ink);
+  --accent: var(--brand-accent-on-light);
+
+  --card-bg: var(--surface-white);
+  --card-fg: var(--ink);
+  --card-hover-bg: var(--surface-black);
+  --card-hover-fg: var(--ink-inverse);
+
+  --stat-bg: var(--surface-white);
+  --stat-fg: var(--ink);
+
+  --section-fill: var(--surface-cream);
+  --icon-tile-bg: var(--surface-cream);
+  --icon-tile-hover-bg: var(--surface-cream);   /* no hover shift on gray */
+  --icon-fg: var(--ink);
+  --icon-fg-hover: var(--ink);
+
+  --btn-bg: var(--surface-black);
+  --btn-fg: var(--ink-inverse);
+  --btn-hover-bg: var(--brand-primary);
+  --btn-hover-fg: var(--ink-inverse);
+
+  --btn-outline-border: var(--ink);
+  --btn-outline-fg: var(--ink);
+}
+
+/* DARK — near-black section, cream ink; cards are #1a1a1a; accents brighten. */
+.section--dark {
+  --bg: var(--surface-black);
+  --fg: var(--ink-inverse);
+  --accent: var(--brand-accent-on-dark);
+
+  --card-bg: var(--surface-black-2);
+  --card-fg: var(--ink-inverse);
+  --card-hover-bg: var(--surface-black-3);
+  --card-hover-fg: var(--ink-inverse);
+
+  --stat-bg: var(--surface-black-2);
+  --stat-fg: var(--ink-inverse);
+
+  --section-fill: var(--surface-black);
+  --icon-tile-bg: var(--surface-black);
+  --icon-tile-hover-bg: var(--surface-black);
+  --icon-fg: var(--accent);                     /* bronze icon on dark */
+  --icon-fg-hover: var(--accent);
+
+  /* Solid CTA on dark: bronze button → cream on hover with dark ink. */
+  --btn-bg: var(--brand-primary);
+  --btn-fg: var(--ink-inverse);
+  --btn-hover-bg: var(--ink-inverse);
+  --btn-hover-fg: var(--ink);
+
+  --btn-outline-border: var(--ink-inverse);
+  --btn-outline-fg: var(--ink-inverse);
+}
+
+/* ON-MEDIA — content sitting over a photo/gradient (heroes, project cards).
+   Always reads as "on dark": cream ink, bright bronze accents — regardless of
+   the surrounding section, because the local backdrop is the image. */
+.on-media {
+  --fg: var(--ink-inverse);
+  --accent: var(--brand-accent-on-dark);
+  color: var(--fg);
+}
+
+/* ============================================================================
+   TYPOGRAPHIC ACCENTS
+   ============================================================================ */
+
+/* Eyebrow — the small tracked uppercase label above headings. Auto-picks the
+   correct on-light / on-dark bronze from the section it lives in. */
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.875rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.eyebrow--tight { letter-spacing: 0.2em; }
+.eyebrow--wide  { letter-spacing: 0.28em; }
+
+/* Section display heading — shared uppercase treatment. */
+.heading-display {
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Accent-coloured inline text (e.g. category label, hover colour target). */
+.text-accent { color: var(--accent); }
+.hover-accent:hover { color: var(--accent); }
+.group:hover .group-hover-accent { color: var(--accent); }
+
+/* A thin brand rule — the growing underline under titles, menu line, etc.
+   Accent-coloured, so it follows the on-light / on-dark rule. */
+.rule-accent { background-color: var(--accent); }
+/* A structural brand rule/fill — uses the solid primary (borders, dividers). */
+.rule-primary { background-color: var(--brand-primary); }
+
+/* Border-colour atoms (widths stay as utilities in markup). */
+.border-brand { border-color: var(--brand-primary); }
+.hover-border-brand:hover { border-color: var(--brand-primary); }
+.hover-bg-brand:hover { background-color: var(--brand-primary); }
+
+/* ============================================================================
+   BUTTONS
+   ============================================================================ */
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  clip-path: var(--cut-btn-10);
+}
+.btn--lg { padding: 1.25rem 3rem; }
+.btn--sm { padding: 0.75rem 2rem; clip-path: var(--cut-btn-8); }
+
+/* Solid CTA — resolves to the correct per-theme fill/hover. */
+.btn-primary {
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+}
+.btn-primary:hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-hover-fg);
+}
+
+/* Bronze CTA — always the solid brand primary (used on hero / dark media). */
+.btn-bronze {
+  background-color: var(--brand-primary);
+  color: var(--ink-inverse);
+}
+.btn-bronze:hover {
+  background-color: var(--ink-inverse);
+  color: var(--ink);
+}
+
+/* Outline CTA — border adapts to the section; fills bronze on hover. */
+.btn-outline {
+  border: 2px solid var(--btn-outline-border);
+  color: var(--btn-outline-fg);
+  background-color: transparent;
+}
+.btn-outline:hover {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  color: var(--ink-inverse);
+}
+
+/* Outline CTA on media (hero secondary) — cream outline over the photo. */
+.on-media .btn-outline {
+  border-color: var(--ink-inverse);
+  color: var(--ink-inverse);
+}
+.on-media .btn-outline:hover {
+  background-color: var(--ink-inverse);
+  color: var(--ink);
+  border-color: var(--ink-inverse);
+}
+
+/* ============================================================================
+   CARDS
+   ============================================================================ */
+
+/* Base card — inverts against its section, signature top-right cut + bronze
+   left border. Size modifiers change the corner cut only. */
+.card {
+  position: relative;
+  background-color: var(--card-bg);
+  color: var(--card-fg);
+  border-left: 4px solid var(--brand-primary);
+  clip-path: var(--cut-30);
+}
+.card--compact     { clip-path: var(--cut-24); }
+.card--stat        { clip-path: var(--cut-24); background-color: var(--stat-bg); color: var(--stat-fg); }
+.card--testimonial { clip-path: var(--cut-36); background-color: var(--stat-bg); color: var(--stat-fg); }
+.card--flush       { clip-path: var(--cut-20); }   /* project-detail sidebar */
+
+/* Signature hover: card flips to the inverted surface. */
+.card--hover:hover {
+  background-color: var(--card-hover-bg);
+  color: var(--card-hover-fg);
+}
+
+/* A dark "contact / invite" card that is intentionally black on any section. */
+.card-invert {
+  background-color: var(--surface-black);
+  color: var(--ink-inverse);
+  border-left: 4px solid var(--brand-primary);
+  clip-path: var(--cut-20);
+}
+
+/* Icon tile — the small notched square behind an icon inside a card. Painted
+   with the section fill so it reads as a cut-out through the (inverted) card. */
+.icon-tile {
+  display: inline-block;
+  background-color: var(--icon-tile-bg);
+  clip-path: var(--cut-12);
+}
+.card--hover:hover .icon-tile,
+.group:hover .icon-tile { background-color: var(--icon-tile-hover-bg); }
+
+/* Icon glyph coloured via currentColor (lucide) … */
+.icon-brand { color: var(--icon-fg); transition: color 0.2s ease; }
+.group:hover .icon-brand { color: var(--icon-fg-hover); }
+
+/* … or via CSS mask (uploaded SVG can't inherit currentColor, so we paint the
+   shape with background-color instead). */
+.icon-mask {
+  display: block;
+  background-color: var(--icon-fg);
+  transition: background-color 0.2s ease;
+}
+.group:hover .icon-mask { background-color: var(--icon-fg-hover); }
+
+/* A masked icon that is always solid brand primary (compact card / footer). */
+.icon-mask-primary {
+  display: block;
+  background-color: var(--brand-primary);
+}
+
+/* Neutral surface background utilities (brand-neutral fills). */
+.surface-white { background-color: var(--surface-white); }
+.surface-cream { background-color: var(--surface-cream); }
+.surface-black { background-color: var(--surface-black); color: var(--ink-inverse); }
+
+/* ----------------------------------------------------------------------------
+   LEAN ROLE CLASSES
+   Colour-only helpers (no geometry) so existing components can keep their
+   inline clip-paths while every colour comes from a token. themeUtils emits
+   these; combine with the block's inline clip-path + .brand-border-left.
+   ---------------------------------------------------------------------------- */
+.surface-card         { background-color: var(--card-bg);  color: var(--card-fg); }
+.surface-stat         { background-color: var(--stat-bg);  color: var(--stat-fg); }
+.surface-section-fill { background-color: var(--section-fill); }
+
+.hover-flip:hover     { background-color: var(--card-hover-bg); color: var(--card-hover-fg); }
+
+.icon-tile-fill               { background-color: var(--icon-tile-bg); }
+.group:hover .icon-tile-fill  { background-color: var(--icon-tile-hover-bg); }
+
+/* Large faded index label (e.g. "01") on text cards — near-black on light,
+   bronze on dark, matching the original per-theme treatment. */
+.card-label { color: var(--ink); opacity: 0.1; font-weight: 700; line-height: 1; }
+.section--dark .card-label { color: var(--accent); opacity: 0.35; }
+
+/* ============================================================================
+   FORMS
+   ============================================================================ */
+
+.field {
+  width: 100%;
+  background-color: var(--surface-cream);
+  border: 1px solid var(--hairline);
+  padding: 1rem;
+  clip-path: var(--cut-6);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+}
+
+/* Small notched icon holder inside info cards. */
+.info-icon {
+  background-color: var(--surface-white);
+  padding: 0.75rem;
+  clip-path: var(--cut-6);
+  color: var(--ink);
+}
+
+/* ============================================================================
+   HEADER / FOOTER / CHROME
+   ============================================================================ */
+
+/* Growing underline under a desktop nav link. Accent (on-dark → bronze). */
+.nav-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: var(--accent);
+  transition: all 0.2s ease;
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 100%, 0 100%);
+}
+
+/* Quiet vertical divider in the header contact cluster. */
+.nav-divider { background-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+
+/* The footer & mobile drawer brand edges. */
+.brand-border-top  { border-top: 2px solid var(--brand-primary); }
+.brand-border-left { border-left: 4px solid var(--brand-primary); }
+
+/* Decorative top-left corner bracket used on inner heroes / project heroes. */
+.corner-bracket {
+  border-left: 2px solid color-mix(in srgb, var(--brand-accent-on-dark) 30%, transparent);
+  border-top:  2px solid color-mix(in srgb, var(--brand-accent-on-dark) 30%, transparent);
+  clip-path: polygon(0 0, 100% 0, 100% 60px, 60px 60px, 60px 100%, 0 100%);
+}
+
+/* Map pin colour is set from JS via getComputedStyle(--brand-primary). */
+
+/* Bronze-outlined contact chip (maintenance screen) — accent border that
+   fills subtly on hover. */
+.contact-chip {
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.contact-chip:hover {
+  border-color: var(--accent);
+  background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* ============================================================================
+   FALLBACK / LEGACY MODE
+   Add class="brand-legacy" to <html> (or :root) to force the original
+   single-bronze look. Proves the 3-shade system degrades to the current site.
+   ============================================================================ */
+
+.brand-legacy {
+  --brand-primary: #B8946A;
+  --brand-accent-on-dark: #B8946A;
+  --brand-accent-on-light: #B8946A;
+}
