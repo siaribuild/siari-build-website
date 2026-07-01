@@ -76,20 +76,17 @@ export function Footer() {
                   </a>
                 ) : (
                   <div className="flex items-start gap-3">
-                    <MapPin size={18} strokeWidth={2} className="text-[#B8946A] shrink-0 mt-0.5" aria-hidden="true" />
                     <span className="whitespace-pre-line opacity-70">{settings.address}</span>
                   </div>
                 )
               )}
               {settings?.email && (
                 <div className="flex items-center gap-3">
-                  <Mail size={18} strokeWidth={2} className="text-[#B8946A] shrink-0" aria-hidden="true" />
                   <ObfuscatedEmail email={settings.email} className="opacity-70 hover:opacity-100 hover:text-[#B8946A] transition-all" />
                 </div>
               )}
               {settings?.phone && (
                 <a href={telHref} className="group flex items-center gap-3 hover:text-[#B8946A] transition-colors">
-                  <Phone size={18} strokeWidth={2} className="text-[#B8946A] shrink-0" aria-hidden="true" />
                   <span className="opacity-70 group-hover:opacity-100 transition-opacity">{settings.phone}</span>
                 </a>
               )}
