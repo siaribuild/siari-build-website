@@ -14,7 +14,7 @@
   --secondary-foreground: #111111;
   --muted: #C8C5BE;
   --muted-foreground: #111111;
-  --accent: #B8946A;
+  --accent: var(--brand-accent-on-light); /* base token → brand 3-shade system (see brand.css) */
   --accent-foreground: #F5F3EF;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
@@ -24,7 +24,7 @@
   --switch-background: #C8C5BE;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #B8946A;
+  --ring: var(--brand-primary);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);

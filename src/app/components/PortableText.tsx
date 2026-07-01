@@ -30,10 +30,10 @@ const components = {
   listItem: {
     bullet: ({ children }: any) => (
       <li
-        className="flex items-start gap-3 bg-[#F5F3EF] p-4 border-l-4 border-[#B8946A]"
+        className="flex items-start gap-3 surface-cream p-4 brand-border-left"
         style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}
       >
-        <div className="w-2 h-2 bg-[#B8946A] mt-2 flex-shrink-0" />
+        <div className="rule-primary w-2 h-2 mt-2 flex-shrink-0" />
         <span className="opacity-80">{children}</span>
       </li>
     ),

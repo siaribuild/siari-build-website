@@ -33,7 +33,7 @@ export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimoni
         {(eyebrow || heading) && (
           <div className="text-center mb-16">
             {eyebrow && (
-              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
             )}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
@@ -46,17 +46,17 @@ export function TestimonialsBlock({ theme = 'light', eyebrow, heading, testimoni
           {testimonials.map((t) => (
             <div
               key={t._id}
-              className={`p-10 border-l-4 border-[#B8946A] ${themeStatCard(theme)}`}
+              className={`p-10 brand-border-left ${themeStatCard(theme)}`}
               style={{ clipPath: 'polygon(0 0, calc(100% - 36px) 0, 100% 36px, 100% 100%, 0 100%)' }}
             >
-              <div className="text-5xl mb-6 text-[#B8946A] opacity-20">"</div>
+              <div className="text-5xl mb-6 text-accent opacity-20">"</div>
               <p className="text-lg mb-8 leading-relaxed">{t.quote}</p>
               <div className="pl-4">
                 <div style={{ fontWeight: 600, fontSize: '1.125rem' }}>{t.clientName}</div>
                 {t.link?.title && t.link.slug && (
                   <SmartLink
                     link={{ kind: 'internal', internal: { _type: t.link._type, slug: t.link.slug } }}
-                    className="inline-block text-sm opacity-70 mt-1 hover:opacity-100 hover:text-[#B8946A] transition-colors"
+                    className="inline-block text-sm opacity-70 mt-1 hover:opacity-100 hover-accent transition-colors"
                   >
                     {t.link.title}
                   </SmartLink>

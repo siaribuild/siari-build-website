@@ -25,11 +25,9 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
 
   const [first, ...rest] = projects
 
-  // Outline button adapts: on dark theme it's light-bordered; on light/gray it's dark-bordered
-  const outlineBtn =
-    theme === 'dark'
-      ? 'border-2 border-[#F5F3EF] text-[#F5F3EF] hover:bg-[#B8946A] hover:border-[#B8946A]'
-      : 'border-2 border-[#111111] text-[#111111] hover:bg-[#B8946A] hover:border-[#B8946A] hover:text-[#F5F3EF]'
+  // Outline button adapts to the section theme via CSS vars (.btn-outline):
+  // dark → cream border, light/gray → dark border; both fill bronze on hover.
+  const outlineBtn = 'btn-outline'
 
   return (
     <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
@@ -37,7 +35,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
         <div className="flex justify-between items-end mb-16">
           <div>
             {eyebrow && (
-              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
             )}
             {heading && (
               <h2 className="uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1 }}>
@@ -58,7 +56,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div
-            className="relative h-[600px] group cursor-pointer overflow-hidden"
+            className="on-media relative h-[600px] group cursor-pointer overflow-hidden"
             onClick={() => navigate(`/projects/${first.slug}`)}
             style={{ clipPath: 'polygon(0 0, calc(100% - 60px) 0, 100% 60px, 100% 100%, 0 100%)' }}
           >
@@ -72,9 +70,9 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
               <div className="text-sm opacity-90">{first.details?.location} • {first.details?.year}</div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-10 text-[#F5F3EF] z-10">
-              <div className="text-xs tracking-[0.2em] uppercase mb-3 text-[#B8946A]">{first.details?.category}</div>
+              <div className="text-xs tracking-[0.2em] uppercase mb-3 text-accent">{first.details?.category}</div>
               <h3 style={{ fontSize: '2.5rem', fontWeight: 700, lineHeight: 1.1 }}>{first.title}</h3>
-              <div className="h-1 bg-[#B8946A] w-16 mt-3 group-hover:w-full transition-all duration-500 ease-out" />
+              <div className="h-1 rule-accent w-16 mt-3 group-hover:w-full transition-all duration-500 ease-out" />
             </div>
           </div>
 
@@ -82,7 +80,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
             {rest.map((project: any) => (
               <div
                 key={project._id}
-                className="relative h-[293px] group cursor-pointer overflow-hidden"
+                className="on-media relative h-[293px] group cursor-pointer overflow-hidden"
                 onClick={() => navigate(`/projects/${project.slug}`)}
                 style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
               >
@@ -96,9 +94,9 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
                   <div className="text-sm opacity-90">{project.details?.location} • {project.details?.year}</div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 text-[#F5F3EF] z-10">
-                  <div className="text-xs tracking-[0.2em] uppercase mb-2 text-[#B8946A]">{project.details?.category}</div>
+                  <div className="text-xs tracking-[0.2em] uppercase mb-2 text-accent">{project.details?.category}</div>
                   <h3 style={{ fontSize: '1.8rem', fontWeight: 700, lineHeight: 1.1 }}>{project.title}</h3>
-                  <div className="h-1 bg-[#B8946A] w-12 mt-2 group-hover:w-full transition-all duration-500 ease-out" />
+                  <div className="h-1 rule-accent w-12 mt-2 group-hover:w-full transition-all duration-500 ease-out" />
                 </div>
               </div>
             ))}

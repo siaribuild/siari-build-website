@@ -17,7 +17,7 @@ export function RichText({ theme = 'light', eyebrow, heading, content, joinTop, 
     <section className={`${sectionPad(joinTop, joinBottom)} ${themeBg(theme)}`}>
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         {eyebrow && (
-          <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+          <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
         )}
         {heading && (
           <h1

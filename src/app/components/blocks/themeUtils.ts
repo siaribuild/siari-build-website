@@ -1,97 +1,70 @@
 export type Theme = 'light' | 'gray' | 'dark'
 
-// Section background + base text colour
+/* ---------------------------------------------------------------------------
+ * Block theming — now class-based.
+ *
+ * Every helper returns a *semantic class name* defined in styles/brand.css.
+ * The single important call is `themeBg`, which puts a `section--{theme}`
+ * scope on the block wrapper; that scope maps all the contextual CSS
+ * variables (--accent, --card-bg, --btn-*, …) that the child classes below
+ * read. Change the section class and the whole subtree recolours — including
+ * resolving eyebrows/accents to the correct on-light / on-dark bronze shade
+ * for WCAG contrast, without any per-component branching.
+ * ------------------------------------------------------------------------- */
+
+// Section background + base text colour + theme variable scope.
 export function themeBg(theme: Theme = 'light') {
-  return {
-    light: 'bg-white text-[#111111]',
-    gray: 'bg-[#F5F3EF] text-[#111111]',
-    dark: 'bg-[#111111] text-[#F5F3EF]',
-  }[theme]
+  return { light: 'section--light', gray: 'section--gray', dark: 'section--dark' }[theme]
 }
 
-// Card background — cards INVERT against the section background per the design.
-export function themeCard(theme: Theme = 'light') {
-  return {
-    light: 'bg-[#F5F3EF]',
-    gray: 'bg-white',
-    dark: 'bg-[#1a1a1a]',
-  }[theme]
+// Card surface — inverts against the section (colour only; keep inline clip).
+export function themeCard(_theme: Theme = 'light') {
+  return 'surface-card'
 }
 
-// Card hover treatment
-export function themeCardHover(theme: Theme = 'light') {
-  return {
-    // On light/gray the signature hover flips the card to dark with light text
-    light: 'hover:bg-[#111111] hover:text-[#F5F3EF]',
-    gray: 'hover:bg-[#111111] hover:text-[#F5F3EF]',
-    dark: 'hover:bg-[#222]',
-  }[theme]
+// Signature hover — card flips to the inverted surface.
+export function themeCardHover(_theme: Theme = 'light') {
+  return 'hover-flip'
 }
 
-// Icon tile background (the small notched square behind an icon)
-export function themeIconTile(theme: Theme = 'light') {
-  return {
-    light: 'bg-[#F5F3EF] group-hover:bg-[#B8946A]',
-    gray: 'bg-[#F5F3EF]',
-    dark: 'bg-[#111111]',
-  }[theme]
+// Icon tile background (the small notched square behind an icon).
+export function themeIconTile(_theme: Theme = 'light') {
+  return 'icon-tile-fill'
 }
 
-// Icon colour inside the tile
-export function themeIconColor(theme: Theme = 'light') {
-  return {
-    light: 'text-[#111111] group-hover:text-[#F5F3EF]',
-    gray: 'text-[#111111]',
-    dark: 'text-[#B8946A]',
-  }[theme]
+// Icon colour inside the tile (lucide / currentColor icons).
+export function themeIconColor(_theme: Theme = 'light') {
+  return 'icon-brand'
 }
 
-// Same intent as themeIconColor, but as background-color — used when an uploaded
-// SVG is painted via CSS mask (an <img>-loaded SVG can't inherit currentColor,
-// so we mask the shape and colour it with the background instead).
-export function themeIconMaskColor(theme: Theme = 'light') {
-  return {
-    light: 'bg-[#111111] group-hover:bg-[#F5F3EF]',
-    gray: 'bg-[#111111]',
-    dark: 'bg-[#B8946A]',
-  }[theme]
+// Same intent as themeIconColor but as background-color — for CSS-masked SVGs.
+export function themeIconMaskColor(_theme: Theme = 'light') {
+  return 'icon-mask'
 }
 
-// Stat card background (stat cards stay cream on light/gray, darker on dark)
-export function themeStatCard(theme: Theme = 'light') {
-  return {
-    light: 'bg-[#F5F3EF] text-[#111111]',
-    gray: 'bg-white text-[#111111]',
-    dark: 'bg-[#1a1a1a] text-[#F5F3EF]',
-  }[theme]
+// Stat card surface.
+export function themeStatCard(_theme: Theme = 'light') {
+  return 'surface-stat'
 }
 
-// Primary button styling per section theme
-export function themePrimaryBtn(theme: Theme = 'light') {
-  return {
-    light: 'bg-[#111111] text-[#F5F3EF] hover:bg-[#B8946A]',
-    gray: 'bg-[#111111] text-[#F5F3EF] hover:bg-[#B8946A]',
-    dark: 'bg-[#B8946A] text-[#F5F3EF] hover:bg-[#F5F3EF] hover:text-[#111111]',
-  }[theme]
+// Primary CTA button styling per section theme.
+export function themePrimaryBtn(_theme: Theme = 'light') {
+  return 'btn-primary'
 }
 
-// Section background as a fill CLASS — used to paint a shape (e.g. the icon
-// square) the same colour as the block background, so it reads as a cut-out
-// through the card (which inverts to a different colour).
-export function themeSectionFill(theme: Theme = 'light') {
-  return { light: 'bg-white', gray: 'bg-[#F5F3EF]', dark: 'bg-[#111111]' }[theme]
+// Section background as a fill CLASS — paints a cut-out shape the section colour.
+export function themeSectionFill(_theme: Theme = 'light') {
+  return 'surface-section-fill'
 }
 
 // Raw section background colour — used to detect consecutive same-colour blocks
-// so they can be visually joined. light=white and gray=cream are deliberately
-// different, so only truly identical backgrounds collapse together.
+// so they can be visually joined. Kept as literal hexes (matches the neutral
+// surface tokens) purely for the join-detection comparison in PageBuilder.
 export function themeBgColor(theme: Theme = 'light') {
   return { light: '#ffffff', gray: '#F5F3EF', dark: '#111111' }[theme]
 }
 
-// Vertical padding for a section. When a block sits directly against another
-// block of the SAME background colour, the touching edge collapses to 32px (pt/pb-8)
-// so the two read as one continuous section instead of two stacked ones.
+// Vertical padding for a section (unchanged — pure layout).
 export function sectionPad(
   joinTop?: boolean,
   joinBottom?: boolean,

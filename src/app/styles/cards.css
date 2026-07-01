@@ -1,35 +1,11 @@
-/* Standardized Card Styles - Consistent across entire site */
+/* Standardized Card Styles — now token-driven.
+   The bronze left border reads from --brand-primary so the whole card family
+   recolours with the 3-shade system. Corner-cut geometry uses shared --cut-*
+   tokens defined in styles/brand.css. */
 
-/* Standard Card: Top-right corner cut + Left bronze border */
-.card-standard {
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-  border-left: 4px solid #B8946A;
-}
-
-/* Stats/Feature Cards - Smaller corner cut */
-.card-stat {
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
-  border-left: 4px solid #B8946A;
-}
-
-/* Service/Icon Cards */
-.card-service {
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
-  border-left: 4px solid #B8946A;
-}
-
-/* Testimonial Cards - Larger corner cut */
-.card-testimonial {
-  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
-  border-left: 4px solid #B8946A;
-}
-
-/* Project Image Cards - Angular cut for visual interest */
-.card-project-image {
-  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%);
-}
-
-/* Form Input Cards */
-.card-input {
-  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
-}
+.card-standard        { clip-path: var(--cut-20); border-left: 4px solid var(--brand-primary); }
+.card-stat            { clip-path: var(--cut-16); border-left: 4px solid var(--brand-primary); }
+.card-service         { clip-path: var(--cut-16); border-left: 4px solid var(--brand-primary); }
+.card-testimonial     { clip-path: var(--cut-24); border-left: 4px solid var(--brand-primary); }
+.card-project-image   { clip-path: var(--cut-30); }
+.card-input           { clip-path: var(--cut-6); }

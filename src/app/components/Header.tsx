@@ -86,7 +86,7 @@ export function Header() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      <header className={`on-media fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? 'bg-[#111111]/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
       }`}>
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-5">
@@ -98,11 +98,10 @@ export function Header() {
             <nav className="hidden lg:flex items-center gap-8">
               {regularItems.map((item: any) => (
                 <Link key={item.pageSlug} to={hrefFor(item.pageSlug)} className="relative group">
-                  <span className={`text-sm tracking-wider uppercase transition-colors text-[#F5F3EF] ${isActive(item.pageSlug) ? 'text-[#B8946A]' : ''}`}>
+                  <span className={`text-sm tracking-wider uppercase transition-colors text-[#F5F3EF] ${isActive(item.pageSlug) ? 'text-accent' : ''}`}>
                     {item.label || item.pageTitle}
                   </span>
-                  <span className={`absolute bottom-0 left-0 h-[2px] bg-[#B8946A] transition-all ${isActive(item.pageSlug) ? 'w-full' : 'w-0 group-hover:w-full'}`}
-                        style={{ clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 100%, 0 100%)' }}></span>
+                  <span className={`nav-underline ${isActive(item.pageSlug) ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
                 </Link>
               ))}
 
@@ -111,15 +110,15 @@ export function Header() {
                   with the CTA on it lands between the links and the CTA button; with
                   the CTA off it simply trails the full link list. */}
               {settings?.phone && (
-                <span className="w-px h-5 bg-[#B8946A]/40" aria-hidden="true" />
+                <span className="nav-divider w-px h-5" aria-hidden="true" />
               )}
               {settings?.phone && (
                 <a
                   href={telHref}
-                  className="flex items-center gap-2 text-[#F5F3EF] hover:text-[#B8946A] transition-colors"
+                  className="flex items-center gap-2 text-[#F5F3EF] hover-accent transition-colors"
                   aria-label={`Call ${settings.phone}`}
                 >
-                  <Phone size={16} strokeWidth={2} className="text-[#B8946A]" />
+                  <Phone size={16} strokeWidth={2} className="text-accent" />
                   <span className="text-[0.95rem] whitespace-nowrap">{settings.phone}</span>
                 </a>
               )}
@@ -127,7 +126,7 @@ export function Header() {
               {ctaItem && (
                 <Link
                   to={hrefFor(ctaItem.pageSlug)}
-                  className="bg-[#B8946A] text-[#F5F3EF] px-8 py-3 text-sm tracking-wider uppercase transition-all hover:bg-[#F5F3EF] hover:text-[#111111]"
+                  className="btn-bronze px-8 py-3 text-sm tracking-wider uppercase transition-all"
                   style={{ clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))' }}
                 >
                   {ctaItem.label || ctaItem.pageTitle}
@@ -170,7 +169,7 @@ export function Header() {
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        className={`lg:hidden fixed top-0 right-0 z-[70] h-[100dvh] w-[80vw] sm:w-[400px] flex flex-col overflow-y-auto pt-24 px-7 pb-9 bg-[#141414] border-l-4 border-[#B8946A] shadow-2xl transition-transform duration-[440ms] motion-reduce:transition-none ${
+        className={`lg:hidden fixed top-0 right-0 z-[70] h-[100dvh] w-[80vw] sm:w-[400px] flex flex-col overflow-y-auto pt-24 px-7 pb-9 bg-[#141414] brand-border-left shadow-2xl transition-transform duration-[440ms] motion-reduce:transition-none ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ transitionTimingFunction: EASE, clipPath: 'polygon(26px 0, 100% 0, 100% 100%, 0 100%, 0 26px)' }}
@@ -180,7 +179,7 @@ export function Header() {
           ref={closeRef}
           onClick={() => setOpen(false)}
           aria-label="Close menu"
-          className="absolute top-5 right-5 w-11 h-11 flex items-center justify-center text-[#F5F3EF] hover:text-[#B8946A] transition-colors"
+          className="absolute top-5 right-5 w-11 h-11 flex items-center justify-center text-[#F5F3EF] hover-accent transition-colors"
         >
           <X size={26} strokeWidth={2} />
         </button>
@@ -196,12 +195,12 @@ export function Header() {
               }`}
               style={{ transitionTimingFunction: EASE, transitionDelay: open ? `${0.1 + i * 0.06}s` : '0s' }}
             >
-              <span className="block text-[0.62rem] tracking-[0.25em] text-[#B8946A] mb-1.5">
+              <span className="block text-[0.62rem] tracking-[0.25em] text-accent mb-1.5">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span
-                className={`text-3xl font-bold transition-colors group-hover:text-[#B8946A] ${
-                  isActive(item.pageSlug) ? 'text-[#B8946A]' : 'text-[#F5F3EF]'
+                className={`text-3xl font-bold transition-colors group-hover-accent ${
+                  isActive(item.pageSlug) ? 'text-accent' : 'text-[#F5F3EF]'
                 }`}
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
@@ -222,7 +221,7 @@ export function Header() {
             <Link
               to={hrefFor(ctaItem.pageSlug)}
               onClick={() => setOpen(false)}
-              className="bg-[#B8946A] text-[#F5F3EF] px-9 py-4 text-sm tracking-wider uppercase transition-colors hover:bg-[#F5F3EF] hover:text-[#111111]"
+              className="btn-bronze px-9 py-4 text-sm tracking-wider uppercase transition-colors"
               style={{ clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))' }}
             >
               {ctaItem.label || ctaItem.pageTitle}
@@ -239,15 +238,15 @@ export function Header() {
             }`}
             style={{ transitionDelay: open ? '0.42s' : '0s' }}
           >
-            <div className="text-xs tracking-[0.28em] uppercase text-[#B8946A] font-medium">Get in touch</div>
+            <div className="text-xs tracking-[0.28em] uppercase text-accent font-medium">Get in touch</div>
             <div className="flex flex-col items-end gap-2 text-[#F5F3EF]">
               {settings.phone && (
-                <a href={telHref} className="text-[1.05rem] hover:text-[#B8946A] transition-colors">
+                <a href={telHref} className="text-[1.05rem] hover-accent transition-colors">
                   {settings.phone}
                 </a>
               )}
               {settings.email && (
-                <ObfuscatedEmail email={settings.email} className="text-[1.05rem] hover:text-[#B8946A] transition-colors" />
+                <ObfuscatedEmail email={settings.email} className="text-[1.05rem] hover-accent transition-colors" />
               )}
             </div>
           </div>

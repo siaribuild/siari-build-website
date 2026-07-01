@@ -58,7 +58,7 @@ export function TextImage({ theme = 'light', imagePosition = 'left', imageSize =
 
           <div className={`order-2 ${textCol}`}>
             {eyebrow && (
-              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
             )}
             {heading && (
               <h2
@@ -76,7 +76,7 @@ export function TextImage({ theme = 'light', imagePosition = 'left', imageSize =
                 {stats.map((stat, i) => (
                   <div
                     key={i}
-                    className={`p-8 border-l-4 border-[#B8946A] ${themeStatCard(theme)}`}
+                    className={`p-8 brand-border-left ${themeStatCard(theme)}`}
                     style={{ clipPath: 'polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%)' }}
                   >
                     <div className="text-4xl mb-2" style={{ fontWeight: 700 }}>{stat.value}</div>

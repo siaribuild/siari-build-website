@@ -36,7 +36,7 @@ export function Footer() {
   }) as const
 
   return (
-    <footer className="bg-[#0a0a0a] text-[#F5F3EF] py-20 border-t-2 border-[#B8946A] relative overflow-hidden">
+    <footer className="on-media bg-[#0a0a0a] text-[#F5F3EF] py-20 brand-border-top relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand — logo + tagline */}
@@ -47,13 +47,13 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Navigation</h4>
+            <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-accent">Navigation</h4>
             <nav className="space-y-3">
               {footerItems.map((item: any) => (
                 <Link
                   key={item.pageSlug}
                   to={hrefFor(item.pageSlug)}
-                  className="block opacity-70 hover:opacity-100 hover:text-[#B8946A] transition-all"
+                  className="block opacity-70 hover:opacity-100 hover-accent transition-all"
                 >
                   {item.label || item.pageTitle}
                 </Link>
@@ -63,7 +63,7 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Contact</h4>
+            <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-accent">Contact</h4>
             <div className="space-y-3 opacity-70">
               {settings?.address && (
                 mapsUrl ? (
@@ -71,7 +71,7 @@ export function Footer() {
                     href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block whitespace-pre-line hover:opacity-100 hover:text-[#B8946A] transition-all"
+                    className="block whitespace-pre-line hover:opacity-100 hover-accent transition-all"
                   >
                     {settings.address}
                   </a>
@@ -79,9 +79,9 @@ export function Footer() {
                   <p className="whitespace-pre-line">{settings.address}</p>
                 )
               )}
-              {settings?.email && <ObfuscatedEmail email={settings.email} className="block hover:text-[#B8946A] transition-all" />}
+              {settings?.email && <ObfuscatedEmail email={settings.email} className="block hover-accent transition-all" />}
               {settings?.phone && (
-                <a href={telHref} className="block hover:text-[#B8946A] transition-all">
+                <a href={telHref} className="block hover-accent transition-all">
                   {settings.phone}
                 </a>
               )}
@@ -90,7 +90,7 @@ export function Footer() {
 
           {/* Follow */}
           <div>
-            <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Follow</h4>
+            <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-accent">Follow</h4>
             <div className="flex flex-col gap-3">
               {socialItems.map((item: any) => (
                 <a
@@ -98,12 +98,12 @@ export function Footer() {
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-3 hover:text-[#B8946A] transition-colors"
+                  className="group flex items-center gap-3 hover-accent transition-colors"
                 >
                   {item.icon && (
                     <span
                       aria-hidden="true"
-                      className="w-5 h-5 shrink-0 bg-[#B8946A]"
+                      className="icon-mask-primary w-5 h-5 shrink-0"
                       style={maskStyle(item.icon)}
                     />
                   )}

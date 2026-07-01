@@ -74,7 +74,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
     }
   }
 
-  const inputClass = "w-full bg-[#F5F3EF] border border-[#C8C5BE] px-4 py-4 focus:outline-none focus:border-[#B8946A]"
+  const inputClass = "field px-4 py-4"
   const inputStyle = { clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }
 
   return (
@@ -87,7 +87,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
             <h2 className="mb-8" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700 }}>{formHeading}</h2>
 
             {status === 'sent' ? (
-              <div className="bg-[#F5F3EF] p-10 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)' }}>
+              <div className="surface-cream p-10 brand-border-left" style={{ clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)' }}>
                 <h3 className="text-2xl font-bold mb-3">Message Sent</h3>
                 <p className="opacity-70">Thank you for getting in touch. We'll be in contact shortly.</p>
               </div>
@@ -139,7 +139,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 <button
                   type="submit"
                   disabled={status === 'sending'}
-                  className="bg-[#111111] text-[#F5F3EF] px-12 py-4 text-sm tracking-wider uppercase transition-all hover:bg-[#B8946A] disabled:opacity-50"
+                  className="btn-primary px-12 py-4 text-sm tracking-wider uppercase transition-all disabled:opacity-50"
                   style={{ clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
                 >
                   {status === 'sending' ? 'Sending...' : 'Send Message'}
@@ -160,9 +160,9 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 <InfoCard icon={<Phone className="text-[#111111]" size={24} />} title="Phone" value={settings.phone} href={`tel:${String(settings.phone).replace(/[^\d+]/g, '')}`} />
               )}
               {settings?.email && (
-                <div className="bg-[#F5F3EF] p-6 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
+                <div className="surface-cream p-6 brand-border-left" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-white" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}>
+                    <div className="info-icon">
                       <Mail className="text-[#111111]" size={24} />
                     </div>
                     <div>
@@ -185,15 +185,15 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
 
 function InfoCard({ icon, title, value, href }: { icon: React.ReactNode; title: string; value: string; href?: string }) {
   return (
-    <div className="bg-[#F5F3EF] p-6 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
+    <div className="surface-cream p-6 brand-border-left" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
       <div className="flex items-start gap-4">
-        <div className="p-3 bg-white" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}>
+        <div className="info-icon">
           {icon}
         </div>
         <div>
           <h3 className="mb-1" style={{ fontSize: '1.125rem', fontWeight: 600 }}>{title}</h3>
           {href ? (
-            <a href={href} className="opacity-70 whitespace-pre-line hover:opacity-100 hover:text-[#B8946A] transition-colors">{value}</a>
+            <a href={href} className="opacity-70 whitespace-pre-line hover:opacity-100 hover-accent transition-colors">{value}</a>
           ) : (
             <p className="opacity-70 whitespace-pre-line">{value}</p>
           )}

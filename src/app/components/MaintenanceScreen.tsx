@@ -19,7 +19,7 @@ export function MaintenanceScreen({ heading, message, showContact, bgImage }: Pr
   const boxStyle = { clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))' }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#111111] text-[#F5F3EF]">
+    <section className="on-media section--dark relative min-h-screen flex items-center justify-center overflow-hidden">
       {bgImage && (
         <motion.div
           className="absolute inset-0 bg-cover bg-center opacity-20"
@@ -32,14 +32,14 @@ export function MaintenanceScreen({ heading, message, showContact, bgImage }: Pr
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40" />
 
       <div
-        className="absolute top-0 left-0 w-96 h-96 border-l-2 border-t-2 border-[#B8946A]/30"
+        className="absolute top-0 left-0 w-96 h-96 corner-bracket"
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60px, 60px 60px, 60px 100%, 0 100%)' }}
       />
 
       <div className="relative z-10 text-center px-6 py-24 max-w-3xl">
         <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} width={200} height={200} className="h-20 w-auto brightness-0 invert mx-auto mb-12 opacity-90" />
 
-        <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">Maintenance</div>
+        <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">Maintenance</div>
         <h1
           className="mb-6 uppercase"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.02em' }}
@@ -55,19 +55,19 @@ export function MaintenanceScreen({ heading, message, showContact, bgImage }: Pr
             {settings?.phone && (
               <a
                 href={`tel:${settings.phone}`}
-                className="flex items-center gap-3 border border-[#B8946A]/40 px-6 py-3 transition-all hover:border-[#B8946A] hover:bg-[#B8946A]/10"
+                className="contact-chip flex items-center gap-3 px-6 py-3 transition-all"
                 style={boxStyle}
               >
-                <Phone size={18} className="text-[#B8946A]" />
+                <Phone size={18} className="text-accent" />
                 <span>{settings.phone}</span>
               </a>
             )}
             {settings?.email && (
               <div
-                className="flex items-center gap-3 border border-[#B8946A]/40 px-6 py-3 transition-all hover:border-[#B8946A] hover:bg-[#B8946A]/10"
+                className="contact-chip flex items-center gap-3 px-6 py-3 transition-all"
                 style={boxStyle}
               >
-                <Mail size={18} className="text-[#B8946A]" />
+                <Mail size={18} className="text-accent" />
                 <ObfuscatedEmail email={settings.email} className="cursor-pointer" />
               </div>
             )}

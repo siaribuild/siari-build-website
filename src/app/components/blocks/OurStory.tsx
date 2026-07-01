@@ -20,7 +20,7 @@ export function OurStory({ theme = 'light', eyebrow, heading, text, stats, joinT
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             {eyebrow && (
-              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-[#B8946A]">{eyebrow}</div>
+              <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
             )}
             {heading && (
               <h2 className="mb-8 uppercase" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1.1 }}>
@@ -38,7 +38,7 @@ export function OurStory({ theme = 'light', eyebrow, heading, text, stats, joinT
               {stats.map((stat, i) => (
                 <div
                   key={i}
-                  className={`p-10 border-l-4 border-[#B8946A] ${themeStatCard(theme)}`}
+                  className={`p-10 brand-border-left ${themeStatCard(theme)}`}
                   style={{ clipPath: 'polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%)' }}
                 >
                   <div className="text-5xl mb-3" style={{ fontWeight: 700 }}>{stat.value}</div>
