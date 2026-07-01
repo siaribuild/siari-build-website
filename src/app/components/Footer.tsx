@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { MapPin, Mail, Phone } from 'lucide-react'
 import { useSanity } from '../hooks/useSanity'
 import { SITE_SETTINGS_QUERY, NAVIGATION_QUERY } from '../lib/queries'
 import { ObfuscatedEmail } from './ObfuscatedEmail'
@@ -12,6 +13,28 @@ export function Footer() {
   const socialItems = nav?.socialMenu || []
 
   const hrefFor = (slug: string) => (slug === 'home' ? '/' : `/${slug}`)
+
+  // Address links to Google Maps only when a map pin (geopoint) is set.
+  const loc = settings?.mapLocation as { lat?: number; lng?: number } | undefined
+  const mapsUrl =
+    loc?.lat != null && loc?.lng != null
+      ? `https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`
+      : undefined
+
+  const telHref = settings?.phone ? `tel:${String(settings.phone).replace(/[^\d+]/g, '')}` : undefined
+
+  // Recolour any uploaded icon SVG to bronze via CSS mask (an <img> can't be
+  // recoloured, so a black-filled icon would vanish on the dark footer).
+  const maskStyle = (url: string) => ({
+    WebkitMaskImage: `url(${url})`,
+    maskImage: `url(${url})`,
+    WebkitMaskRepeat: 'no-repeat',
+    maskRepeat: 'no-repeat',
+    WebkitMaskPosition: 'center',
+    maskPosition: 'center',
+    WebkitMaskSize: 'contain',
+    maskSize: 'contain',
+  }) as const
 
   return (
     <footer className="bg-[#0a0a0a] text-[#F5F3EF] py-20 border-t-2 border-[#B8946A] relative overflow-hidden">
@@ -39,15 +62,35 @@ export function Footer() {
           </div>
           <div>
             <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Contact</h4>
-            <div className="space-y-3 opacity-70">
-              {settings?.address && <p className="whitespace-pre-line">{settings.address}</p>}
-              {settings?.email && <ObfuscatedEmail email={settings.email} className="block hover:text-[#B8946A] transition-all" />}
+            <div className="space-y-3">
+              {settings?.address && (
+                mapsUrl ? (
+                  <a
+                    href={mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-start gap-3 hover:text-[#B8946A] transition-colors"
+                  >
+                    <MapPin size={18} strokeWidth={2} className="text-[#B8946A] shrink-0 mt-0.5" aria-hidden="true" />
+                    <span className="whitespace-pre-line opacity-70 group-hover:opacity-100 transition-opacity">{settings.address}</span>
+                  </a>
+                ) : (
+                  <div className="flex items-start gap-3">
+                    <MapPin size={18} strokeWidth={2} className="text-[#B8946A] shrink-0 mt-0.5" aria-hidden="true" />
+                    <span className="whitespace-pre-line opacity-70">{settings.address}</span>
+                  </div>
+                )
+              )}
+              {settings?.email && (
+                <div className="flex items-center gap-3">
+                  <Mail size={18} strokeWidth={2} className="text-[#B8946A] shrink-0" aria-hidden="true" />
+                  <ObfuscatedEmail email={settings.email} className="opacity-70 hover:opacity-100 hover:text-[#B8946A] transition-all" />
+                </div>
+              )}
               {settings?.phone && (
-                <a
-                  href={`tel:${String(settings.phone).replace(/[^\d+]/g, '')}`}
-                  className="block hover:text-[#B8946A] transition-all"
-                >
-                  {settings.phone}
+                <a href={telHref} className="group flex items-center gap-3 hover:text-[#B8946A] transition-colors">
+                  <Phone size={18} strokeWidth={2} className="text-[#B8946A] shrink-0" aria-hidden="true" />
+                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">{settings.phone}</span>
                 </a>
               )}
             </div>
@@ -61,10 +104,16 @@ export function Footer() {
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 opacity-70 hover:opacity-100 hover:text-[#B8946A] transition-all"
+                  className="group flex items-center gap-3 hover:text-[#B8946A] transition-colors"
                 >
-                  {item.icon && <img src={item.icon} alt="" className="w-5 h-5 object-contain" />}
-                  <span>{item.label}</span>
+                  {item.icon && (
+                    <span
+                      aria-hidden="true"
+                      className="w-5 h-5 shrink-0 bg-[#B8946A]"
+                      style={maskStyle(item.icon)}
+                    />
+                  )}
+                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">{item.label}</span>
                 </a>
               ))}
             </div>
