@@ -154,16 +154,16 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
             <h2 className="mb-8" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700 }}>{infoHeading}</h2>
             <div className="space-y-6">
               {settings?.address && (
-                <InfoCard icon={<MapPin className="text-[#B8946A]" size={24} />} title="Address" value={settings.address} />
+                <InfoCard icon={<MapPin className="text-[#111111]" size={24} />} title="Address" value={settings.address} />
               )}
               {settings?.phone && (
-                <InfoCard icon={<Phone className="text-[#B8946A]" size={24} />} title="Phone" value={settings.phone} href={`tel:${String(settings.phone).replace(/[^\d+]/g, '')}`} />
+                <InfoCard icon={<Phone className="text-[#111111]" size={24} />} title="Phone" value={settings.phone} href={`tel:${String(settings.phone).replace(/[^\d+]/g, '')}`} />
               )}
               {settings?.email && (
                 <div className="bg-[#F5F3EF] p-6 border-l-4 border-[#B8946A]" style={{ clipPath: 'polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%)' }}>
                   <div className="flex items-start gap-4">
                     <div className="p-3 bg-white" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}>
-                      <Mail className="text-[#B8946A]" size={24} />
+                      <Mail className="text-[#111111]" size={24} />
                     </div>
                     <div>
                       <h3 className="mb-1" style={{ fontSize: '1.125rem', fontWeight: 600 }}>Email</h3>
@@ -173,7 +173,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 </div>
               )}
               {settings?.workingHours && (
-                <InfoCard icon={<Clock className="text-[#B8946A]" size={24} />} title="Working Hours" value={settings.workingHours} />
+                <InfoCard icon={<Clock className="text-[#111111]" size={24} />} title="Working Hours" value={settings.workingHours} />
               )}
             </div>
           </div>

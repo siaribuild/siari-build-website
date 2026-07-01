@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { MapPin, Mail, Phone } from 'lucide-react'
 import { useSanity } from '../hooks/useSanity'
 import { SITE_SETTINGS_QUERY, NAVIGATION_QUERY } from '../lib/queries'
 import { ObfuscatedEmail } from './ObfuscatedEmail'
@@ -23,7 +22,7 @@ export function Footer() {
 
   const telHref = settings?.phone ? `tel:${String(settings.phone).replace(/[^\d+]/g, '')}` : undefined
 
-  // Recolour any uploaded icon SVG to bronze via CSS mask (an <img> can't be
+  // Recolour an uploaded icon SVG to bronze via CSS mask (an <img> can't be
   // recoloured, so a black-filled icon would vanish on the dark footer).
   const maskStyle = (url: string) => ({
     WebkitMaskImage: `url(${url})`,
@@ -39,13 +38,14 @@ export function Footer() {
   return (
     <footer className="bg-[#0a0a0a] text-[#F5F3EF] py-20 border-t-2 border-[#B8946A] relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
-          <div className="text-center">
-            <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} width={200} height={200} className="h-32 w-auto brightness-0 invert mb-6 mx-auto opacity-70" />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          {/* Brand — logo + tagline */}
           <div>
+            <img src={logo} alt={settings?.siteName || 'SIARI BUILD'} width={200} height={200} className="h-24 w-auto brightness-0 invert mb-6 opacity-70" />
             <p className="opacity-70 leading-relaxed">{settings?.tagline || 'Premium residential construction across Melbourne. Built with precision, designed to last.'}</p>
           </div>
+
+          {/* Navigation */}
           <div>
             <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Navigation</h4>
             <nav className="space-y-3">
@@ -60,38 +60,35 @@ export function Footer() {
               ))}
             </nav>
           </div>
+
+          {/* Contact */}
           <div>
             <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Contact</h4>
-            <div className="space-y-3">
+            <div className="space-y-3 opacity-70">
               {settings?.address && (
                 mapsUrl ? (
                   <a
                     href={mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-start gap-3 hover:text-[#B8946A] transition-colors"
+                    className="block whitespace-pre-line hover:opacity-100 hover:text-[#B8946A] transition-all"
                   >
-                    <MapPin size={18} strokeWidth={2} className="text-[#B8946A] shrink-0 mt-0.5" aria-hidden="true" />
-                    <span className="whitespace-pre-line opacity-70 group-hover:opacity-100 transition-opacity">{settings.address}</span>
+                    {settings.address}
                   </a>
                 ) : (
-                  <div className="flex items-start gap-3">
-                    <span className="whitespace-pre-line opacity-70">{settings.address}</span>
-                  </div>
+                  <p className="whitespace-pre-line">{settings.address}</p>
                 )
               )}
-              {settings?.email && (
-                <div className="flex items-center gap-3">
-                  <ObfuscatedEmail email={settings.email} className="opacity-70 hover:opacity-100 hover:text-[#B8946A] transition-all" />
-                </div>
-              )}
+              {settings?.email && <ObfuscatedEmail email={settings.email} className="block hover:text-[#B8946A] transition-all" />}
               {settings?.phone && (
-                <a href={telHref} className="group flex items-center gap-3 hover:text-[#B8946A] transition-colors">
-                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">{settings.phone}</span>
+                <a href={telHref} className="block hover:text-[#B8946A] transition-all">
+                  {settings.phone}
                 </a>
               )}
             </div>
           </div>
+
+          {/* Follow */}
           <div>
             <h4 className="mb-6 text-sm tracking-[0.2em] uppercase text-[#B8946A]">Follow</h4>
             <div className="flex flex-col gap-3">
