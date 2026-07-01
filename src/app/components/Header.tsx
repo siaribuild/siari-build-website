@@ -1,7 +1,7 @@
 import logo from '../../imports/logo-black-200-2.png'
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { Phone, X } from 'lucide-react';
 import { useSanity } from '../hooks/useSanity';
 import { NAVIGATION_QUERY, SITE_SETTINGS_QUERY } from '../lib/queries';
 import { ObfuscatedEmail } from './ObfuscatedEmail';
@@ -95,7 +95,7 @@ export function Header() {
               <img src={logo} alt="SIARI BUILD" width={200} height={200} className="h-16 w-auto brightness-0 invert" />
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-12">
+            <nav className="hidden lg:flex items-center gap-8">
               {regularItems.map((item: any) => (
                 <Link key={item.pageSlug} to={hrefFor(item.pageSlug)} className="relative group">
                   <span className={`text-sm tracking-wider uppercase transition-colors text-[#F5F3EF] ${isActive(item.pageSlug) ? 'text-[#B8946A]' : ''}`}>
@@ -105,6 +105,25 @@ export function Header() {
                         style={{ clipPath: 'polygon(0 0, calc(100% - 4px) 0, 100% 100%, 0 100%)' }}></span>
                 </Link>
               ))}
+
+              {/* Contact cluster — a quiet divider separates wayfinding from contact
+                  actions. The phone always sits after the links and before the CTA:
+                  with the CTA on it lands between the links and the CTA button; with
+                  the CTA off it simply trails the full link list. */}
+              {settings?.phone && (
+                <span className="w-px h-5 bg-[#B8946A]/40" aria-hidden="true" />
+              )}
+              {settings?.phone && (
+                <a
+                  href={telHref}
+                  className="flex items-center gap-2 text-[#F5F3EF] hover:text-[#B8946A] transition-colors"
+                  aria-label={`Call ${settings.phone}`}
+                >
+                  <Phone size={16} strokeWidth={2} className="text-[#B8946A]" />
+                  <span className="text-[0.95rem] whitespace-nowrap">{settings.phone}</span>
+                </a>
+              )}
+
               {ctaItem && (
                 <Link
                   to={hrefFor(ctaItem.pageSlug)}
