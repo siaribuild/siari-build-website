@@ -32,7 +32,7 @@ export function DynamicPage({ slug }: Props) {
 
   return (
     <>
-      <Seo seo={page.seo} fallbackTitle={page.title} path={path} />
+      <Seo seo={page.seo} fallbackTitle={page.title} path={path} organization={slug === 'home'} />
       <PageBuilder sections={page.sections} />
     </>
   )

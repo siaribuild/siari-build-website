@@ -95,25 +95,25 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block mb-2 text-sm tracking-wider uppercase">First Name</label>
-                    <input name="firstName" value={form.firstName} onChange={handleChange} required type="text" className={inputClass} style={inputStyle} />
+                    <label htmlFor="firstName" className="block mb-2 text-sm tracking-wider uppercase">First Name</label>
+                    <input id="firstName" name="firstName" value={form.firstName} onChange={handleChange} required type="text" className={inputClass} style={inputStyle} />
                   </div>
                   <div>
-                    <label className="block mb-2 text-sm tracking-wider uppercase">Last Name</label>
-                    <input name="lastName" value={form.lastName} onChange={handleChange} required type="text" className={inputClass} style={inputStyle} />
+                    <label htmlFor="lastName" className="block mb-2 text-sm tracking-wider uppercase">Last Name</label>
+                    <input id="lastName" name="lastName" value={form.lastName} onChange={handleChange} required type="text" className={inputClass} style={inputStyle} />
                   </div>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm tracking-wider uppercase">Email</label>
-                  <input name="email" value={form.email} onChange={handleChange} required type="email" className={inputClass} style={inputStyle} />
+                  <label htmlFor="email" className="block mb-2 text-sm tracking-wider uppercase">Email</label>
+                  <input id="email" name="email" value={form.email} onChange={handleChange} required type="email" className={inputClass} style={inputStyle} />
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm tracking-wider uppercase">Phone</label>
-                  <input name="phone" value={form.phone} onChange={handleChange} type="tel" className={inputClass} style={inputStyle} />
+                  <label htmlFor="phone" className="block mb-2 text-sm tracking-wider uppercase">Phone</label>
+                  <input id="phone" name="phone" value={form.phone} onChange={handleChange} type="tel" className={inputClass} style={inputStyle} />
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm tracking-wider uppercase">Project Type</label>
-                  <select name="projectType" value={form.projectType || defaultProjectType} onChange={handleChange} className={inputClass} style={inputStyle}>
+                  <label htmlFor="projectType" className="block mb-2 text-sm tracking-wider uppercase">Project Type</label>
+                  <select id="projectType" name="projectType" value={form.projectType || defaultProjectType} onChange={handleChange} className={inputClass} style={inputStyle}>
                     {!defaultProjectType && <option value="">Select a type...</option>}
                     {categories?.map((c: any) => (
                       <option key={c._id} value={c.title}>{c.title}</option>
@@ -122,8 +122,8 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                   </select>
                 </div>
                 <div>
-                  <label className="block mb-2 text-sm tracking-wider uppercase">Message</label>
-                  <textarea name="message" value={form.message} onChange={handleChange} required rows={6} className={`${inputClass} resize-none`} style={inputStyle} />
+                  <label htmlFor="message" className="block mb-2 text-sm tracking-wider uppercase">Message</label>
+                  <textarea id="message" name="message" value={form.message} onChange={handleChange} required rows={6} className={`${inputClass} resize-none`} style={inputStyle} />
                 </div>
 
                 <div>

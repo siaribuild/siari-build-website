@@ -7,7 +7,8 @@ import { useSanity } from '../hooks/useSanity'
 import { PROJECT_QUERY, OTHER_PROJECTS_QUERY } from '../lib/queries'
 import { Seo } from '../components/Seo'
 import { NotFoundPage } from './NotFoundPage'
-import { img as cdnImg } from '../lib/image'
+import { img as cdnImg, srcSet } from '../lib/image'
+import { CdnImage } from '../components/CdnImage'
 
 export function ProjectDetailPage() {
   const { projectId } = useParams()
@@ -57,10 +58,11 @@ export function ProjectDetailPage() {
       {/* Hero */}
       <section className="on-media section--dark relative min-h-[70vh] flex items-end overflow-hidden">
         <motion.div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${cdnImg(project.heroImage, { w: 1920 })})` }}
+          className="absolute inset-0"
           initial={{ scale: 1.05 }} animate={{ scale: 1 }} transition={{ duration: 2.5, ease: 'easeOut' }}
         >
+          <CdnImage src={project.heroImage} alt="" fill priority sizes="100vw"
+            widths={[768, 1024, 1366, 1600, 1920, 2560]} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
         </motion.div>
         <div className="absolute top-0 left-0 w-96 h-96 corner-bracket" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 60px, 60px 60px, 60px 100%, 0 100%)' }} />
@@ -152,10 +154,21 @@ export function ProjectDetailPage() {
               {project.gallery.map((img: any, i: number) => (
                 <div
                   key={i}
-                  className="relative h-[400px] bg-cover bg-center cursor-pointer group"
+                  className="relative h-[400px] overflow-hidden cursor-pointer group"
                   onClick={() => setLightboxImage(i)}
-                  style={{ backgroundImage: `url(${cdnImg(img.url, { w: 1000 })})`, clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
+                  style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
                 >
+                  <img
+                    src={cdnImg(img.url, { w: 1000 })}
+                    srcSet={srcSet(img.url, { widths: [480, 768, 1000, 1400] }) || undefined}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    alt=""
+                    width={1000}
+                    height={400}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
                 </div>
               ))}
@@ -171,15 +184,19 @@ export function ProjectDetailPage() {
             <div className="flex justify-between items-center mb-12">
               <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700 }}>MORE PROJECTS</h2>
               <div className="flex gap-4">
-                <button onClick={() => setCarouselIndex(i => i <= 0 ? maxIndex : i - 1)} className="btn-primary p-3 transition-colors" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}><ChevronLeft size={24} /></button>
-                <button onClick={() => setCarouselIndex(i => i >= maxIndex ? 0 : i + 1)} className="btn-primary p-3 transition-colors" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}><ChevronRight size={24} /></button>
+                <button aria-label="Previous projects" onClick={() => setCarouselIndex(i => i <= 0 ? maxIndex : i - 1)} className="btn-primary p-3 transition-colors" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}><ChevronLeft size={24} /></button>
+                <button aria-label="Next projects" onClick={() => setCarouselIndex(i => i >= maxIndex ? 0 : i + 1)} className="btn-primary p-3 transition-colors" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }}><ChevronRight size={24} /></button>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {visibleProjects.map((p: any) => (
                 <div key={p._id} className="group cursor-pointer" onClick={() => navigate(`/projects/${p.slug}`)}>
                   <div className="on-media relative h-[350px] overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}>
-                    <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]" style={{ backgroundImage: `url(${cdnImg(p.heroImage, { w: 800 })})` }} />
+                    <img src={cdnImg(p.heroImage, { w: 800 })}
+                      srcSet={srcSet(p.heroImage, { widths: [400, 600, 800] }) || undefined}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      alt={p.title} width={800} height={350} loading="lazy" decoding="async"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute top-0 left-0 p-4 text-[#F5F3EF] text-sm opacity-90">{p.details?.location} • {p.details?.year}</div>
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-[#F5F3EF]">
@@ -201,11 +218,11 @@ export function ProjectDetailPage() {
       {/* Lightbox */}
       {lightboxImage !== null && project.gallery && (
         <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4" onClick={() => setLightboxImage(null)}>
-          <button className="absolute top-6 right-6 text-white hover-accent z-10" onClick={() => setLightboxImage(null)}><X size={32} /></button>
-          <button className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + project.gallery.length) % project.gallery.length : null) }}><ChevronLeft size={32} /></button>
-          <button className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % project.gallery.length : null) }}><ChevronRight size={32} /></button>
+          <button aria-label="Close image viewer" className="absolute top-6 right-6 text-white hover-accent z-10" onClick={() => setLightboxImage(null)}><X size={32} /></button>
+          <button aria-label="Previous image" className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + project.gallery.length) % project.gallery.length : null) }}><ChevronLeft size={32} /></button>
+          <button aria-label="Next image" className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % project.gallery.length : null) }}><ChevronRight size={32} /></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2">{lightboxImage + 1} / {project.gallery.length}</div>
-          <img src={cdnImg(project.gallery[lightboxImage].url, { w: 2000, q: 82 })} alt="" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
+          <img src={cdnImg(project.gallery[lightboxImage].url, { w: 2000, q: 82 })} alt={`${project.title} — image ${lightboxImage + 1}`} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </>

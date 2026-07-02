@@ -29,17 +29,24 @@ interface Props {
   fallbackDescription?: string
   fallbackImage?: string
   path?: string
+  /** Emit LocalBusiness/GeneralContractor JSON-LD (use on the home page). */
+  organization?: boolean
 }
 
 // Canonical/OG absolute URL base. Set VITE_SITE_URL per environment
-// (e.g. https://siaribuild.com.au in production). Falls back to the Vercel
-// deployment URL so previews still produce valid absolute URLs.
+// (e.g. https://siaribuild.com.au in production). Falls back to the actual
+// serving origin at runtime, so previews/production always produce correct
+// absolute URLs even if the env var is unset — never a stale hardcoded host.
 const SITE_URL = (
-  import.meta.env.VITE_SITE_URL || 'https://siari-build-website.vercel.app'
+  import.meta.env.VITE_SITE_URL ||
+  (typeof window !== 'undefined' ? window.location.origin : '')
 ).replace(/\/$/, '')
 
-export function Seo({ seo, fallbackTitle, fallbackDescription, fallbackImage, path = '' }: Props) {
-  const { data: settings } = useSanity<{ siteName?: string; tagline?: string }>(SITE_SETTINGS_QUERY)
+export function Seo({ seo, fallbackTitle, fallbackDescription, fallbackImage, path = '', organization }: Props) {
+  const { data: settings } = useSanity<{
+    siteName?: string; tagline?: string; phone?: string; email?: string;
+    address?: string; mapLocation?: { lat?: number; lng?: number }
+  }>(SITE_SETTINGS_QUERY)
 
   const siteName = seo?.openGraph?.siteName || settings?.siteName || 'SIARI BUILD'
 
@@ -61,6 +68,27 @@ export function Seo({ seo, fallbackTitle, fallbackDescription, fallbackImage, pa
   const canonical = `${SITE_URL}${path}`
 
   const robots = seo?.nofollowAttributes ? 'noindex, nofollow' : 'index, follow'
+
+  // GeneralContractor structured data — strong SEO signal for a construction
+  // business (rich results, local pack eligibility). Only emitted where asked.
+  const jsonLd = organization
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'GeneralContractor',
+        name: siteName,
+        url: SITE_URL || undefined,
+        image: image || undefined,
+        description: description || undefined,
+        telephone: settings?.phone || undefined,
+        email: settings?.email || undefined,
+        address: settings?.address
+          ? { '@type': 'PostalAddress', streetAddress: settings.address }
+          : undefined,
+        geo: settings?.mapLocation?.lat != null && settings?.mapLocation?.lng != null
+          ? { '@type': 'GeoCoordinates', latitude: settings.mapLocation.lat, longitude: settings.mapLocation.lng }
+          : undefined,
+      }
+    : null
 
   return (
     <Helmet>
@@ -85,6 +113,12 @@ export function Seo({ seo, fallbackTitle, fallbackDescription, fallbackImage, pa
       <meta name="twitter:title" content={seo?.openGraph?.title || fullTitle} />
       <meta name="twitter:description" content={seo?.openGraph?.description || description} />
       {image && <meta name="twitter:image" content={image} />}
+
+      {jsonLd && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd, (_k, v) => (v === undefined ? undefined : v))}
+        </script>
+      )}
     </Helmet>
   )
 }

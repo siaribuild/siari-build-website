@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSanity } from '../../hooks/useSanity'
 import { PROJECTS_QUERY, CATEGORIES_QUERY } from '../../lib/queries'
 import { themeBg, type Theme } from './themeUtils'
-import { img } from '../../lib/image'
+import { img, srcSet } from '../../lib/image'
 
 interface Props { theme?: Theme; joinTop?: boolean; joinBottom?: boolean }
 
@@ -87,7 +87,11 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom }: Props) {
                       background so the browser can manage loading. */}
                   <img
                     src={img(project.heroImage, { w: 800 })}
+                    srcSet={srcSet(project.heroImage, { widths: [400, 600, 800, 1000] }) || undefined}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     alt={project.title}
+                    width={800}
+                    height={400}
                     loading="lazy"
                     decoding="async"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"

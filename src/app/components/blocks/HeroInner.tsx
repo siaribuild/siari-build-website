@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { renderMultiline } from './renderMultiline'
-import { img } from '../../lib/image'
+import { CdnImage } from '../CdnImage'
 
 const heightMap = {
   tall: 'min-h-[70vh]',
@@ -20,12 +20,14 @@ export function HeroInner({ height = 'half', eyebrow, heading, subheading, backg
   return (
     <section className={`on-media section--dark relative ${heightMap[height]} flex items-center justify-center overflow-hidden`}>
       <motion.div
-        className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{ backgroundImage: `url(${img(backgroundImage, { w: 1920 })})` }}
+        className="absolute inset-0 opacity-30"
         initial={{ scale: 1.05 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2.5, ease: 'easeOut' }}
-      />
+      >
+        <CdnImage src={backgroundImage} alt="" fill priority sizes="100vw"
+          widths={[768, 1024, 1366, 1600, 1920]} />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
       <div className="corner-bracket absolute top-0 left-0 w-96 h-96" />
 

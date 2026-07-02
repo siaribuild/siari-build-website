@@ -2,7 +2,7 @@ import { motion } from 'motion/react'
 import { SmartLink } from '../SmartLink'
 import type { SanityLink } from '../../lib/links'
 import { renderMultiline } from './renderMultiline'
-import { img } from '../../lib/image'
+import { CdnImage } from '../CdnImage'
 
 interface Props {
   eyebrow?: string
@@ -23,12 +23,19 @@ export function HeroHome({
   return (
     <section className="relative h-screen flex items-center overflow-hidden">
       <motion.div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${img(backgroundImage, { w: 1920 })})` }}
+        className="absolute inset-0"
         initial={{ scale: 1.05 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2.5, ease: 'easeOut' }}
       >
+        <CdnImage
+          src={backgroundImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          widths={[768, 1024, 1366, 1600, 1920, 2560]}
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
       </motion.div>

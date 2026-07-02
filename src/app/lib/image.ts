@@ -34,3 +34,22 @@ export function img(url: string | undefined | null, opts: ImageOpts = {}): strin
   const sep = url.includes('?') ? '&' : '?'
   return `${url}${sep}${params.toString()}`
 }
+
+// ── Responsive helpers ──────────────────────────────────────────────────────
+// A sensible width ladder for a full-bleed / large image. Trim per call site
+// via `widths` when an image is known to be small (thumbnails, icons).
+const DEFAULT_WIDTHS = [480, 768, 1024, 1366, 1600, 1920, 2560]
+
+/**
+ * Build a `srcset` string for a Sanity image across several widths, so the
+ * browser can pick the smallest file that fits the layout + DPR. Non-Sanity
+ * URLs return '' (no srcset — the plain src is used).
+ */
+export function srcSet(
+  url: string | undefined | null,
+  opts: Omit<ImageOpts, 'w'> & { widths?: number[] } = {},
+): string {
+  if (!url || !url.includes('cdn.sanity.io') || /\.svg($|\?)/i.test(url)) return ''
+  const { widths = DEFAULT_WIDTHS, ...rest } = opts
+  return widths.map((w) => `${img(url, { ...rest, w })} ${w}w`).join(', ')
+}

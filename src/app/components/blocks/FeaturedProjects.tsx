@@ -5,7 +5,7 @@ import { useSanity } from '../../hooks/useSanity'
 import { FEATURED_PROJECTS_QUERY } from '../../lib/queries'
 import { themeBg, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
-import { img } from '../../lib/image'
+import { CdnImage } from '../CdnImage'
 
 interface Props {
   theme?: Theme
@@ -60,10 +60,9 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
             onClick={() => navigate(`/projects/${first.slug}`)}
             style={{ clipPath: 'polygon(0 0, calc(100% - 60px) 0, 100% 60px, 100% 100%, 0 100%)' }}
           >
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              style={{ backgroundImage: `url(${img(first.heroImage, { w: 1400 })})` }}
-            />
+            <CdnImage src={first.heroImage} alt={first.title}
+              className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              fill sizes="(max-width: 1024px) 100vw, 50vw" widths={[640, 768, 1024, 1400]} />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
             <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-black/70 to-transparent group-hover:from-black/50 transition-all duration-500 pointer-events-none" />
             <div className="absolute top-0 left-0 p-6 text-[#F5F3EF] z-10">
@@ -84,10 +83,9 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
                 onClick={() => navigate(`/projects/${project.slug}`)}
                 style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
               >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  style={{ backgroundImage: `url(${img(project.heroImage, { w: 1000 })})` }}
-                />
+                <CdnImage src={project.heroImage} alt={project.title}
+                  className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  fill sizes="(max-width: 1024px) 100vw, 50vw" widths={[480, 640, 768, 1000]} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
                 <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-black/70 to-transparent group-hover:from-black/50 transition-all duration-500 pointer-events-none" />
                 <div className="absolute top-0 left-0 p-6 text-[#F5F3EF] z-10">
