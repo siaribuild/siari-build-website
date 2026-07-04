@@ -1,0 +1,6 @@
+# SPA fallback for any path not prerendered as a static file.
+# IMPORTANT: target is EXTENSIONLESS (/__spa-fallback, NOT /__spa-fallback.html).
+# Cloudflare Pages auto-strips ".html" and 308-redirects /x.html -> /x, so a
+# ".html" target here creates an infinite redirect loop. Pages serves the file
+# __spa-fallback.html at the path /__spa-fallback, so we rewrite to that.
+/*    /__spa-fallback    200
