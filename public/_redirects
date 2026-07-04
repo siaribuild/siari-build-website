@@ -1,8 +1,3 @@
-# Real build assets are served as-is. Listed FIRST so the SPA fallback below
-# never intercepts them (Cloudflare Pages _redirects = first match wins).
-/assets/*    /assets/:splat    200
-
-# SPA fallback — ONLY for page routes that aren't prerendered static files.
-# Extensionless target (Cloudflare Pages strips .html, so /__spa-fallback.html
-# would 308-loop).
-/*    /__spa-fallback    200
+# (no SPA rewrite here — Cloudflare Pages' native not-found handling serves
+#  build/client/404.html for unmatched routes without overriding real files.
+#  finalize-build.mjs writes 404.html from the React Router SPA fallback.)

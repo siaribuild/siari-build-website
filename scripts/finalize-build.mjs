@@ -26,6 +26,19 @@ async function walk(dir) {
 async function main() {
   const files = await walk(OUT)
 
+  // ── 0. SPA fallback via Cloudflare Pages' NATIVE not-found handling ─────────
+  // Pages serves build/client/404.html for any route that doesn't match a real
+  // file — WITHOUT overriding "/", real pages, or /assets/* (unlike a greedy
+  // `/* /__spa-fallback 200` rule, which was serving the empty shell for "/").
+  // React Router's SPA shell is __spa-fallback.html, so we copy it to 404.html.
+  try {
+    const shell = await readFile(join(OUT, '__spa-fallback.html'), 'utf8')
+    await writeFile(join(OUT, '404.html'), shell)
+    console.log('spa-fallback: wrote 404.html from __spa-fallback.html')
+  } catch (err) {
+    console.warn('spa-fallback: could not create 404.html —', err.message)
+  }
+
   // ── 1. Local image fallbacks ──────────────────────────────────────────────
   const textFiles = files.filter((f) => /\.(html|js|data|txt|json)$/.test(f))
   const assets = new Map() // key: `${hash}.${ext}`  ->  base Sanity URL (no query)
