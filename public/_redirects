@@ -1,5 +1,0 @@
-# Cloudflare Pages serves existing static files first (every prerendered page is
-# a real .html file), so this catch-all only applies to paths that DON'T exist
-# as static assets — sending them to the SPA fallback, which client-renders and
-# shows the branded 404. "/" is prerendered, so RR emits __spa-fallback.html.
-/*    /__spa-fallback.html    200
