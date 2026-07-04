@@ -1,5 +1,6 @@
-# Cloudflare Pages serves existing static files first (every prerendered page is
-# a real .html file), so this catch-all only applies to paths that DON'T exist
-# as static assets — sending them to the SPA fallback, which client-renders and
-# shows the branded 404. "/" is prerendered, so RR emits __spa-fallback.html.
-/*    /__spa-fallback.html    200
+# SPA fallback for any path not prerendered as a static file.
+# IMPORTANT: target is EXTENSIONLESS (/__spa-fallback, NOT /__spa-fallback.html).
+# Cloudflare Pages auto-strips ".html" and 308-redirects /x.html -> /x, so a
+# ".html" target here creates an infinite redirect loop. Pages serves the file
+# __spa-fallback.html at the path /__spa-fallback, so we rewrite to that.
+/*    /__spa-fallback    200

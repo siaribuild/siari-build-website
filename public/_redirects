@@ -1,6 +1,8 @@
-# SPA fallback for any path not prerendered as a static file.
-# IMPORTANT: target is EXTENSIONLESS (/__spa-fallback, NOT /__spa-fallback.html).
-# Cloudflare Pages auto-strips ".html" and 308-redirects /x.html -> /x, so a
-# ".html" target here creates an infinite redirect loop. Pages serves the file
-# __spa-fallback.html at the path /__spa-fallback, so we rewrite to that.
+# Real build assets are served as-is. Listed FIRST so the SPA fallback below
+# never intercepts them (Cloudflare Pages _redirects = first match wins).
+/assets/*    /assets/:splat    200
+
+# SPA fallback — ONLY for page routes that aren't prerendered static files.
+# Extensionless target (Cloudflare Pages strips .html, so /__spa-fallback.html
+# would 308-loop).
 /*    /__spa-fallback    200
