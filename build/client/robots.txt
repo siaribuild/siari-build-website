@@ -1,0 +1,5 @@
+# https://siaribuild.com.au
+User-agent: *
+Allow: /
+
+Sitemap: https://siaribuild.com.au/sitemap.xml

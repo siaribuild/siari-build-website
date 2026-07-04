@@ -1,0 +1,24 @@
+/* Self-hosted fonts via Fontsource (installed as npm packages).
+   LATIN SUBSET ONLY — the plain @fontsource/<font>/<weight>.css imports pull in
+   every unicode-range subset (cyrillic, greek, vietnamese, latin-ext, …), which
+   is ~33 @font-face rules the browser never needs for an English site. The
+   latin-<weight>.css variants import just the latin subset. */
+
+/* Inter — body text */
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+
+/* Space Grotesk — headings */
+@import '@fontsource/space-grotesk/latin-400.css';
+@import '@fontsource/space-grotesk/latin-500.css';
+@import '@fontsource/space-grotesk/latin-600.css';
+@import '@fontsource/space-grotesk/latin-700.css';
+
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
