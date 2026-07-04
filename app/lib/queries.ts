@@ -203,6 +203,8 @@ export const PROJECT_QUERY = `*[_type == "project" && slug.current == $slug][0] 
   },
   gallery[] {
     "url": asset->url,
+    "lqip": asset->metadata.lqip,
+    "aspect": asset->metadata.dimensions.aspectRatio,
     caption
   },
   ${SEO_FRAGMENT}

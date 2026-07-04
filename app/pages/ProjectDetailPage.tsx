@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { PortableText } from '@portabletext/react'
 import { img as cdnImg, srcSet } from '../lib/image'
 import { CdnImage } from '../components/CdnImage'
+import { BlurUpImage } from '../components/BlurUpImage'
 
 export function ProjectDetailPage({ project, otherProjects }: { project: any; otherProjects: any[] }) {
   const navigate = useNavigate()
@@ -130,16 +131,13 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
                   onClick={() => setLightboxImage(i)}
                   style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
                 >
-                  <img
-                    src={cdnImg(img.url, { w: 1000 })}
-                    srcSet={srcSet(img.url, { widths: [480, 768, 1000, 1400] }) || undefined}
+                  <BlurUpImage
+                    url={img.url}
+                    lqip={img.lqip}
+                    widths={[480, 768, 1000, 1400]}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    alt=""
-                    width={1000}
-                    height={400}
-                    loading="lazy"
-                    decoding="async"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    w={1000}
+                    className="transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
                 </div>
@@ -164,7 +162,7 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
               {visibleProjects.map((p: any) => (
                 <div key={p._id} className="group cursor-pointer" onClick={() => navigate(`/projects/${p.slug}`)}>
                   <div className="on-media relative h-[350px] overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}>
-                    <img src={cdnImg(p.heroImage, { w: 800 })}
+                    <img src={cdnImg(p.heroImage, { w: 800 })} crossOrigin="anonymous"
                       srcSet={srcSet(p.heroImage, { widths: [400, 600, 800] }) || undefined}
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       alt={p.title} width={800} height={350} loading="lazy" decoding="async"
@@ -194,7 +192,7 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
           <button aria-label="Previous image" className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + project.gallery.length) % project.gallery.length : null) }}><ChevronLeft size={32} /></button>
           <button aria-label="Next image" className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % project.gallery.length : null) }}><ChevronRight size={32} /></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2">{lightboxImage + 1} / {project.gallery.length}</div>
-          <img src={cdnImg(project.gallery[lightboxImage].url, { w: 2000, q: 82 })} alt={`${project.title} — image ${lightboxImage + 1}`} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
+          <img src={cdnImg(project.gallery[lightboxImage].url, { w: 2000, q: 82 })} crossOrigin="anonymous" alt={`${project.title} — image ${lightboxImage + 1}`} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </>

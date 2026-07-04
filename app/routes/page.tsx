@@ -3,7 +3,7 @@ import type { LoaderFunctionArgs, MetaArgs } from 'react-router'
 import { client } from '../lib/sanity'
 import { PAGE_QUERY } from '../lib/queries'
 import { loadBlockData } from '../lib/block-data'
-import { buildMeta } from '../lib/meta'
+import { buildMeta, heroImageOf } from '../lib/meta'
 import { DynamicPage } from '../pages/DynamicPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 
@@ -22,6 +22,7 @@ export function meta({ data, matches, params }: MetaArgs<typeof loader>) {
     pageSeo: data?.page?.seo,
     fallbackTitle: data?.page?.title,
     path: `/${params.slug}`,
+    preloadImage: heroImageOf(data?.page),
     matches,
   })
 }

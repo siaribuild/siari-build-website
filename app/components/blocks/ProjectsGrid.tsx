@@ -89,6 +89,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom, projects, c
                     height={400}
                     loading="lazy"
                     decoding="async"
+                    crossOrigin="anonymous"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />

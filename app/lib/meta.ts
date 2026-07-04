@@ -1,4 +1,5 @@
 import type { MetaDescriptor } from 'react-router'
+import { img, srcSet } from './image'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Ports the old <Seo> component to React Router v7 `meta` descriptors.
@@ -31,6 +32,9 @@ interface BuildMetaArgs {
   path?: string
   /** Emit GeneralContractor JSON-LD (home page only). */
   organization?: boolean
+  /** Hero image URL to responsively preload (improves LCP on hero-led pages). */
+  preloadImage?: string
+  preloadWidths?: number[]
   /** RR passes `matches`; we read the root loader's baked site settings from it. */
   matches?: Array<{ id: string; data?: unknown }>
 }
@@ -42,6 +46,8 @@ export function buildMeta({
   fallbackImage,
   path = '',
   organization,
+  preloadImage,
+  preloadWidths,
   matches,
 }: BuildMetaArgs): MetaDescriptor[] {
   const settings =
@@ -80,6 +86,22 @@ export function buildMeta({
     { name: 'twitter:description', content: pageSeo?.openGraph?.description || description },
   ]
 
+  // Responsive hero preload — matches the hero <img> (crossOrigin anonymous +
+  // 100vw srcset), so the LCP image starts downloading immediately without the
+  // browser waiting to discover it, and without over-fetching on mobile.
+  if (preloadImage) {
+    tags.push({
+      tagName: 'link',
+      rel: 'preload',
+      as: 'image',
+      href: img(preloadImage, { w: 1600 }),
+      imageSrcSet: srcSet(preloadImage, { widths: preloadWidths ?? [768, 1024, 1366, 1600, 1920] }),
+      imageSizes: '100vw',
+      fetchPriority: 'high',
+      crossOrigin: 'anonymous',
+    } as MetaDescriptor)
+  }
+
   if (pageSeo?.seoKeywords) tags.push({ name: 'keywords', content: pageSeo.seoKeywords })
   if (image) {
     tags.push({ property: 'og:image', content: image })
@@ -115,4 +137,13 @@ export function buildMeta({
   }
 
   return tags
+}
+
+// Returns the hero section's background image URL for a page, if present — used
+// to preload the LCP image (see buildMeta `preloadImage`).
+export function heroImageOf(page: any): string | undefined {
+  const s = (page?.sections ?? []).find(
+    (x: any) => x?._type === 'heroHome' || x?._type === 'heroInner',
+  )
+  return s?.backgroundImage || undefined
 }

@@ -60,6 +60,7 @@ export function CdnImage({
       // @ts-expect-error fetchpriority is a valid HTML attribute React passes through
       fetchpriority={priority ? 'high' : undefined}
       decoding={priority ? 'sync' : 'async'}
+      crossOrigin="anonymous"
       onError={
         fallback
           ? (e) => {

@@ -23,6 +23,7 @@ export function meta({ data, matches }: MetaArgs<typeof loader>) {
     fallbackDescription: p?.details?.location ? `${p.title} — ${p.details.location}` : p?.title,
     fallbackImage: p?.heroImage,
     path: p ? `/projects/${p.slug}` : '',
+    preloadImage: p?.heroImage,
     matches,
   })
 }
