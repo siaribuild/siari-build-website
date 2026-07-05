@@ -16,3 +16,12 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Content-Security-Policy — REPORT-ONLY: this does NOT block anything, it only
+  # logs violations to the browser console. Deploy it, watch for reports as you
+  # click through the site (esp. contact form / Turnstile, and the map block),
+  # tune the allow-lists to match, THEN rename the header to
+  # `Content-Security-Policy` to enforce. 'unsafe-inline' on script-src is required
+  # because React Router injects an inline hydration script and this is a static
+  # (ssr:false) site with no server to issue per-request nonces.
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.sanity.io https://*.googleapis.com https://*.gstatic.com https://*.ggpht.com; font-src 'self' data:; connect-src 'self' https://*.sanity.io https://cloudflareinsights.com https://challenges.cloudflare.com https://maps.googleapis.com; frame-src https://challenges.cloudflare.com https://www.google.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'

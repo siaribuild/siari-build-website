@@ -263,7 +263,10 @@
 
 /* Bronze CTA — always the solid brand primary (used on hero / dark media). */
 .btn-bronze {
-  background-color: var(--brand-primary);
+  /* Darkened from --brand-primary (#9F7C53, 3.46:1) to meet WCAG AA contrast
+     with the light label (#8B6940 = 4.52:1). --brand-primary is unchanged for
+     borders/fills/lines, which don't bear text. */
+  background-color: #8B6940;
   color: var(--ink-inverse);
 }
 .btn-bronze:hover {

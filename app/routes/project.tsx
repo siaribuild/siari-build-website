@@ -15,6 +15,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { project, otherProjects: otherProjects ?? [] }
 }
 
+// See page.tsx — clientLoader handles non-prerendered paths at runtime under
+// ssr:false, rendering the branded 404 instead of throwing.
+export async function clientLoader({ serverLoader }: { serverLoader: () => Promise<any> }) {
+  try {
+    return await serverLoader()
+  } catch {
+    return { project: null, otherProjects: [] }
+  }
+}
+
 export function meta({ data, matches }: MetaArgs<typeof loader>) {
   const p = data?.project
   return buildMeta({

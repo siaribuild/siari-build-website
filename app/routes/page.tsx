@@ -17,6 +17,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { page, blockData }
 }
 
+// Under ssr:false the build-time `loader` only produced data for PRERENDERED
+// paths. At runtime, any other path (a real 404, or a page published but not yet
+// rebuilt) has no server data — without this, React Router throws a generic error
+// and you get "Unexpected error" instead of the branded 404. clientLoader returns
+// the baked data for real pages, and null (→ NotFoundPage) for everything else.
+export async function clientLoader({ serverLoader }: { serverLoader: () => Promise<any> }) {
+  try {
+    return await serverLoader()
+  } catch {
+    return { page: null, blockData: {} }
+  }
+}
+
 export function meta({ data, matches, params }: MetaArgs<typeof loader>) {
   return buildMeta({
     pageSeo: data?.page?.seo,
