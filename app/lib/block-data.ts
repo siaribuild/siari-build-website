@@ -5,6 +5,13 @@ import {
   CATEGORIES_QUERY,
   ALL_CATEGORIES_QUERY,
 } from './queries'
+import type {
+  PAGE_QUERY_RESULT,
+  FEATURED_PROJECTS_QUERY_RESULT,
+  PROJECTS_QUERY_RESULT,
+  CATEGORIES_QUERY_RESULT,
+  ALL_CATEGORIES_QUERY_RESULT,
+} from './sanity.types'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Below-the-fold blocks used to fetch their own collections in the browser via
@@ -19,10 +26,10 @@ import {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface BlockData {
-  featuredProjects?: any[] | null
-  projects?: any[] | null
-  categories?: any[] | null
-  allCategories?: any[] | null
+  featuredProjects?: FEATURED_PROJECTS_QUERY_RESULT | null
+  projects?: PROJECTS_QUERY_RESULT | null
+  categories?: CATEGORIES_QUERY_RESULT | null
+  allCategories?: ALL_CATEGORIES_QUERY_RESULT | null
 }
 
 // Deep-walk any object/array and replace Sanity-hosted *.svg URLs with an inline
@@ -73,16 +80,16 @@ export async function inlineSanitySvgs(node: unknown): Promise<void> {
 
 // Fetch whatever collections the page's blocks need, based on section types
 // present. Also inlines SVG icons in the page sections (mutates in place).
-export async function loadBlockData(page: any): Promise<BlockData> {
+export async function loadBlockData(page: PAGE_QUERY_RESULT): Promise<BlockData> {
   if (!page?.sections?.length) return {}
 
-  const types = new Set<string>(page.sections.map((s: any) => s._type))
+  const types = new Set<string>(page.sections.map((s) => s._type))
 
   const [featuredProjects, projects, categories, allCategories] = await Promise.all([
-    types.has('featuredProjects') ? client.fetch<any[]>(FEATURED_PROJECTS_QUERY) : Promise.resolve(null),
-    types.has('projectsGrid') ? client.fetch<any[]>(PROJECTS_QUERY) : Promise.resolve(null),
-    types.has('projectsGrid') ? client.fetch<any[]>(CATEGORIES_QUERY) : Promise.resolve(null),
-    types.has('contactFormBlock') ? client.fetch<any[]>(ALL_CATEGORIES_QUERY) : Promise.resolve(null),
+    types.has('featuredProjects') ? client.fetch(FEATURED_PROJECTS_QUERY) : Promise.resolve(null),
+    types.has('projectsGrid') ? client.fetch(PROJECTS_QUERY) : Promise.resolve(null),
+    types.has('projectsGrid') ? client.fetch(CATEGORIES_QUERY) : Promise.resolve(null),
+    types.has('contactFormBlock') ? client.fetch(ALL_CATEGORIES_QUERY) : Promise.resolve(null),
   ])
 
   // Bake card icons (cardGrid / cardGridText / any icon field) into the HTML.

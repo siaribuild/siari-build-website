@@ -10,7 +10,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   if (__MAINTENANCE__) return { project: null, otherProjects: [] }
   const [project, otherProjects] = await Promise.all([
     client.fetch(PROJECT_QUERY, { slug: params.projectId }),
-    client.fetch<any[]>(OTHER_PROJECTS_QUERY, { slug: params.projectId }),
+    client.fetch(OTHER_PROJECTS_QUERY, { slug: params.projectId }),
   ])
   return { project, otherProjects: otherProjects ?? [] }
 }

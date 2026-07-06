@@ -1,3 +1,0 @@
-# (no SPA rewrite here — Cloudflare Pages' native not-found handling serves
-#  build/client/404.html for unmatched routes without overriding real files.
-#  finalize-build.mjs writes 404.html from the React Router SPA fallback.)

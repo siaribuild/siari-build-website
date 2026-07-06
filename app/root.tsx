@@ -73,7 +73,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F3EF] text-[#111111]">
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       <Outlet />
       <Footer />

@@ -9,7 +9,7 @@ export function Footer() {
   const footerItems = nav?.footerMenu || []
   const socialItems = nav?.socialMenu || []
 
-  const hrefFor = (slug: string) => (slug === 'home' ? '/' : `/${slug}`)
+  const hrefFor = (slug?: string | null) => (!slug || slug === 'home' ? '/' : `/${slug}`)
 
   // Address links to Google Maps only when a map pin (geopoint) is set.
   const loc = settings?.mapLocation as { lat?: number; lng?: number } | undefined

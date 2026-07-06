@@ -71,7 +71,7 @@ export function Header() {
     };
   }, [open]);
 
-  const hrefFor = (slug: string) => (slug === 'home' ? '/' : `/${slug}`);
+  const hrefFor = (slug?: string | null) => (!slug || slug === 'home' ? '/' : `/${slug}`);
   // Active when the URL matches the item exactly, OR is a page *within* that
   // section (e.g. /projects/fraser-rise keeps "Projects" active). Home stays
   // exact-only so it doesn't match every path. The trailing "/" guard prevents

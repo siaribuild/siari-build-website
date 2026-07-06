@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://siaribuild.com.au/sitemap.xml

@@ -5,13 +5,15 @@ import { PortableText } from '@portabletext/react'
 import { img as cdnImg, srcSet } from '../lib/image'
 import { CdnImage } from '../components/CdnImage'
 import { BlurUpImage } from '../components/BlurUpImage'
+import type { PROJECT_QUERY_RESULT, OTHER_PROJECTS_QUERY_RESULT } from '../lib/sanity.types'
 
-export function ProjectDetailPage({ project, otherProjects }: { project: any; otherProjects: any[] }) {
+export function ProjectDetailPage({ project, otherProjects }: { project: NonNullable<PROJECT_QUERY_RESULT>; otherProjects: OTHER_PROJECTS_QUERY_RESULT }) {
   const navigate = useNavigate()
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [lightboxImage, setLightboxImage] = useState<number | null>(null)
 
 
+  const gallery = project.gallery ?? []
   const itemsPerPage = 3
   const maxIndex = Math.max(0, Math.ceil((otherProjects?.length || 0) / itemsPerPage) - 1)
   const visibleProjects = otherProjects?.slice(carouselIndex * itemsPerPage, (carouselIndex + 1) * itemsPerPage) || []
@@ -119,12 +121,12 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
       </section>
 
       {/* Gallery */}
-      {project.gallery?.length > 0 && (
+      {gallery.length > 0 && (
         <section className="py-24 lg:py-32 bg-[#F5F3EF]">
           <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
             <h2 className="mb-12 text-center" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700 }}>Project Gallery</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {project.gallery.map((img: any, i: number) => (
+              {gallery.map((img, i) => (
                 <div
                   key={i}
                   className="relative h-[400px] overflow-hidden cursor-pointer group"
@@ -132,8 +134,8 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
                   style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
                 >
                   <BlurUpImage
-                    url={img.url}
-                    lqip={img.lqip}
+                    url={img.url ?? ''}
+                    lqip={img.lqip ?? undefined}
                     widths={[480, 768, 1000, 1400]}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     w={1000}
@@ -159,13 +161,13 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {visibleProjects.map((p: any) => (
+              {visibleProjects.map((p) => (
                 <div key={p._id} className="group cursor-pointer" onClick={() => navigate(`/projects/${p.slug}`)}>
                   <div className="on-media relative h-[350px] overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}>
                     <img src={cdnImg(p.heroImage, { w: 800 })} crossOrigin="anonymous"
                       srcSet={srcSet(p.heroImage, { widths: [400, 600, 800] }) || undefined}
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      alt={p.title} width={800} height={350} loading="lazy" decoding="async"
+                      alt={p.title ?? ''} width={800} height={350} loading="lazy" decoding="async"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute top-0 left-0 p-4 text-[#F5F3EF] text-sm opacity-90">{p.details?.location} • {p.details?.year}</div>
@@ -186,13 +188,13 @@ export function ProjectDetailPage({ project, otherProjects }: { project: any; ot
       )}
 
       {/* Lightbox */}
-      {lightboxImage !== null && project.gallery && (
+      {lightboxImage !== null && gallery.length > 0 && (
         <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4" onClick={() => setLightboxImage(null)}>
           <button aria-label="Close image viewer" className="absolute top-6 right-6 text-white hover-accent z-10" onClick={() => setLightboxImage(null)}><X size={32} /></button>
-          <button aria-label="Previous image" className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + project.gallery.length) % project.gallery.length : null) }}><ChevronLeft size={32} /></button>
-          <button aria-label="Next image" className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % project.gallery.length : null) }}><ChevronRight size={32} /></button>
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2">{lightboxImage + 1} / {project.gallery.length}</div>
-          <img src={cdnImg(project.gallery[lightboxImage].url, { w: 2000, q: 82 })} crossOrigin="anonymous" alt={`${project.title} — image ${lightboxImage + 1}`} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
+          <button aria-label="Previous image" className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + gallery.length) % gallery.length : null) }}><ChevronLeft size={32} /></button>
+          <button aria-label="Next image" className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % gallery.length : null) }}><ChevronRight size={32} /></button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2">{lightboxImage + 1} / {gallery.length}</div>
+          <img src={cdnImg(gallery[lightboxImage].url, { w: 2000, q: 82 })} crossOrigin="anonymous" alt={`${project.title} — image ${lightboxImage + 1}`} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </>

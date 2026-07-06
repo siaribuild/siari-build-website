@@ -75,7 +75,7 @@ export function MapBlock({ height = 'medium' }: Props) {
   const apiKey = (import.meta.env as any).VITE_GOOGLE_MAPS_API_KEY as string | undefined
   const loc = settings?.mapLocation as { lat?: number; lng?: number } | undefined
   const zoom: number = settings?.mapZoom || 15
-  const label: string | undefined = settings?.mapAddressLabel
+  const label: string | undefined = settings?.mapAddressLabel ?? undefined
   const hasMap = Boolean(apiKey && loc?.lat != null && loc?.lng != null)
   const px = HEIGHTS[height] || HEIGHTS.medium
 
@@ -102,7 +102,13 @@ export function MapBlock({ height = 'medium' }: Props) {
           title: label || '',
         })
         if (label) {
-          const info = new google.maps.InfoWindow({ content: `<div style="font-family:Inter,sans-serif;font-size:13px;color:#111;padding:2px 4px">${label}</div>` })
+          // Build the InfoWindow content as a DOM node and set the CMS-supplied
+          // label via textContent (never string-interpolated into HTML) so a
+          // label authored in Sanity can't inject markup/script into the page.
+          const el = document.createElement('div')
+          el.style.cssText = 'font-family:Inter,sans-serif;font-size:13px;color:#111;padding:2px 4px'
+          el.textContent = label
+          const info = new google.maps.InfoWindow({ content: el })
           marker.addListener('click', () => info.open({ anchor: marker, map }))
         }
       })

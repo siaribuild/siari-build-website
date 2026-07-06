@@ -1,0 +1,21 @@
+# Cloudflare Pages configuration (infrastructure-as-code alternative to setting
+# these in the dashboard). If you configure bindings in the dashboard instead,
+# you can delete this file — but don't define the same binding in both places.
+
+name = "siari-build"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]   # required: the contact function uses `resend` (Node APIs)
+pages_build_output_dir = "build/client"
+
+# Private store for contact submissions. Create the DB, then paste its id here:
+#   npx wrangler d1 create siari_build
+[[d1_databases]]
+binding = "DB"
+database_name = "siari_build"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# Optional: KV namespace for the per-IP rate limiter. Create it, then paste the id:
+#   npx wrangler kv namespace create CONTACT_RATELIMIT
+# [[kv_namespaces]]
+# binding = "CONTACT_RATELIMIT"
+# id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"

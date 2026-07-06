@@ -71,13 +71,6 @@ export default defineConfig({
                   .documentId('navigation')
               ),
 
-            S.divider(),
-
-            S.listItem()
-              .title('Contact Submissions')
-              .child(
-                S.documentTypeList('contactSubmission').title('Contact Submissions')
-              ),
           ])
       },
     }),

@@ -15,25 +15,25 @@ import { img, srcSet } from './image'
 const SITE_URL = (import.meta.env.VITE_SITE_URL || '').replace(/\/$/, '')
 
 interface SeoData {
-  metaTitle?: string
-  metaDescription?: string
-  metaImage?: string
-  nofollowAttributes?: boolean
-  seoKeywords?: string
-  openGraph?: { title?: string; description?: string; siteName?: string; image?: string }
-  twitter?: { cardType?: string; site?: string; creator?: string; handle?: string }
+  metaTitle?: string | null
+  metaDescription?: string | null
+  metaImage?: string | null
+  nofollowAttributes?: boolean | null
+  seoKeywords?: string[] | null
+  openGraph?: { title?: string | null; description?: string | null; siteName?: string | null; image?: string | null } | null
+  twitter?: { cardType?: string | null; site?: string | null; creator?: string | null; handle?: string | null } | null
 }
 
 interface BuildMetaArgs {
-  pageSeo?: SeoData
-  fallbackTitle?: string
-  fallbackDescription?: string
-  fallbackImage?: string
+  pageSeo?: SeoData | null
+  fallbackTitle?: string | null
+  fallbackDescription?: string | null
+  fallbackImage?: string | null
   path?: string
   /** Emit GeneralContractor JSON-LD (home page only). */
   organization?: boolean
   /** Hero image URL to responsively preload (improves LCP on hero-led pages). */
-  preloadImage?: string
+  preloadImage?: string | null
   preloadWidths?: number[]
   /** RR passes `matches`; we read the root loader's baked site settings from it. */
   matches?: Array<{ id: string; data?: unknown }>
@@ -102,7 +102,7 @@ export function buildMeta({
     } as MetaDescriptor)
   }
 
-  if (pageSeo?.seoKeywords) tags.push({ name: 'keywords', content: pageSeo.seoKeywords })
+  if (pageSeo?.seoKeywords?.length) tags.push({ name: 'keywords', content: pageSeo.seoKeywords.join(', ') })
   if (image) {
     tags.push({ property: 'og:image', content: image })
     tags.push({ name: 'twitter:image', content: image })

@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { themeBg, type Theme } from './themeUtils'
 import { img, srcSet } from '../../lib/image'
+import type { PROJECTS_QUERY_RESULT, CATEGORIES_QUERY_RESULT } from '../../lib/sanity.types'
 
-interface Props { theme?: Theme; joinTop?: boolean; joinBottom?: boolean; projects?: any[]; categories?: any[] }
+interface Props { theme?: Theme; joinTop?: boolean; joinBottom?: boolean; projects?: PROJECTS_QUERY_RESULT | null; categories?: CATEGORIES_QUERY_RESULT | null }
 
 // How many projects to show initially and per "Load More" click.
 const BATCH = 6
@@ -51,7 +52,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom, projects, c
             >
               All
             </button>
-            {categories?.map((cat: any) => (
+            {categories?.map((cat) => (
               <button
                 key={cat._id}
                 onClick={() => setActiveCategory(cat.slug)}
@@ -69,7 +70,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom, projects, c
       <section className={`pt-24 lg:pt-32 ${joinBottom ? 'pb-8' : 'pb-24 lg:pb-32'} ${themeBg(theme)}`}>
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {visible.map((project: any) => (
+            {visible.map((project) => (
               <div
                 key={project._id}
                 className="group cursor-pointer"
@@ -84,7 +85,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom, projects, c
                     src={img(project.heroImage, { w: 800 })}
                     srcSet={srcSet(project.heroImage, { widths: [400, 600, 800, 1000] }) || undefined}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    alt={project.title}
+                    alt={project.title ?? ''}
                     width={800}
                     height={400}
                     loading="lazy"

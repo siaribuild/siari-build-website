@@ -1,4 +1,5 @@
 import { HeroHome } from './HeroHome'
+import type { FEATURED_PROJECTS_QUERY_RESULT, PROJECTS_QUERY_RESULT, CATEGORIES_QUERY_RESULT, ALL_CATEGORIES_QUERY_RESULT } from '../../lib/sanity.types'
 import { HeroInner } from './HeroInner'
 import { FeaturedProjects } from './FeaturedProjects'
 import { ProjectsGrid } from './ProjectsGrid'
@@ -37,10 +38,10 @@ interface Props {
   sections?: Section[]
   /** Baked collection data from the route loader (featured/projects/categories). */
   blockData?: {
-    featuredProjects?: any[] | null
-    projects?: any[] | null
-    categories?: any[] | null
-    allCategories?: any[] | null
+    featuredProjects?: FEATURED_PROJECTS_QUERY_RESULT | null
+    projects?: PROJECTS_QUERY_RESULT | null
+    categories?: CATEGORIES_QUERY_RESULT | null
+    allCategories?: ALL_CATEGORIES_QUERY_RESULT | null
   }
 }
 

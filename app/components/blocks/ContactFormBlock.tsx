@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import type { ALL_CATEGORIES_QUERY_RESULT } from '../../lib/sanity.types'
 import { MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { useRootData } from '../../lib/root-data'
@@ -11,8 +12,8 @@ interface Props {
   joinBottom?: boolean
   formHeading?: string
   infoHeading?: string
-  /** Baked at build time by the route loader; falls back to a client fetch if absent. */
-  categories?: any[]
+  /** Project categories baked at build time by the route loader (ALL_CATEGORIES_QUERY). */
+  categories?: ALL_CATEGORIES_QUERY_RESULT | null
 }
 
 export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Message', infoHeading = 'Contact Info', joinTop, joinBottom, categories }: Props) {
@@ -62,7 +63,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
         turnstileRef.current?.reset()
         setToken(null)
       } else {
-        const data = await res.json().catch(() => ({}))
+        const data = (await res.json().catch(() => ({}))) as { error?: string }
         setErrorMsg(data.error || 'Something went wrong. Please try again.')
         setStatus('error')
         turnstileRef.current?.reset()
@@ -117,8 +118,8 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                   <label htmlFor="projectType" className="block mb-2 text-sm tracking-wider uppercase">Project Type</label>
                   <select id="projectType" name="projectType" value={form.projectType || defaultProjectType} onChange={handleChange} className={inputClass} style={inputStyle}>
                     {!defaultProjectType && <option value="">Select a type...</option>}
-                    {categories?.map((c: any) => (
-                      <option key={c._id} value={c.title}>{c.title}</option>
+                    {categories?.map((c) => (
+                      <option key={c._id} value={c.title ?? ''}>{c.title}</option>
                     ))}
                     <option value="Other">Other</option>
                   </select>
@@ -146,7 +147,7 @@ export function ContactFormBlock({ theme = 'light', formHeading = 'Send Us A Mes
                 >
                   {status === 'sending' ? 'Sending...' : 'Send Message'}
                 </button>
-                {errorMsg && <p className="text-red-600 text-sm">{errorMsg}</p>}
+                {errorMsg && <p role="alert" aria-live="assertive" className="text-red-600 text-sm">{errorMsg}</p>}
               </form>
             )}
           </div>

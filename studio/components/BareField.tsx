@@ -1,11 +1,8 @@
-import {Fragment, createElement} from 'react'
-import {type FieldProps} from 'sanity'
+import {FieldProps} from 'sanity'
 
-// Renders only a field's input (for an object, that's its member fields),
-// dropping the field's own title/description/border. Used so a nested object
-// can sit directly inside a document tab without showing a redundant group
-// header (e.g. "Project Details" under the Details tab). Purely cosmetic —
-// the stored data shape is unchanged.
+// NOTE: placeholder created only to let `sanity schema extract` run. The real
+// BareField component is missing from the reviewed archive (see assessment).
+// Field components affect Studio rendering only, never the extracted schema types.
 export function BareField(props: FieldProps) {
-  return createElement(Fragment, null, props.children)
+  return props.renderDefault(props)
 }

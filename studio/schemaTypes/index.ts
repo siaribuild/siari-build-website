@@ -21,7 +21,6 @@ import {project} from './project'
 import {testimonial} from './testimonial'
 import {siteSettings} from './siteSettings'
 import {navigation} from './navigation'
-import {contactSubmission} from './contactSubmission'
 import {page} from './page'
 import {richTextBlock} from './richTextBlock'
 
@@ -49,5 +48,4 @@ export const schemaTypes = [
   testimonial,
   siteSettings,
   navigation,
-  contactSubmission,
 ]
