@@ -1,0 +1,216 @@
+{
+  "_DynamicPage-DLiSVzL3.js": {
+    "file": "assets/DynamicPage-DLiSVzL3.js",
+    "name": "DynamicPage",
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_index-D7Luntbz.js",
+      "_NotFoundPage-Ci2a6T2q.js",
+      "_createLucideIcon-ChXsGN-Q.js",
+      "_root-data-CJ4F2QQd.js",
+      "_ObfuscatedEmail-VzV21FnA.js"
+    ]
+  },
+  "_NotFoundPage-Ci2a6T2q.js": {
+    "file": "assets/NotFoundPage-Ci2a6T2q.js",
+    "name": "NotFoundPage",
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_root-data-CJ4F2QQd.js"
+    ]
+  },
+  "_ObfuscatedEmail-VzV21FnA.js": {
+    "file": "assets/ObfuscatedEmail-VzV21FnA.js",
+    "name": "ObfuscatedEmail",
+    "imports": [
+      "_createLucideIcon-ChXsGN-Q.js",
+      "_jsx-runtime-BidyjLFM.js"
+    ]
+  },
+  "_createLucideIcon-ChXsGN-Q.js": {
+    "file": "assets/createLucideIcon-ChXsGN-Q.js",
+    "name": "createLucideIcon",
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js"
+    ]
+  },
+  "_index-D7Luntbz.js": {
+    "file": "assets/index-D7Luntbz.js",
+    "name": "index",
+    "imports": [
+      "_createLucideIcon-ChXsGN-Q.js",
+      "_jsx-runtime-BidyjLFM.js",
+      "_NotFoundPage-Ci2a6T2q.js"
+    ]
+  },
+  "_jsx-runtime-BidyjLFM.js": {
+    "file": "assets/jsx-runtime-BidyjLFM.js",
+    "name": "jsx-runtime"
+  },
+  "_root-data-CJ4F2QQd.js": {
+    "file": "assets/root-data-CJ4F2QQd.js",
+    "name": "root-data",
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js"
+    ]
+  },
+  "_x-D5Kw-LgX.js": {
+    "file": "assets/x-D5Kw-LgX.js",
+    "name": "x",
+    "imports": [
+      "_createLucideIcon-ChXsGN-Q.js"
+    ]
+  },
+  "app/root.tsx?__react-router-build-client-route": {
+    "file": "assets/root-DKwnF-yV.js",
+    "name": "root",
+    "src": "app/root.tsx?__react-router-build-client-route",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_root-data-CJ4F2QQd.js",
+      "_ObfuscatedEmail-VzV21FnA.js",
+      "_x-D5Kw-LgX.js",
+      "_createLucideIcon-ChXsGN-Q.js"
+    ],
+    "css": [
+      "assets/root-Bbv1lxT5.css"
+    ],
+    "assets": [
+      "assets/inter-latin-400-normal-C38fXH4l.woff2",
+      "assets/inter-latin-400-normal-CyCys3Eg.woff",
+      "assets/inter-latin-500-normal-Cerq10X2.woff2",
+      "assets/inter-latin-500-normal-BL9OpVg8.woff",
+      "assets/inter-latin-600-normal-LgqL8muc.woff2",
+      "assets/inter-latin-600-normal-CiBQ2DWP.woff",
+      "assets/space-grotesk-latin-400-normal-CJ-V5oYT.woff2",
+      "assets/space-grotesk-latin-400-normal-BnQMeOim.woff",
+      "assets/space-grotesk-latin-500-normal-lFbtlQH6.woff2",
+      "assets/space-grotesk-latin-500-normal-CNSSEhBt.woff",
+      "assets/space-grotesk-latin-600-normal-DjKNqYRj.woff2",
+      "assets/space-grotesk-latin-600-normal-BflQw4A9.woff",
+      "assets/space-grotesk-latin-700-normal-RjhwGPKo.woff2",
+      "assets/space-grotesk-latin-700-normal-CwsQ-cCU.woff"
+    ]
+  },
+  "app/routes/home.tsx?__react-router-build-client-route": {
+    "file": "assets/home-BjjVkEg6.js",
+    "name": "home",
+    "src": "app/routes/home.tsx?__react-router-build-client-route",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_NotFoundPage-Ci2a6T2q.js",
+      "_DynamicPage-DLiSVzL3.js",
+      "_root-data-CJ4F2QQd.js",
+      "_index-D7Luntbz.js",
+      "_createLucideIcon-ChXsGN-Q.js",
+      "_ObfuscatedEmail-VzV21FnA.js"
+    ]
+  },
+  "app/routes/not-found.tsx?__react-router-build-client-route": {
+    "file": "assets/not-found-ZpTnF-DD.js",
+    "name": "not-found",
+    "src": "app/routes/not-found.tsx?__react-router-build-client-route",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_NotFoundPage-Ci2a6T2q.js",
+      "_root-data-CJ4F2QQd.js"
+    ]
+  },
+  "app/routes/page.tsx?__react-router-build-client-route": {
+    "file": "assets/page-CXqy8IiO.js",
+    "name": "page",
+    "src": "app/routes/page.tsx?__react-router-build-client-route",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_NotFoundPage-Ci2a6T2q.js",
+      "_DynamicPage-DLiSVzL3.js",
+      "_root-data-CJ4F2QQd.js",
+      "_index-D7Luntbz.js",
+      "_createLucideIcon-ChXsGN-Q.js",
+      "_ObfuscatedEmail-VzV21FnA.js"
+    ]
+  },
+  "app/routes/project.tsx?__react-router-build-client-route": {
+    "file": "assets/project-Cwu494P4.js",
+    "name": "project",
+    "src": "app/routes/project.tsx?__react-router-build-client-route",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js",
+      "_NotFoundPage-Ci2a6T2q.js",
+      "_index-D7Luntbz.js",
+      "_createLucideIcon-ChXsGN-Q.js",
+      "_x-D5Kw-LgX.js",
+      "_root-data-CJ4F2QQd.js"
+    ]
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff": {
+    "file": "assets/inter-latin-400-normal-CyCys3Eg.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2": {
+    "file": "assets/inter-latin-400-normal-C38fXH4l.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff": {
+    "file": "assets/inter-latin-500-normal-BL9OpVg8.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2": {
+    "file": "assets/inter-latin-500-normal-Cerq10X2.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff": {
+    "file": "assets/inter-latin-600-normal-CiBQ2DWP.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2": {
+    "file": "assets/inter-latin-600-normal-LgqL8muc.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff": {
+    "file": "assets/space-grotesk-latin-400-normal-BnQMeOim.woff",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff2": {
+    "file": "assets/space-grotesk-latin-400-normal-CJ-V5oYT.woff2",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff": {
+    "file": "assets/space-grotesk-latin-500-normal-CNSSEhBt.woff",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2": {
+    "file": "assets/space-grotesk-latin-500-normal-lFbtlQH6.woff2",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff": {
+    "file": "assets/space-grotesk-latin-600-normal-BflQw4A9.woff",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff2": {
+    "file": "assets/space-grotesk-latin-600-normal-DjKNqYRj.woff2",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff2"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff": {
+    "file": "assets/space-grotesk-latin-700-normal-CwsQ-cCU.woff",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff"
+  },
+  "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2": {
+    "file": "assets/space-grotesk-latin-700-normal-RjhwGPKo.woff2",
+    "src": "node_modules/@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2"
+  },
+  "node_modules/@react-router/dev/dist/config/defaults/entry.client.tsx": {
+    "file": "assets/entry.client-BNfpigKK.js",
+    "name": "entry.client",
+    "src": "node_modules/@react-router/dev/dist/config/defaults/entry.client.tsx",
+    "isEntry": true,
+    "imports": [
+      "_jsx-runtime-BidyjLFM.js"
+    ]
+  }
+}
