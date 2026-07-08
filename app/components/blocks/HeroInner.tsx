@@ -32,7 +32,7 @@ export function HeroInner({ height = 'half', eyebrow, heading, subheading, backg
         )}
         <h1
           className="mb-6 uppercase"
-          style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.02em' }}>{renderMultiline(heading)}</h1>
+          style={{ fontSize: 'clamp(3rem, min(8vw, 11vh), 6rem)', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.02em' }}>{renderMultiline(heading)}</h1>
         {subheading && (
           <p className="text-xl max-w-3xl mx-auto opacity-90">{subheading}</p>
         )}

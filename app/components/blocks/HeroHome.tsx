@@ -20,8 +20,14 @@ export function HeroHome({
   primaryButtonLabel, primaryButtonLink,
   secondaryButtonLabel, secondaryButtonLink,
 }: Props) {
+  // min-h-screen (not h-screen): on a short viewport — e.g. 1080p at 150% OS
+  // scale, which is 1280x720 CSS px — the content can be taller than the
+  // viewport. A fixed height clips it and slides it under the fixed header;
+  // min-h lets the section grow instead. The symmetric py-28 keeps the content
+  // optically centred while guaranteeing clearance below the fixed header.
+  // The heading also clamps against vh, not just vw (see fontSize below).
   return (
-    <section className="relative h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden py-28">
       <div className="absolute inset-0 hero-zoom">
         <CdnImage
           src={backgroundImage}
@@ -44,7 +50,7 @@ export function HeroHome({
             )}
             <h1
               className="mb-8 uppercase"
-              style={{ fontSize: 'clamp(3.5rem, 10vw, 7rem)', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }}>{renderMultiline(heading)}</h1>
+              style={{ fontSize: 'clamp(3.5rem, min(10vw, 13vh), 7rem)', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }}>{renderMultiline(heading)}</h1>
             {subheading && (
               <p className="mb-10 text-xl max-w-2xl opacity-90">{subheading}</p>
             )}
