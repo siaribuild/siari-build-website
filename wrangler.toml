@@ -1,9 +1,0 @@
-name = "siari-build"
-compatibility_date = "2025-01-01"
-compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "build/client"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "siari_build"
-database_id = "a74bb8e1-3b61-4ff1-80d9-0350fa80b84d"
