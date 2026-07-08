@@ -43,6 +43,20 @@ export const RocketIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+// Sanity Studio persists the auth token at localStorage["__studio_auth_token_<projectId>"]
+// as JSON of the shape { token: string }. Verified against sanity's own
+// getStoredToken() implementation. On a custom domain the Studio uses token auth
+// (cookies are third-party there), so client.config().token can be empty while
+// the real token lives here. Read both, preferring the client config.
+function getStoredToken(projectId: string): string | undefined {
+  try {
+    const raw = localStorage.getItem(`__studio_auth_token_${projectId}`)
+    return raw ? (JSON.parse(raw)?.token as string | undefined) : undefined
+  } catch {
+    return undefined
+  }
+}
+
 export function DeployTool() {
   const [status, setStatus] = useState<'idle' | 'deploying' | 'done' | 'error'>('idle')
   const [message, setMessage] = useState('')
@@ -51,10 +65,11 @@ export function DeployTool() {
   const deploy = useCallback(async () => {
     // The Studio's own auth token proves to the proxy that a logged-in user of
     // THIS Sanity project is making the request.
-    const token = client.config().token
+    const { token: configToken, projectId } = client.config()
+    const token = configToken || (projectId ? getStoredToken(projectId) : undefined)
     if (!token) {
       setStatus('error')
-      setMessage('Could not read your Sanity session. Try reloading the Studio.')
+      setMessage('Could not read your Sanity session. Try signing out and back in.')
       return
     }
 
