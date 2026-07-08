@@ -202,7 +202,7 @@ export function Header() {
               }`}
               style={{ transitionTimingFunction: EASE, transitionDelay: open ? `${0.1 + i * 0.06}s` : '0s' }}
             >
-              <span className="block text-[0.62rem] tracking-[0.25em] text-accent mb-1.5">
+              <span className="block text-[0.85rem] tracking-[0.25em] text-accent mb-1.5">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span

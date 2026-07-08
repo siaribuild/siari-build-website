@@ -94,7 +94,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom, projects, c
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
-                  <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-black/70 to-transparent group-hover:from-black/50 transition-all duration-500 pointer-events-none" />
+                  <div className="absolute top-0 inset-x-0 h-1/3 bg-gradient-to-b from-black/60 to-transparent group-hover:from-black/40 transition-all duration-500 pointer-events-none" />
                   <div className="absolute top-0 left-0 p-4 text-[#F5F3EF]">
                     <div className="text-sm opacity-90">{project.details?.location} • {project.details?.year}</div>
                   </div>
