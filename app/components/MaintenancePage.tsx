@@ -40,7 +40,7 @@ export function MaintenancePage() {
         <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">Maintenance</div>
         <h1
           className="mb-6 uppercase"
-          style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.02em' }}
+          style={{ fontSize: 'clamp(2.5rem, min(8vw, 11vh), 5rem)', fontWeight: 700, lineHeight: 0.95, letterSpacing: '-0.02em' }}
         >
           {heading || "WE'LL BE RIGHT BACK"}
         </h1>
