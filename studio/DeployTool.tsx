@@ -14,7 +14,7 @@
 
 import { useState, useCallback } from 'react'
 import { Card, Stack, Button, Text, Flex, Box, Badge } from '@sanity/ui'
-import { RocketIcon } from '@sanity/icons'
+import { RocketIcon } from '@sanity/icons/Rocket'
 
 const HOOK_URL = (import.meta as any).env?.SANITY_STUDIO_DEPLOY_HOOK_URL as string | undefined
 

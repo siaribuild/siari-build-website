@@ -3,8 +3,10 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import {seoMetaFields} from 'sanity-plugin-seo'
+import {RocketIcon} from '@sanity/icons/Rocket'
 import {schemaTypes} from './schemaTypes'
 import {duplicateWithoutRank} from './actions/duplicateWithoutRank'
+import {DeployTool} from './DeployTool'
 
 export default defineConfig({
   name: 'default',
@@ -77,6 +79,18 @@ export default defineConfig({
     seoMetaFields({
       dashboard: false,
     }),
+  ],
+
+  // Adds a "Publish site" item to the Studio's top toolbar that triggers a
+  // Cloudflare rebuild. Needs SANITY_STUDIO_DEPLOY_HOOK_URL set (see DeployTool.tsx).
+  tools: (prev) => [
+    ...prev,
+    {
+      name: 'deploy',
+      title: 'Publish site',
+      icon: RocketIcon,
+      component: DeployTool,
+    },
   ],
 
   schema: {

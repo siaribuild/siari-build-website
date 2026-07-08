@@ -13,9 +13,29 @@ import { config as loadEnv } from 'dotenv'
 loadEnv({ path: '.env.local' })
 loadEnv()
 
+const projectId = process.env.VITE_SANITY_PROJECT_ID
+const dataset = process.env.VITE_SANITY_DATASET
+
+// Fail fast with an ACTIONABLE message instead of @sanity/client's cryptic
+// "Configuration must contain `projectId`". Missing config cannot produce a
+// working site, so stopping here (with a clear reason) beats crashing obscurely
+// or — worse — building an empty site.
+if (!projectId || !dataset) {
+  throw new Error(
+    '\n[build] Sanity is not configured — cannot enumerate or fetch content.\n' +
+      '  VITE_SANITY_PROJECT_ID and VITE_SANITY_DATASET must be set at BUILD time.\n' +
+      '  • Cloudflare Pages: if a wrangler.toml exists it OVERRIDES the dashboard\n' +
+      '    build variables — put these in a [vars] block there. Without a\n' +
+      '    wrangler.toml, set them under Pages → Settings (Production/Preview).\n' +
+      '  • Local: add them to .env or .env.local.\n' +
+      `  Currently: VITE_SANITY_PROJECT_ID=${projectId ? 'set' : 'MISSING'}, ` +
+      `VITE_SANITY_DATASET=${dataset ? 'set' : 'MISSING'}.\n`,
+  )
+}
+
 export const buildClient = createClient({
-  projectId: process.env.VITE_SANITY_PROJECT_ID,
-  dataset: process.env.VITE_SANITY_DATASET,
+  projectId,
+  dataset,
   apiVersion: process.env.VITE_SANITY_API_VERSION || '2025-06-18',
   useCdn: true,
   perspective: 'published',
