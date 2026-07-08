@@ -64,14 +64,29 @@ function clean(value: unknown, max: number): string {
 
 async function verifyTurnstile(token: string, ip: string | null, secret: string): Promise<boolean> {
   try {
+    // `remoteip` is optional; omit it when absent rather than sending null.
+    const payload: Record<string, string> = { secret, response: token }
+    if (ip) payload.remoteip = ip
+
     const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret, response: token, remoteip: ip }),
+      body: JSON.stringify(payload),
     })
-    const data = (await res.json()) as { success?: boolean }
+    const data = (await res.json()) as { success?: boolean; 'error-codes'?: string[] }
+
+    if (data.success !== true) {
+      // Cloudflare says WHY. Without this the failure is undiagnosable.
+      //   invalid-input-secret     -> TURNSTILE_SECRET_KEY is wrong
+      //   invalid-input-response   -> token doesn't match this secret's widget
+      //                               (site key and secret key are from different widgets)
+      //   timeout-or-duplicate     -> token expired (>300s) or already redeemed
+      //   missing-input-secret     -> secret not sent
+      console.error('[turnstile] verification failed:', JSON.stringify(data['error-codes'] ?? data))
+    }
     return data.success === true
-  } catch {
+  } catch (err) {
+    console.error('[turnstile] siteverify request threw:', err)
     return false
   }
 }
