@@ -3,10 +3,9 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 import {seoMetaFields} from 'sanity-plugin-seo'
-import {RocketIcon} from '@sanity/icons/Rocket'
 import {schemaTypes} from './schemaTypes'
 import {duplicateWithoutRank} from './actions/duplicateWithoutRank'
-import {DeployTool} from './DeployTool'
+import {DeployTool, RocketIcon} from './DeployTool'
 
 export default defineConfig({
   name: 'default',

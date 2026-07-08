@@ -13,8 +13,31 @@
 // 3. Register this tool in sanity.config.ts (see snippet in README.md).
 
 import { useState, useCallback } from 'react'
+import type { SVGProps } from 'react'
 import { Card, Stack, Button, Text, Flex, Box, Badge } from '@sanity/ui'
-import { RocketIcon } from '@sanity/icons/Rocket'
+
+// Inline SVG rather than importing from @sanity/icons: that package's named /
+// subpath icon exports differ across versions and broke the Studio build under
+// the browser/ESM resolution conditions. An inline icon can't regress.
+export const RocketIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M12 15l-3-3a11 11 0 0 1 3.5-6.5A11 11 0 0 1 19 3a11 11 0 0 1-2.5 6.5A11 11 0 0 1 12 15z" />
+    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+    <path d="M9 12H5s.4-2.3 1.8-3.2c1-.7 2.7-.3 2.7-.3" />
+    <path d="M12 15v4s2.3-.4 3.2-1.8c.7-1 .3-2.7.3-2.7" />
+    <circle cx="15" cy="9" r="1" />
+  </svg>
+)
 
 const HOOK_URL = (import.meta as any).env?.SANITY_STUDIO_DEPLOY_HOOK_URL as string | undefined
 
