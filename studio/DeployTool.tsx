@@ -1,20 +1,24 @@
-// Sanity Studio custom tool: a manual "Publish site" / rebuild button that POSTs
-// to a Cloudflare Pages Deploy Hook. Gives editors a one-click rebuild instead of
-// relying only on the automatic publish webhook.
+// Sanity Studio custom tool: a manual "Publish site" / rebuild button.
 //
-// SETUP
-// 1. In Cloudflare: dev/prod Pages project → Settings → Builds & deployments →
-//    Deploy hooks → create one → copy its URL.
-// 2. Because the hook URL is a secret-ish trigger, don't hard-code it in the repo.
-//    Put it in a Studio env var: SANITY_STUDIO_DEPLOY_HOOK_URL (Studio exposes
-//    vars prefixed SANITY_STUDIO_ to the browser bundle). For production hooks,
-//    prefer routing through a tiny serverless proxy so the URL isn't public — see
-//    the note at the bottom.
-// 3. Register this tool in sanity.config.ts (see snippet in README.md).
+// It POSTs to a SAME-ORIGIN proxy (functions/api/deploy.ts on this Studio's
+// Cloudflare Pages project), NOT directly to the Cloudflare Deploy Hooks API.
+// Two reasons:
+//   1. CORS — the Deploy Hooks API sends no Access-Control-Allow-Origin, so a
+//      direct browser fetch() fails with "Failed to fetch" even though the hook
+//      fires (200). A same-origin request has no CORS to satisfy.
+//   2. Secrecy — the hook URL is a bearer credential. Anything prefixed
+//      SANITY_STUDIO_ is baked into this browser bundle, so the URL must NOT be
+//      an env var here. The proxy holds it as a server-side secret.
+//
+// SETUP (on the STUDIO's Pages project → Settings → Variables and Secrets):
+//   DEPLOY_HOOK_URL   — secret. The deploy hook URL for the SITE's Pages project.
+//   SANITY_PROJECT_ID — plain text. Used by the proxy to validate the caller.
+// No Studio rebuild is needed when the hook is rotated — only the proxy's secret.
 
 import { useState, useCallback } from 'react'
 import type { SVGProps } from 'react'
 import { Card, Stack, Button, Text, Flex, Box, Badge } from '@sanity/ui'
+import { useClient } from 'sanity'
 
 // Inline SVG rather than importing from @sanity/icons: that package's named /
 // subpath icon exports differ across versions and broke the Studio build under
@@ -39,30 +43,37 @@ export const RocketIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-const HOOK_URL = (import.meta as any).env?.SANITY_STUDIO_DEPLOY_HOOK_URL as string | undefined
-
 export function DeployTool() {
   const [status, setStatus] = useState<'idle' | 'deploying' | 'done' | 'error'>('idle')
   const [message, setMessage] = useState('')
+  const client = useClient({ apiVersion: '2025-06-18' })
 
   const deploy = useCallback(async () => {
-    if (!HOOK_URL) {
+    // The Studio's own auth token proves to the proxy that a logged-in user of
+    // THIS Sanity project is making the request.
+    const token = client.config().token
+    if (!token) {
       setStatus('error')
-      setMessage('SANITY_STUDIO_DEPLOY_HOOK_URL is not set.')
+      setMessage('Could not read your Sanity session. Try reloading the Studio.')
       return
     }
+
     setStatus('deploying')
     setMessage('')
     try {
-      const res = await fetch(HOOK_URL, { method: 'POST' })
-      if (!res.ok) throw new Error(`Deploy hook returned ${res.status}`)
+      const res = await fetch('/api/deploy', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      const data = (await res.json().catch(() => ({}))) as { error?: string }
+      if (!res.ok) throw new Error(data.error || `Deploy failed (${res.status})`)
       setStatus('done')
       setMessage('Build triggered — the site will update in a minute or two.')
-    } catch (err: any) {
+    } catch (err) {
       setStatus('error')
-      setMessage(err?.message || 'Could not trigger the build.')
+      setMessage(err instanceof Error ? err.message : 'Could not trigger the build.')
     }
-  }, [])
+  }, [client])
 
   return (
     <Flex align="center" justify="center" style={{ minHeight: '100%' }} padding={4}>
