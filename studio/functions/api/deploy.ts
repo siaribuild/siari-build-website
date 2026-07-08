@@ -13,12 +13,17 @@
 // so the endpoint can't be used by a random visitor who finds the URL.
 //
 // REQUIRED ENV (on the Studio's Pages project):
-//   DEPLOY_HOOK_URL   — secret. The Cloudflare deploy hook URL for the SITE project.
-//   SANITY_PROJECT_ID — plain text. Used to scope token validation.
+//   DEPLOY_HOOK_URL          — secret. Deploy hook URL for the SITE's Pages project.
+//   SANITY_STUDIO_PROJECT_ID — already set for the Studio itself; reused here.
 
 interface Env {
+  /** Secret. Deliberately NOT prefixed SANITY_STUDIO_ — that prefix would bake it
+   *  into the Studio's browser bundle, which is exactly what this proxy prevents. */
   DEPLOY_HOOK_URL: string
-  SANITY_PROJECT_ID: string
+  /** The project id. The Studio already defines SANITY_STUDIO_PROJECT_ID for its own
+   *  config; a Pages Function can read any env var regardless of prefix, so we reuse
+   *  it rather than duplicating the value. */
+  SANITY_STUDIO_PROJECT_ID?: string
 }
 
 // Typed inline rather than via `PagesFunction` from @cloudflare/workers-types:
@@ -59,9 +64,14 @@ export const onRequest = async ({ request, env }: Context): Promise<Response> =>
     return json({ error: 'Method not allowed.' }, 405)
   }
 
-  if (!env.DEPLOY_HOOK_URL || !env.SANITY_PROJECT_ID) {
-    console.error('Deploy proxy misconfigured: DEPLOY_HOOK_URL or SANITY_PROJECT_ID missing')
-    return json({ error: 'Deploy is not configured on the server.' }, 500)
+  const projectId = env.SANITY_STUDIO_PROJECT_ID
+  const missing: string[] = []
+  if (!env.DEPLOY_HOOK_URL) missing.push('DEPLOY_HOOK_URL')
+  if (!projectId) missing.push('SANITY_STUDIO_PROJECT_ID')
+  if (missing.length || !projectId) {
+    // Names only, never values. Visible via `wrangler pages deployment tail`.
+    console.error(`Deploy proxy misconfigured. Missing env var(s): ${missing.join(', ')}`)
+    return json({ error: `Deploy is not configured on the server (missing: ${missing.join(', ')}).` }, 500)
   }
 
   const auth = request.headers.get('Authorization') ?? ''
@@ -70,7 +80,7 @@ export const onRequest = async ({ request, env }: Context): Promise<Response> =>
     return json({ error: 'Not authenticated.' }, 401)
   }
 
-  const userId = await verifySanityUser(token, env.SANITY_PROJECT_ID)
+  const userId = await verifySanityUser(token, projectId)
   if (!userId) {
     return json({ error: 'Not authorised to trigger a deploy.' }, 403)
   }
