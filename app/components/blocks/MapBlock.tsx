@@ -10,7 +10,7 @@ const HEIGHTS: Record<string, number> = { small: 300, medium: 500, large: 700 }
 // Map styling tuned to the site palette: warm cream land, muted features, no
 // noisy POIs or icons — so the map reads as part of the brand, not a default
 // Google map. (A JSON `styles` array only applies when no mapId is set, which
-// is why this uses the classic styled-map approach.)
+// is why this uses the classic styled-map approach. )
 const BRAND_MAP_STYLE = [
   { elementType: 'geometry', stylers: [{ color: '#F5F3EF' }] },
   { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },

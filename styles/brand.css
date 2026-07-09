@@ -88,7 +88,7 @@
    SECTION THEMES
    Put ONE of these on a block wrapper. Each maps the contextual variables that
    every child component reads. This is what makes a block's children "render
-   differently" based on the block's background setting.
+   differently" based on the block's background setting .
    ============================================================================ */
 
 .section--light,
