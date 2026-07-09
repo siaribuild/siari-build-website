@@ -54,6 +54,13 @@ function escapeHtml(input: unknown): string {
     .replace(/'/g, '&#39;')
 }
 
+// Log only the error's message, never the raw error object. Driver/SDK errors can
+// carry request context (bound parameters, payload echoes), and submissions are
+// personal information — it must not end up in the log stream by accident.
+function errMsg(err: unknown): string {
+  return err instanceof Error ? err.message : String(err)
+}
+
 function clean(value: unknown, max: number): string {
   if (typeof value !== 'string') return ''
   // Strip control characters (incl. CR/LF) so nothing user-supplied can break
@@ -86,7 +93,7 @@ async function verifyTurnstile(token: string, ip: string | null, secret: string)
     }
     return data.success === true
   } catch (err) {
-    console.error('[turnstile] siteverify request threw:', err)
+    console.error('[turnstile] siteverify request threw:', errMsg(err))
     return false
   }
 }
@@ -143,7 +150,7 @@ async function storeSubmission(db: D1Database | undefined, s: Submission): Promi
       .run()
     return true
   } catch (err) {
-    console.error('D1 store failed (continuing to email):', err)
+    console.error('D1 store failed (continuing to email):', errMsg(err))
     return false
   }
 }
@@ -235,7 +242,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     })
     return json({ success: true }, 200)
   } catch (err) {
-    console.error('Contact form email error:', err)
+    console.error('Contact form email error:', errMsg(err))
     return json({ error: 'Failed to send message. Please try again.' }, 500)
   }
 }

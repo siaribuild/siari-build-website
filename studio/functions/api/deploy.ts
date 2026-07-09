@@ -15,6 +15,7 @@
 // REQUIRED ENV (on the Studio's Pages project):
 //   DEPLOY_HOOK_URL          — secret. Deploy hook URL for the SITE's Pages project.
 //   SANITY_STUDIO_PROJECT_ID — already set for the Studio itself; reused here.
+//                              (SANITY_PROJECT_ID also accepted as an alias.)
 
 interface Env {
   /** Secret. Deliberately NOT prefixed SANITY_STUDIO_ — that prefix would bake it
@@ -22,8 +23,9 @@ interface Env {
   DEPLOY_HOOK_URL: string
   /** The project id. The Studio already defines SANITY_STUDIO_PROJECT_ID for its own
    *  config; a Pages Function can read any env var regardless of prefix, so we reuse
-   *  it rather than duplicating the value. */
+   *  it rather than duplicating the value. SANITY_PROJECT_ID is accepted as an alias. */
   SANITY_STUDIO_PROJECT_ID?: string
+  SANITY_PROJECT_ID?: string
 }
 
 // Typed inline rather than via `PagesFunction` from @cloudflare/workers-types:
@@ -64,7 +66,7 @@ export const onRequest = async ({ request, env }: Context): Promise<Response> =>
     return json({ error: 'Method not allowed.' }, 405)
   }
 
-  const projectId = env.SANITY_STUDIO_PROJECT_ID
+  const projectId = env.SANITY_STUDIO_PROJECT_ID || env.SANITY_PROJECT_ID
   const missing: string[] = []
   if (!env.DEPLOY_HOOK_URL) missing.push('DEPLOY_HOOK_URL')
   if (!projectId) missing.push('SANITY_STUDIO_PROJECT_ID')
@@ -94,7 +96,7 @@ export const onRequest = async ({ request, env }: Context): Promise<Response> =>
     console.log(`Deploy triggered by Sanity user ${userId}`)
     return json({ success: true }, 200)
   } catch (err) {
-    console.error('Deploy hook request failed:', err)
+    console.error('Deploy hook request failed:', err instanceof Error ? err.message : String(err))
     return json({ error: 'Could not reach the deploy hook.' }, 502)
   }
 }

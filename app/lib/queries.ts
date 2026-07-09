@@ -58,7 +58,9 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings"][0] {
   "notFoundImage": notFoundImage.asset->url,
   mapLocation,
   mapZoom,
-  mapAddressLabel
+  mapAddressLabel,
+  mapShowPin,
+  mapAreaRadius
 }`)
 
 // ─── Navigation (header menu, footer menu, social links) ──────────────────────

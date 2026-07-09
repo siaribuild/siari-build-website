@@ -140,6 +140,27 @@ export const siteSettings = defineType({
       group: 'maps',
       description: 'Optional. Shown when the pin is clicked, and used for the "Get directions" link.',
     }),
+    defineField({
+      name: 'mapShowPin',
+      title: 'Show exact pin',
+      type: 'boolean',
+      group: 'maps',
+      initialValue: true,
+      description:
+        'Turn OFF if you do not want to mark an exact address. NOTE: the map still centres on the ' +
+        'point above, so for real privacy also set Map Location to an approximate spot (e.g. the ' +
+        'suburb centre) and lower the Zoom Level.',
+    }),
+    defineField({
+      name: 'mapAreaRadius',
+      title: 'Service area radius (metres)',
+      type: 'number',
+      group: 'maps',
+      description:
+        'Optional. If set, draws a soft circle of this radius instead of a precise point — good for ' +
+        'showing the area you serve. E.g. 2000 = a 2 km radius. Leave empty for no circle.',
+      validation: (Rule) => Rule.min(100).max(50000),
+    }),
   ],
   preview: {
     prepare() {

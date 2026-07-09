@@ -104,6 +104,9 @@ export function MapBlock({ height = 'medium' }: Props) {
   const loc = settings?.mapLocation as { lat?: number; lng?: number } | undefined
   const zoom: number = settings?.mapZoom || 15
   const label: string | undefined = settings?.mapAddressLabel ?? undefined
+  // Pin defaults to ON (older content has no value for this field).
+  const showPin: boolean = settings?.mapShowPin !== false
+  const areaRadius: number | undefined = settings?.mapAreaRadius ?? undefined
   const hasMap = Boolean(apiKey && loc?.lat != null && loc?.lng != null)
   const px = HEIGHTS[height] || HEIGHTS.medium
 
@@ -134,21 +137,40 @@ export function MapBlock({ height = 'medium' }: Props) {
           keyboardShortcuts: false,
           gestureHandling: 'cooperative',
         })
-        const marker = new google.maps.Marker({
-          position: center,
-          map,
-          icon: { ...pinIcon(), anchor: new google.maps.Point(12, 24) },
-          title: label || '',
-        })
-        if (label) {
-          // Build the InfoWindow content as a DOM node and set the CMS-supplied
-          // label via textContent (never string-interpolated into HTML) so a
-          // label authored in Sanity can't inject markup/script into the page.
-          const el = document.createElement('div')
-          el.style.cssText = 'font-family:Inter,sans-serif;font-size:13px;color:#111;padding:2px 4px'
-          el.textContent = label
-          const info = new google.maps.InfoWindow({ content: el })
-          marker.addListener('click', () => info.open({ anchor: marker, map }))
+        // Optional service-area circle — shows the region served without marking
+        // an exact address. Drawn under any pin.
+        if (areaRadius && areaRadius > 0) {
+          new google.maps.Circle({
+            map,
+            center,
+            radius: areaRadius,
+            strokeColor: cssToken('--brand-primary', '#B8946A'),
+            strokeOpacity: 0.65,
+            strokeWeight: 1.5,
+            fillColor: cssToken('--brand-primary', '#B8946A'),
+            fillOpacity: 0.12,
+            clickable: false,
+          })
+        }
+
+        // Exact pin — skipped when the site opts out of showing a precise address.
+        if (showPin) {
+          const marker = new google.maps.Marker({
+            position: center,
+            map,
+            icon: { ...pinIcon(), anchor: new google.maps.Point(12, 24) },
+            title: label || '',
+          })
+          if (label) {
+            // Build the InfoWindow content as a DOM node and set the CMS-supplied
+            // label via textContent (never string-interpolated into HTML) so a
+            // label authored in Sanity can't inject markup/script into the page.
+            const el = document.createElement('div')
+            el.style.cssText = 'font-family:Inter,sans-serif;font-size:13px;color:#111;padding:2px 4px'
+            el.textContent = label
+            const info = new google.maps.InfoWindow({ content: el })
+            marker.addListener('click', () => info.open({ anchor: marker, map }))
+          }
         }
       })
       .catch((err) => {
@@ -159,7 +181,7 @@ export function MapBlock({ height = 'medium' }: Props) {
     return () => {
       cancelled = true
     }
-  }, [hasMap, apiKey, loc?.lat, loc?.lng, zoom, label])
+  }, [hasMap, apiKey, loc?.lat, loc?.lng, zoom, label, showPin, areaRadius])
 
   // Not configured (no API key or no pin) — hide the block entirely.
   if (!hasMap || failed) return null
