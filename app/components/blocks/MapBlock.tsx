@@ -79,6 +79,17 @@ export function MapBlock({ height = 'medium' }: Props) {
   const hasMap = Boolean(apiKey && loc?.lat != null && loc?.lng != null)
   const px = HEIGHTS[height] || HEIGHTS.medium
 
+  // Diagnostics: this block hides itself when unconfigured, which makes a missing
+  // key and a missing pin look identical (both = no map, no error). Say which.
+  // Client-only (inside an effect) so it never spams the prerender build log.
+  useEffect(() => {
+    if (hasMap) return
+    const missing: string[] = []
+    if (!apiKey) missing.push('VITE_GOOGLE_MAPS_API_KEY (build-time env var — set it, then REBUILD; it is baked into the bundle, not read at runtime)')
+    if (loc?.lat == null || loc?.lng == null) missing.push('Site Settings → Maps → Map Location (the geopoint pin) in Sanity Studio')
+    console.warn(`[MapBlock] Map hidden. Missing: ${missing.join(' AND ')}`)
+  }, [hasMap, apiKey, loc?.lat, loc?.lng])
+
   useEffect(() => {
     if (!hasMap || !ref.current) return
     let cancelled = false
@@ -112,7 +123,11 @@ export function MapBlock({ height = 'medium' }: Props) {
           marker.addListener('click', () => info.open({ anchor: marker, map }))
         }
       })
-      .catch(() => !cancelled && setFailed(true))
+      .catch((err) => {
+        if (cancelled) return
+        console.error('[MapBlock] Google Maps failed to load. Check the browser console for a Google error code (ApiNotActivatedMapError / RefererNotAllowedMapError / BillingNotEnabledMapError).', err)
+        setFailed(true)
+      })
     return () => {
       cancelled = true
     }
