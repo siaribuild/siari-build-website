@@ -51,17 +51,45 @@ function pinIcon() {
 }
 
 let mapsPromise: Promise<any> | null = null
+
+// Loads the Maps JS API.
+//
+// IMPORTANT: `loading=async` means the API explicitly does NOT signal readiness
+// via the script's load event — Google's docs require the `callback` parameter
+// instead. Resolving on `script.onload` (the previous behaviour) is a race: the
+// script had loaded but `google.maps.Map` was not necessarily defined yet, so
+// `new google.maps.Map()` could throw and the block would silently hide itself.
 function loadGoogleMaps(apiKey: string): Promise<any> {
   const w = window as any
-  if (w.google?.maps) return Promise.resolve(w.google)
+  if (w.google?.maps?.Map) return Promise.resolve(w.google)
   if (mapsPromise) return mapsPromise
+
   mapsPromise = new Promise((resolve, reject) => {
+    const callbackName = '__siariInitGoogleMaps__'
+
+    // Auth failures (bad key, referrer not allowed, API not enabled, billing off)
+    // do NOT fire script.onerror — the script loads fine, then Google calls this.
+    w.gm_authFailure = () => {
+      console.error(
+        '[MapBlock] Google rejected the API key. Check the console for the exact code ' +
+          '(RefererNotAllowedMapError = add this hostname to the key restrictions; ' +
+          'ApiNotActivatedMapError = enable "Maps JavaScript API"; ' +
+          'BillingNotEnabledMapError = enable billing).',
+      )
+      reject(new Error('Google Maps authentication failed'))
+    }
+
+    w[callbackName] = () => {
+      delete w[callbackName]
+      resolve(w.google)
+    }
+
     const script = document.createElement('script')
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&loading=async`
+    script.src =
+      `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}` +
+      `&loading=async&callback=${callbackName}`
     script.async = true
-    script.defer = true
-    script.onload = () => resolve((window as any).google)
-    script.onerror = () => reject(new Error('Google Maps failed to load'))
+    script.onerror = () => reject(new Error('Google Maps script failed to load (network/blocked)'))
     document.head.appendChild(script)
   })
   return mapsPromise
