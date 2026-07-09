@@ -9,8 +9,10 @@
 @import '@fontsource/inter/latin-500.css';
 @import '@fontsource/inter/latin-600.css';
 
-/* Space Grotesk — headings */
-@import '@fontsource/space-grotesk/latin-400.css';
+/* Space Grotesk — headings.
+   400 is deliberately NOT imported: no heading renders at weight 400 (theme.css
+   defaults h1–h4 to 500, and headings override to 600/700), so its @font-face
+   rules were dead CSS the browser parsed and never used. */
 @import '@fontsource/space-grotesk/latin-500.css';
 @import '@fontsource/space-grotesk/latin-600.css';
 @import '@fontsource/space-grotesk/latin-700.css';

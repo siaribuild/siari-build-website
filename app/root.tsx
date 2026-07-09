@@ -8,6 +8,13 @@ import {
 } from 'react-router'
 import type { LinksFunction } from 'react-router'
 
+// Above-the-fold font files, imported with Vite's `?url` so the hashed build
+// filename resolves automatically (never hardcode the hash). Only the two faces
+// the hero actually paints with: the h1 (Space Grotesk 700) and body/eyebrow
+// (Inter 400). The rest stay CSS-discovered — they're below the fold.
+import interLatin400 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url'
+import spaceGrotesk700 from '@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2?url'
+
 import '../styles/index.css'
 
 import { client } from './lib/sanity'
@@ -37,9 +44,18 @@ export async function loader() {
 
 // Head resources. Preconnect to BOTH Sanity origins — the query API host
 // (LCP-critical: the page data comes from here) and the image CDN.
+//
+// FONT PRELOADS: without these the critical chain is
+//   HTML -> root.css -> font.woff2
+// because the fonts are only *discovered* once the CSS is parsed. Preloading the
+// two above-the-fold faces flattens that to two hops, letting them download in
+// parallel with the stylesheet. `crossOrigin: 'anonymous'` is REQUIRED on font
+// preloads even for same-origin files — omit it and the browser fetches twice.
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://f0yvhrzy.apicdn.sanity.io', crossOrigin: 'anonymous' },
   { rel: 'preconnect', href: 'https://cdn.sanity.io', crossOrigin: 'anonymous' },
+  { rel: 'preload', as: 'font', type: 'font/woff2', href: spaceGrotesk700, crossOrigin: 'anonymous' },
+  { rel: 'preload', as: 'font', type: 'font/woff2', href: interLatin400, crossOrigin: 'anonymous' },
   { rel: 'icon', href: '/favicon.ico' },
 ]
 
