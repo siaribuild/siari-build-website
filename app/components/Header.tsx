@@ -175,7 +175,12 @@ export function Header() {
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
-        className={`lg:hidden fixed top-0 right-0 z-[70] h-[100dvh] w-[80vw] sm:w-[400px] flex flex-col overflow-y-auto pt-24 px-7 pb-9 bg-[#141414] brand-border-left shadow-2xl transition-transform duration-[440ms] motion-reduce:transition-none ${
+        // `on-media` establishes the dark colour context: the drawer is a SIBLING of
+        // <header> (see the scrim comment above), so it inherits nothing from it. Without
+        // this, --accent falls back to :root = --brand-accent-on-light (#8B6940), i.e. the
+        // dark bronze meant for cream backgrounds, rendered on #141414. on-media (rather
+        // than section--dark) because we only want --fg/--accent, not the --btn-* rewrite.
+        className={`on-media lg:hidden fixed top-0 right-0 z-[70] h-[100dvh] w-[80vw] sm:w-[400px] flex flex-col overflow-y-auto pt-24 px-7 pb-9 bg-[#141414] brand-border-left shadow-2xl transition-transform duration-[440ms] motion-reduce:transition-none ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ transitionTimingFunction: EASE, clipPath: 'polygon(26px 0, 100% 0, 100% 100%, 0 100%, 0 26px)' }}
@@ -202,7 +207,7 @@ export function Header() {
               }`}
               style={{ transitionTimingFunction: EASE, transitionDelay: open ? `${0.1 + i * 0.06}s` : '0s' }}
             >
-              <span className="block text-[0.85rem] tracking-[0.25em] text-accent mb-1.5">
+              <span className="block text-[0.62rem] tracking-[0.25em] text-accent mb-1.5">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span
