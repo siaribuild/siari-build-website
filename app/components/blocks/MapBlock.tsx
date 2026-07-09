@@ -104,8 +104,8 @@ export function MapBlock({ height = 'medium' }: Props) {
   const loc = settings?.mapLocation as { lat?: number; lng?: number } | undefined
   const zoom: number = settings?.mapZoom || 15
   const label: string | undefined = settings?.mapAddressLabel ?? undefined
-  // Pin defaults to ON (older content has no value for this field).
-  const showPin: boolean = settings?.mapShowPin !== false
+  // Unset (null) == unchecked in Studio == pin shown. See the schema comment.
+  const showPin: boolean = settings?.mapHidePin !== true
   const areaRadius: number | undefined = settings?.mapAreaRadius ?? undefined
   const hasMap = Boolean(apiKey && loc?.lat != null && loc?.lng != null)
   const px = HEIGHTS[height] || HEIGHTS.medium

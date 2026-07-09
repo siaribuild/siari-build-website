@@ -141,15 +141,19 @@ export const siteSettings = defineType({
       description: 'Optional. Shown when the pin is clicked, and used for the "Get directions" link.',
     }),
     defineField({
-      name: 'mapShowPin',
-      title: 'Show exact pin',
+      name: 'mapHidePin',
+      title: 'Hide exact pin',
       type: 'boolean',
       group: 'maps',
-      initialValue: true,
+      // Phrased as "hide" rather than "show" on purpose. A boolean that has never
+      // been set is null, and Studio renders null as an UNCHECKED switch. With a
+      // "show" field, unchecked would mean "true" in code — the UI would contradict
+      // the site. With "hide", unchecked == null == false == pin shown. The default
+      // state and the displayed state now agree.
       description:
-        'Turn OFF if you do not want to mark an exact address. NOTE: the map still centres on the ' +
-        'point above, so for real privacy also set Map Location to an approximate spot (e.g. the ' +
-        'suburb centre) and lower the Zoom Level.',
+        'Tick to remove the pin — use when you do not want to mark an exact address. NOTE: the map ' +
+        'still centres on the point above, so for real privacy also set Map Location to an ' +
+        'approximate spot (e.g. the suburb centre) and lower the Zoom Level.',
     }),
     defineField({
       name: 'mapAreaRadius',
