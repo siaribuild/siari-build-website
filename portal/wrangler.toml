@@ -1,23 +1,15 @@
-name = "siari-build"
+name = "siari-build-portal"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "build/client"
 
-# Contact submissions + client portal data.
+# Contact submissions. (Portal tables live in the same DB, bound by the portal Worker.)
 [[d1_databases]]
 binding = "DB"
 database_name = "siari_build"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
-
-# PRIVATE portal files (contracts, plans, permits). Never served directly:
-# every download streams through functions/api/portal/[[path]].ts, which checks
-# project membership and writes an audit event first.
-#   npx wrangler r2 bucket create siari-portal-files
-[[r2_buckets]]
-binding = "PORTAL_FILES"
-bucket_name = "siari-portal-files"
+database_id = "a74bb8e1-3b61-4ff1-80d9-0350fa80b84d"
 
 # Optional: per-IP throttle for the public contact form.
-# [[kv_namespaces]]
-# binding = "CONTACT_RATELIMIT"
-# id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+[[kv_namespaces]]
+binding = "CONTACT_RATELIMIT"
+id = "CONTACT_RATELIMIT"

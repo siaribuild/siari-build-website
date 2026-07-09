@@ -1,10 +1,12 @@
-// Portal API — all routes under /api/portal/*
+// Portal API — everything under /api/portal/*
 //
-// Deliberately a single catch-all rather than one file per endpoint: it keeps
-// every authorization decision visible in one place. The invariant is that no
-// handler below touches project data without first calling requireProjectAccess.
+// A single router rather than file-based routing: every authorization decision
+// stays visible in one place. The invariant is that no handler below touches
+// project data without first calling requireProjectAccess.
 //
-// Nothing here is prerendered. The static site never contains portal data.
+// Reached only via `assets.run_worker_first: ["/api/*"]` in wrangler.jsonc —
+// without that, Workers would serve static assets ahead of this code and no auth
+// check would ever run.
 
 import {
   type PortalEnv,
@@ -21,7 +23,7 @@ import {
   nowIso,
   sessionCookie,
   uuid,
-} from '../../../server/core'
+} from './server/core'
 import {
   consumeToken,
   createSession,
@@ -32,8 +34,8 @@ import {
   requireProjectAccess,
   requireUser,
   revokeSession,
-} from '../../../server/auth'
-import { sendInvite, sendLoginLink, sendUpdatePublished } from '../../../server/mail'
+} from './server/auth'
+import { sendInvite, sendLoginLink, sendUpdatePublished } from './server/mail'
 
 interface Ctx {
   request: Request
@@ -538,12 +540,12 @@ async function adminAudit(ctx: Ctx): Promise<Response> {
 
 // ================================================================== router ===
 
-export const onRequest: PagesFunction<PortalEnv> = async (context) => {
-  const { request, env } = context
+export async function handleApi(request: Request, env: PortalEnv): Promise<Response> {
   const url = new URL(request.url)
   // /api/portal/<...segments>
   const segments = url.pathname.replace(/^\/api\/portal\/?/, '').split('/').filter(Boolean)
   const ctx: Ctx = { request, env, segments, method: request.method }
+
 
   try {
     if (!env.DB) throw new HttpError(500, 'Portal is not configured on the server.')

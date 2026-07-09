@@ -1,10 +1,6 @@
 import { useState } from 'react'
-import { portal } from '../../lib/portal-api'
+import { portal } from '../lib/portal-api'
 import { Shell } from './layout'
-
-export function meta() {
-  return [{ title: 'Sign in — Siari Build' }, { name: 'robots', content: 'noindex, nofollow' }]
-}
 
 // Passwordless magic link. Nothing here reveals whether an account exists: the
 // success state is identical for a known and an unknown address.

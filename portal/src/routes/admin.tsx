@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePortal } from './layout'
-import { formatDate } from '../../lib/portal-api'
+import { formatDate } from '../lib/portal-api'
 
 // Builder-facing controls. Everything here is enforced server-side: the presence
 // of this UI grants nothing. A client who guesses /portal/admin sees an empty

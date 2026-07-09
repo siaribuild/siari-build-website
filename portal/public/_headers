@@ -18,12 +18,3 @@
 #     frame-src https://challenges.cloudflare.com; \
 #     connect-src 'self' https://*.sanity.io https://maps.googleapis.com; \
 #     style-src 'self' 'unsafe-inline'; font-src 'self' data:
-
-# The portal must never be cached by a shared cache: responses are per-user.
-/portal
-  Cache-Control: no-store
-/portal/*
-  Cache-Control: no-store
-  X-Robots-Tag: noindex, nofollow
-/api/portal/*
-  Cache-Control: no-store

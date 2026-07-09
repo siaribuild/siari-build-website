@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { usePortal } from './layout'
-import { portal, formatDate, type UpdateItem, type Stage } from '../../lib/portal-api'
+import { portal, formatDate, type UpdateItem, type Stage } from '../lib/portal-api'
 
 // Clients never receive drafts or internal notes — the server filters them out;
 // this component has no "if (isAdmin)" logic to get wrong.

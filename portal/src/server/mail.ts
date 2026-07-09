@@ -77,7 +77,7 @@ const shell = (heading: string, bodyHtml: string, ctaHref: string, ctaLabel: str
   </div>`
 
 export function sendInvite(env: PortalEnv, opts: { to: string; userId: string; name?: string | null; token: string; projectName?: string }) {
-  const link = `${env.SITE_URL}/portal/verify?token=${encodeURIComponent(opts.token)}`
+  const link = `${env.SITE_URL}/verify?token=${encodeURIComponent(opts.token)}`
   return send({
     env,
     to: opts.to,
@@ -96,7 +96,7 @@ export function sendInvite(env: PortalEnv, opts: { to: string; userId: string; n
 }
 
 export function sendLoginLink(env: PortalEnv, opts: { to: string; userId: string; token: string }) {
-  const link = `${env.SITE_URL}/portal/verify?token=${encodeURIComponent(opts.token)}`
+  const link = `${env.SITE_URL}/verify?token=${encodeURIComponent(opts.token)}`
   return send({
     env,
     to: opts.to,
@@ -117,7 +117,7 @@ export function sendUpdatePublished(
   env: PortalEnv,
   opts: { to: string; userId: string; projectId: string; projectName: string; updateId: string; title: string; excerpt: string },
 ) {
-  const link = `${env.SITE_URL}/portal/updates`
+  const link = `${env.SITE_URL}/updates`
   return send({
     env,
     to: opts.to,

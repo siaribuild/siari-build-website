@@ -15,6 +15,15 @@ INSERT OR IGNORE INTO users (id, email, name, role, status, created_at, updated_
   ('demo-user-pm',     'marcus.reid@example.com',   'Marcus Reid',   'project_manager', 'invited', datetime('now'), datetime('now')),
   ('demo-user-client', 'daniel.harper@example.com', 'Daniel Harper', 'client',          'invited', datetime('now'), datetime('now'));
 
+
+UPDATE users SET email = 'gediminas.bereznevicius@gmail.com' WHERE id='demo-user-pm'
+UPDATE users SET email = 'gediminasooutlook.com.au' WHERE id='demo-user-client'
+
+INSERT OR IGNORE INTO users (id, email, name, role, status, created_at, updated_at) VALUES
+  ('demo-user-pm',     'gediminas.bereznevicius@gmail.com',   'Marcus Reid',   'project_manager', 'invited', datetime('now'), datetime('now')),
+  ('demo-user-client', 'gediminas@outlook.com.au', 'Daniel Harper', 'client',          'invited', datetime('now'), datetime('now'));
+
+
 -- Project ---------------------------------------------------------------------
 INSERT OR IGNORE INTO projects (
   id, name, address, suburb, state, project_type, description, client_summary,

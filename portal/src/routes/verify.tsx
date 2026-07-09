@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
-import { portal } from '../../lib/portal-api'
+import { portal } from '../lib/portal-api'
 import { Shell } from './layout'
-
-export function meta() {
-  return [{ title: 'Signing in — Siari Build' }, { name: 'robots', content: 'noindex, nofollow' }]
-}
 
 // Exchanges the single-use token in the URL for an HttpOnly session cookie, then
 // drops the token from the address bar so it cannot be copied out of history.
@@ -27,8 +23,8 @@ export default function PortalVerify() {
     portal
       .verify(token)
       .then(() => {
-        window.history.replaceState({}, '', '/portal')
-        navigate('/portal', { replace: true })
+        window.history.replaceState({}, '', '/')
+        navigate('/', { replace: true })
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'That link could not be used.'))
   }, [params, navigate])
@@ -40,7 +36,7 @@ export default function PortalVerify() {
           <>
             <h1 className="text-3xl mb-4" style={{ fontWeight: 700 }}>Link not valid</h1>
             <p className="opacity-70 mb-8">{error}</p>
-            <a href="/portal/login" className="btn-bronze inline-block px-9 py-4 text-sm tracking-wider uppercase">
+            <a href="/login" className="btn-bronze inline-block px-9 py-4 text-sm tracking-wider uppercase">
               Request a new link
             </a>
           </>

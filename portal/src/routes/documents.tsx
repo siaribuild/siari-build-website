@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { usePortal } from './layout'
-import { portal, formatBytes, formatDate, DOC_TYPE_LABELS, type DocumentItem } from '../../lib/portal-api'
+import { portal, formatBytes, formatDate, DOC_TYPE_LABELS, type DocumentItem } from '../lib/portal-api'
 
 // Downloads never link to storage. Every href points at an authorising Function
 // that checks membership and records an audit event before streaming the file.

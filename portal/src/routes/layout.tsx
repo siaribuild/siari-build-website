@@ -1,14 +1,10 @@
 import { useEffect, useState, createContext, useContext } from 'react'
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router'
-import { portal, ApiError, type Me, type ProjectSummary } from '../../lib/portal-api'
+import { portal, ApiError, type Me, type ProjectSummary } from '../lib/portal-api'
 
 // The portal is a client-rendered SPA shell: no route here is prerendered, so no
 // private data ever appears in a static payload. `clientLoader` + `ssr: false`
 // means this component only ever runs in the browser.
-export function meta() {
-  return [{ title: 'Client portal — Siari Build' }, { name: 'robots', content: 'noindex, nofollow' }]
-}
-
 interface PortalCtx {
   me: Me
   projectId: string
@@ -47,7 +43,7 @@ export default function PortalLayout() {
       .catch((err) => {
         if (cancelled) return
         if (err instanceof ApiError && err.status === 401) {
-          navigate(`/portal/login?next=${encodeURIComponent(location.pathname)}`, { replace: true })
+          navigate(`/login?next=${encodeURIComponent(location.pathname)}`, { replace: true })
           return
         }
         setError(err instanceof Error ? err.message : 'Could not load the portal.')
@@ -111,10 +107,10 @@ export default function PortalLayout() {
         </header>
 
         <nav className="flex gap-6 mb-10 text-sm uppercase tracking-wider" aria-label="Portal sections">
-          <Tab to="/portal">Overview</Tab>
-          <Tab to="/portal/updates">Updates</Tab>
-          <Tab to="/portal/documents">Documents</Tab>
-          {me.user.isAdmin && <Tab to="/portal/admin">Admin</Tab>}
+          <Tab to="/">Overview</Tab>
+          <Tab to="/updates">Updates</Tab>
+          <Tab to="/documents">Documents</Tab>
+          {me.user.isAdmin && <Tab to="/admin">Admin</Tab>}
         </nav>
 
         <Outlet />
@@ -127,7 +123,7 @@ function Tab({ to, children }: { to: string; children: React.ReactNode }) {
   return (
     <NavLink
       to={to}
-      end={to === '/portal'}
+      end={to === '/'}
       className={({ isActive }) =>
         `pb-2 border-b-2 transition-colors ${isActive ? 'border-current text-accent' : 'border-transparent opacity-60 hover:opacity-100'}`
       }
@@ -145,7 +141,7 @@ function LogoutButton() {
       onClick={async () => {
         await portal.logout().catch(() => {})
         sessionStorage.removeItem(PROJECT_KEY)
-        navigate('/portal/login', { replace: true })
+        navigate('/login', { replace: true })
       }}
       className="text-sm uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity"
     >

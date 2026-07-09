@@ -8,7 +8,7 @@ import {
   type Overview,
   type Stage,
   type Contact,
-} from '../../lib/portal-api'
+} from '../lib/portal-api'
 
 // The dashboard must answer, within ten seconds:
 //   Where is my project up to? / What happened recently? / What happens next?
@@ -102,7 +102,7 @@ export default function PortalOverview() {
       <section>
         <h2 className="eyebrow text-xs mb-4">Latest update</h2>
         {data.latestUpdate ? (
-          <Link to="/portal/updates" className="block border border-black/10 p-6 hover:border-black/30 transition-colors">
+          <Link to="/updates" className="block border border-black/10 p-6 hover:border-black/30 transition-colors">
             <p className="text-lg" style={{ fontWeight: 600 }}>{data.latestUpdate.title}</p>
             <p className="opacity-70 text-sm mt-2 line-clamp-3">{data.latestUpdate.excerpt}</p>
             <p className="opacity-50 text-xs mt-3">{formatDate(data.latestUpdate.published_at)}</p>

@@ -1,7 +1,3 @@
+# The client portal is private. Nothing here is ever public.
 User-agent: *
-Allow: /
-# The client portal is private and must never be indexed.
-Disallow: /portal
-Disallow: /api/
-
-Sitemap: https://siaribuild.com.au/sitemap.xml
+Disallow: /

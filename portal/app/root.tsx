@@ -2,7 +2,6 @@ import {
   Links,
   Meta,
   Outlet,
-  useLocation,
   Scripts,
   ScrollRestoration,
   isRouteErrorResponse,
@@ -83,9 +82,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  // The portal has its own chrome and must not render the marketing nav/footer,
-  // which depend on build-time Sanity data the SPA shell does not carry.
-  const isPortal = useLocation().pathname.startsWith('/portal')
   // Maintenance build → the entire site is the maintenance page (every route and
   // the SPA fallback). The real chrome + content are never rendered or shipped.
   if (__MAINTENANCE__) {
@@ -94,9 +90,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {!isPortal && <Header />}
+      <Header />
       <Outlet />
-      {!isPortal && <Footer />}
+      <Footer />
     </div>
   )
 }

@@ -35,13 +35,6 @@ async function main() {
     const shell = await readFile(join(OUT, '__spa-fallback.html'), 'utf8')
     await writeFile(join(OUT, '404.html'), shell)
     console.log('spa-fallback: wrote 404.html from __spa-fallback.html')
-
-    // The client portal is client-rendered: its routes are NOT prerendered, so no
-    // private data is ever baked into a static file. Serving the same bare shell
-    // at /portal/* with a 200 (via public/_redirects) keeps the portal out of the
-    // 404 status path, which matters for browser history and for the invite link.
-    await writeFile(join(OUT, 'portal-shell.html'), shell)
-    console.log('spa-fallback: wrote portal-shell.html for /portal/*')
   } catch (err) {
     console.warn('spa-fallback: could not create 404.html —', err.message)
   }
