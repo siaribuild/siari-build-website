@@ -1,0 +1,8 @@
+# The client portal is a client-rendered SPA: its routes are never prerendered,
+# so there is no static file to serve. Rewrite (200, not redirect) to the bare
+# shell and let React Router take over in the browser. All project data arrives
+# via authenticated /api/portal/* calls.
+#
+# /api/* is untouched: Pages Functions take precedence over these rules.
+/portal          /portal-shell.html   200
+/portal/*        /portal-shell.html   200

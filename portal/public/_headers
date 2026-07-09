@@ -1,0 +1,29 @@
+# Cloudflare Pages security headers. Served from build/client/_headers
+# (Vite copies public/ into the build output). See:
+# https://developers.cloudflare.com/pages/configuration/headers/
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# A Content-Security-Policy is strongly recommended but must be tuned to the
+# third parties this site loads before enabling, or it will break the map/fonts/
+# form. Starting point to validate in report-only mode first:
+#
+#   Content-Security-Policy-Report-Only: default-src 'self'; \
+#     img-src 'self' data: https://cdn.sanity.io; \
+#     script-src 'self' https://maps.googleapis.com https://challenges.cloudflare.com; \
+#     frame-src https://challenges.cloudflare.com; \
+#     connect-src 'self' https://*.sanity.io https://maps.googleapis.com; \
+#     style-src 'self' 'unsafe-inline'; font-src 'self' data:
+
+# The portal must never be cached by a shared cache: responses are per-user.
+/portal
+  Cache-Control: no-store
+/portal/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+/api/portal/*
+  Cache-Control: no-store
