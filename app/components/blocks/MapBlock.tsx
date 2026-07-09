@@ -187,7 +187,7 @@ export function MapBlock({ height = 'medium' }: Props) {
   if (!hasMap || failed) return null
 
   return (
-    <section className="w-full" style={{ height: px }}>
+    <section className="w-full --brand-primary" style={{ height: px }}>
       <div ref={ref} className="w-full h-full" />
     </section>
   )
