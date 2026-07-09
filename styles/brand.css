@@ -426,7 +426,7 @@
 .nav-divider { background-color: color-mix(in srgb, var(--accent) 40%, transparent); }
 
 /* The footer & mobile drawer brand edges. */
-.brand-border-top  { border-top: 2px solid var(--brand-primary); }
+.brand-border-top  { border-top: 2px solid var(brand-accent-on-dark); }
 .brand-border-left { border-left: 4px solid var(--brand-primary); }
 
 /* Decorative top-left corner bracket used on inner heroes / project heroes. */
