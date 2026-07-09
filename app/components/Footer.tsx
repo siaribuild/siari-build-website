@@ -34,7 +34,7 @@ export function Footer() {
   }) as const
 
   return (
-    <footer className="on-media bg-[#0a0a0a] text-[#F5F3EF] py-20 brand-border-top relative overflow-hidden">
+    <footer className="on-media bg-[#0a0a0a] text-[#F5F3EF] py-20 brand-border-top-accent relative overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand — logo + tagline */}
