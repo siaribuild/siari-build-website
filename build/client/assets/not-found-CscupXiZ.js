@@ -1,1 +1,0 @@
-import{w as o,j as n}from"./jsx-runtime-BidyjLFM.js";import{N as e,b as a}from"./NotFoundPage-IH5YMG6H.js";import"./root-data-CJ4F2QQd.js";function i({matches:t}){return a({pageSeo:{nofollowAttributes:!0},fallbackTitle:"Page Not Found",path:"/404",matches:t})}const p=o(function(){return n.jsx(e,{})});export{p as default,i as meta};

@@ -807,7 +807,7 @@ export type NAVIGATION_QUERY_RESULT = {
 
 // Source: ../app/lib/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0] {  title,  "slug": slug.current,  sections[] {    _type,    _key,    eyebrow, heading, subheading,    "backgroundImage": backgroundImage.asset->url,    "backgroundImageHotspot": backgroundImage.hotspot,    primaryButtonLabel,    primaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    secondaryButtonLabel,    secondaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    height,    theme,    columns,    imagePosition,    imageSize,    "image": image.asset->url,    text[]{      ...,      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    ctaLabel,    ctaLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    stats[] { value, label },    cards[] {      "icon": icon.asset->url,      label,      title,      text    },    buttonLabel,    buttonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    body,    title,    items[] { question, answer },    content[] {      ...,      _type == "image" => {        ...,        "asset": asset->{ url }      },      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    testimonials[]-> {      _id,      quote,      clientName,      link->{ _type, "slug": slug.current, title }    },    formHeading, infoHeading,  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0] {  title,  "slug": slug.current,  sections[] {    _type,    _key,    eyebrow, heading, subheading,    "backgroundImage": backgroundImage.asset->url,    "backgroundImageHotspot": backgroundImage.hotspot,    primaryButtonLabel,    primaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    secondaryButtonLabel,    secondaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    height,    theme,    columns,    imagePosition,    imageSize,    "image": image.asset->url,    text[]{      ...,      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    ctaLabel,    ctaLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    stats[] { value, label },    cards[] {      "icon": icon.asset->url,      label,      title,      text    },    buttonLabel,    buttonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    body,    title,    items[] { question, answer },    content[] {      ...,      _type == "image" => {        ...,        "asset": asset->{ url }      },      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    testimonials[]-> {      _id,      quote,      clientName,      link->{ _type, "slug": slug.current, title }    },    formHeading, infoHeading,  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    robotsMeta,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    },    schemaOrg {      schemaType,      datePublished,      dateModified    }  }}
 export type PAGE_QUERY_RESULT = {
   title: string | null;
   slug: string | null;
@@ -1506,6 +1506,7 @@ export type PAGE_QUERY_RESULT = {
     metaTitle: string | null;
     metaDescription: string | null;
     nofollowAttributes: boolean | null;
+    robotsMeta: Array<string> | null;
     seoKeywords: Array<string> | null;
     metaImage: string | null;
     openGraph: {
@@ -1519,6 +1520,26 @@ export type PAGE_QUERY_RESULT = {
       site: string | null;
       creator: string | null;
       handle: string | null;
+    } | null;
+    schemaOrg: {
+      schemaType:
+        | "Article"
+        | "BreadcrumbList"
+        | "Course"
+        | "Event"
+        | "FAQPage"
+        | "JobPosting"
+        | "LocalBusiness"
+        | "Organization"
+        | "Person"
+        | "Product"
+        | "Recipe"
+        | "SoftwareApplication"
+        | "VideoObject"
+        | "WebPage"
+        | null;
+      datePublished: string | null;
+      dateModified: string | null;
     } | null;
   } | null;
 } | null;
@@ -1615,7 +1636,7 @@ export type ALL_CATEGORIES_QUERY_RESULT = Array<{
 
 // Source: ../app/lib/queries.ts
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  "slug": slug.current,  description[]{    ...,    markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }  },  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  details {    year,    location,    "category": category->title,    client,    duration,    size  },  gallery[] {    "url": asset->url,    "lqip": asset->metadata.lqip,    "aspect": asset->metadata.dimensions.aspectRatio,    caption  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    }  }}
+// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  "slug": slug.current,  description[]{    ...,    markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }  },  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  details {    year,    location,    "category": category->title,    client,    duration,    size  },  gallery[] {    "url": asset->url,    "lqip": asset->metadata.lqip,    "aspect": asset->metadata.dimensions.aspectRatio,    caption  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    robotsMeta,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    },    schemaOrg {      schemaType,      datePublished,      dateModified    }  }}
 export type PROJECT_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1659,6 +1680,7 @@ export type PROJECT_QUERY_RESULT = {
     metaTitle: string | null;
     metaDescription: string | null;
     nofollowAttributes: boolean | null;
+    robotsMeta: Array<string> | null;
     seoKeywords: Array<string> | null;
     metaImage: string | null;
     openGraph: {
@@ -1672,6 +1694,26 @@ export type PROJECT_QUERY_RESULT = {
       site: string | null;
       creator: string | null;
       handle: string | null;
+    } | null;
+    schemaOrg: {
+      schemaType:
+        | "Article"
+        | "BreadcrumbList"
+        | "Course"
+        | "Event"
+        | "FAQPage"
+        | "JobPosting"
+        | "LocalBusiness"
+        | "Organization"
+        | "Person"
+        | "Product"
+        | "Recipe"
+        | "SoftwareApplication"
+        | "VideoObject"
+        | "WebPage"
+        | null;
+      datePublished: string | null;
+      dateModified: string | null;
     } | null;
   } | null;
 } | null;
@@ -1698,12 +1740,12 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "siteSettings"][0] {\n  siteName,\n  tagline,\n  phone,\n  email,\n  address,\n  copyrightText,\n  legalLine,\n  workingHours,\n  maintenanceEnabled,\n  maintenanceHeading,\n  maintenanceMessage,\n  maintenanceShowContact,\n  "maintenanceImage": maintenanceImage.asset->url,\n  notFoundHeading,\n  notFoundMessage,\n  notFoundButtonLabel,\n  "notFoundImage": notFoundImage.asset->url,\n  mapLocation,\n  mapZoom,\n  mapAddressLabel,\n  mapHidePin,\n  mapAreaRadius\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "navigation"][0] {\n  headerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  headerCtaEnabled,\n  footerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  socialMenu[] {\n    label,\n    url,\n    "icon": icon.asset->url\n  }\n}': NAVIGATION_QUERY_RESULT;
-    '*[_type == "page" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  sections[] {\n    _type,\n    _key,\n    eyebrow, heading, subheading,\n    "backgroundImage": backgroundImage.asset->url,\n    "backgroundImageHotspot": backgroundImage.hotspot,\n    primaryButtonLabel,\n    primaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    secondaryButtonLabel,\n    secondaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    height,\n    theme,\n    columns,\n    imagePosition,\n    imageSize,\n    "image": image.asset->url,\n    text[]{\n      ...,\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    ctaLabel,\n    ctaLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    stats[] { value, label },\n    cards[] {\n      "icon": icon.asset->url,\n      label,\n      title,\n      text\n    },\n    buttonLabel,\n    buttonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    body,\n    title,\n    items[] { question, answer },\n    content[] {\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{ url }\n      },\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    testimonials[]-> {\n      _id,\n      quote,\n      clientName,\n      link->{ _type, "slug": slug.current, title }\n    },\n    formHeading, infoHeading,\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    }\n  }\n\n}': PAGE_QUERY_RESULT;
+    '*[_type == "page" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  sections[] {\n    _type,\n    _key,\n    eyebrow, heading, subheading,\n    "backgroundImage": backgroundImage.asset->url,\n    "backgroundImageHotspot": backgroundImage.hotspot,\n    primaryButtonLabel,\n    primaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    secondaryButtonLabel,\n    secondaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    height,\n    theme,\n    columns,\n    imagePosition,\n    imageSize,\n    "image": image.asset->url,\n    text[]{\n      ...,\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    ctaLabel,\n    ctaLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    stats[] { value, label },\n    cards[] {\n      "icon": icon.asset->url,\n      label,\n      title,\n      text\n    },\n    buttonLabel,\n    buttonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    body,\n    title,\n    items[] { question, answer },\n    content[] {\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{ url }\n      },\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    testimonials[]-> {\n      _id,\n      quote,\n      clientName,\n      link->{ _type, "slug": slug.current, title }\n    },\n    formHeading, infoHeading,\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PAGE_QUERY_RESULT;
     '*[_type == "project"] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title,\n    "categorySlug": category->slug.current,\n    client,\n    duration,\n    size\n  }\n}': PROJECTS_QUERY_RESULT;
     '*[_type == "project"] | order(orderRank) [0..2] {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title\n  }\n}': FEATURED_PROJECTS_QUERY_RESULT;
     '*[_type == "projectCategory" && count(*[_type == "project" && references(^._id)]) > 0] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current\n}': CATEGORIES_QUERY_RESULT;
     '*[_type == "projectCategory"] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current\n}': ALL_CATEGORIES_QUERY_RESULT;
-    '*[_type == "project" && slug.current == $slug][0] {\n  _id,\n  title,\n  "slug": slug.current,\n  description[]{\n    ...,\n    markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n  },\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  details {\n    year,\n    location,\n    "category": category->title,\n    client,\n    duration,\n    size\n  },\n  gallery[] {\n    "url": asset->url,\n    "lqip": asset->metadata.lqip,\n    "aspect": asset->metadata.dimensions.aspectRatio,\n    caption\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    }\n  }\n\n}': PROJECT_QUERY_RESULT;
+    '*[_type == "project" && slug.current == $slug][0] {\n  _id,\n  title,\n  "slug": slug.current,\n  description[]{\n    ...,\n    markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n  },\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  details {\n    year,\n    location,\n    "category": category->title,\n    client,\n    duration,\n    size\n  },\n  gallery[] {\n    "url": asset->url,\n    "lqip": asset->metadata.lqip,\n    "aspect": asset->metadata.dimensions.aspectRatio,\n    caption\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PROJECT_QUERY_RESULT;
     '*[_type == "project" && slug.current != $slug] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  details {\n    year,\n    location,\n    "category": category->title\n  }\n}': OTHER_PROJECTS_QUERY_RESULT;
   }
 }

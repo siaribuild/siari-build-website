@@ -64,7 +64,7 @@ export const links: LinksFunction = () => [
 // <ScrollRestoration/> replaces the old custom ScrollToTop component.
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-AU">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -91,7 +91,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <Outlet />
+      <main id="main">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   )

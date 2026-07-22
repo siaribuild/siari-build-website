@@ -6,6 +6,7 @@ const SEO_FRAGMENT = `
     metaTitle,
     metaDescription,
     nofollowAttributes,
+    robotsMeta,
     seoKeywords,
     "metaImage": metaImage.asset->url,
     openGraph {
@@ -19,6 +20,11 @@ const SEO_FRAGMENT = `
       site,
       creator,
       handle
+    },
+    schemaOrg {
+      schemaType,
+      datePublished,
+      dateModified
     }
   }
 `

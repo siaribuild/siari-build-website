@@ -1,27 +1,45 @@
 import type { MetaDescriptor } from 'react-router'
 import { img, srcSet } from './image'
+import { buildJsonLd } from './jsonld'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ports the old <Seo> component to React Router v7 `meta` descriptors.
+// Ports the old <Seo> component to React Router v7 `meta` descriptors, and adds
+// the technical SEO/AEO scaffolding from the July 2026 audit brief:
+//   • Task 1 — <title> renders seo.metaTitle VERBATIM (no brand double-append).
+//   • Task 2 — JSON-LD @graph (business + website + webpage + breadcrumb + FAQ).
+//   • Task 5 — complete Open Graph + Twitter tag set (locale, image dims, alt…).
+//   • Task 6 — robots built from nofollowAttributes + robotsMeta[], de-duped.
+//   • Task 7 — self-referencing absolute canonical (home keeps its trailing /).
+//   • Task 8 — NO <meta name="keywords"> (kept internal in Sanity only).
+//
 // Each route exports a `meta` function that calls buildMeta(); RR merges the
 // result into the document <head> at build time (react-helmet-async is gone).
 //
-// VITE_SITE_URL is now REQUIRED (there is no window at build time). Set it per
-// environment — e.g. https://siaribuild.com.au in production. This also fixes
-// the earlier Lighthouse "canonical is not an absolute URL" failure, because
-// the canonical is now always built from an absolute origin.
+// VITE_SITE_URL is REQUIRED (there is no window at build time). Set it per
+// environment — e.g. https://siaribuild.com.au in production.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SITE_URL = (import.meta.env.VITE_SITE_URL || '').replace(/\/$/, '')
+const DEFAULT_OG_IMAGE = SITE_URL ? `${SITE_URL}/og-default.png` : '/og-default.png'
+const OG_W = 1200
+const OG_H = 630
+
+interface SchemaOrgData {
+  schemaType?: string | null
+  datePublished?: string | null
+  dateModified?: string | null
+}
 
 interface SeoData {
   metaTitle?: string | null
   metaDescription?: string | null
   metaImage?: string | null
   nofollowAttributes?: boolean | null
+  robotsMeta?: string[] | null
   seoKeywords?: string[] | null
   openGraph?: { title?: string | null; description?: string | null; siteName?: string | null; image?: string | null } | null
   twitter?: { cardType?: string | null; site?: string | null; creator?: string | null; handle?: string | null } | null
+  schemaOrg?: SchemaOrgData | null
 }
 
 interface BuildMetaArgs {
@@ -30,13 +48,45 @@ interface BuildMetaArgs {
   fallbackDescription?: string | null
   fallbackImage?: string | null
   path?: string
-  /** Emit GeneralContractor JSON-LD (home page only). */
+  /** Kept for backward-compat with callers; JSON-LD is now always emitted. */
   organization?: boolean
   /** Hero image URL to responsively preload (improves LCP on hero-led pages). */
   preloadImage?: string | null
   preloadWidths?: number[]
-  /** RR passes `matches`; we read the root loader's baked site settings from it. */
+  /** Q&A pairs from the page's visible FAQ block(s) — see faqItemsOf(). */
+  faqItems?: Array<{ question?: string | null; answer?: string | null }> | null
+  /** RR passes `matches`; we read the root loader's baked settings + nav from it. */
   matches?: Array<{ id: string; data?: unknown }>
+}
+
+// Resolve an OG/Twitter image to an absolute 1200x630 URL. Sanity images get a
+// crop transform so the declared width/height are truthful; the packaged default
+// is already 1200x630 and is returned unchanged.
+function ogImageUrl(image: string): string {
+  if (!image) return ''
+  if (image.includes('cdn.sanity.io')) return img(image, { w: OG_W, h: OG_H, fit: 'crop' })
+  return image
+}
+
+// Task 6 — merge the CMS index controls into one robots directive string.
+function resolveRobots(seo?: SeoData | null): string {
+  const directives: string[] = []
+  const push = (v: string) => {
+    const t = v.trim()
+    if (t && !directives.some((d) => d.toLowerCase() === t.toLowerCase())) directives.push(t)
+  }
+
+  // The "Noindex" toggle (stored as nofollowAttributes) => noindex.
+  if (seo?.nofollowAttributes === true) push('noindex')
+  // Any explicit robots values from the CMS (max-image-preview:large, noindex…).
+  for (const r of seo?.robotsMeta ?? []) if (r) push(r)
+
+  const hasIndexDirective = directives.some((d) => /^(no)?index$/i.test(d))
+  if (!hasIndexDirective) {
+    // Default indexable — prepend so the primary directive reads first.
+    directives.unshift('index', 'follow')
+  }
+  return directives.join(', ')
 }
 
 export function buildMeta({
@@ -45,18 +95,30 @@ export function buildMeta({
   fallbackDescription,
   fallbackImage,
   path = '',
-  organization,
   preloadImage,
   preloadWidths,
+  faqItems,
   matches,
 }: BuildMetaArgs): MetaDescriptor[] {
-  const settings =
-    (matches?.find((m) => m?.id === 'root')?.data as { settings?: any } | undefined)?.settings ?? {}
+  const root = matches?.find((m) => m?.id === 'root')?.data as
+    | { settings?: any; navigation?: any }
+    | undefined
+  const settings = root?.settings ?? {}
+  const navigation = root?.navigation ?? {}
 
-  const siteName = pageSeo?.openGraph?.siteName || settings?.siteName || 'SIARI BUILD'
+  const siteName = pageSeo?.openGraph?.siteName || settings?.siteName || 'SIARI Build'
 
-  const title = pageSeo?.metaTitle || pageSeo?.openGraph?.title || fallbackTitle || siteName
-  const fullTitle = title === siteName ? title : `${title} | ${siteName}`
+  // ── Task 1: title verbatim ────────────────────────────────────────────────
+  // metaTitle already contains the brand → output it AS-IS. Only when it's empty
+  // do we compose "<Page> | <Brand>". og/twitter titles follow the same chain:
+  // openGraph.title verbatim → metaTitle verbatim → composed fallback.
+  const metaTitle = pageSeo?.metaTitle?.trim()
+  const composed =
+    fallbackTitle && fallbackTitle.trim() && fallbackTitle.trim() !== siteName
+      ? `${fallbackTitle.trim()} | ${siteName}`
+      : fallbackTitle?.trim() || siteName
+  const documentTitle = metaTitle || composed
+  const socialTitle = pageSeo?.openGraph?.title?.trim() || metaTitle || composed
 
   const description =
     pageSeo?.metaDescription ||
@@ -65,30 +127,62 @@ export function buildMeta({
     settings?.tagline ||
     ''
 
-  const image = pageSeo?.openGraph?.image || pageSeo?.metaImage || fallbackImage || ''
-  const canonical = `${SITE_URL}${path}`
-  const robots = pageSeo?.nofollowAttributes ? 'noindex, nofollow' : 'index, follow'
+  // ── Task 7: canonical (home keeps a single trailing slash) ────────────────
+  const canonical = path === '' || path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`
+
+  // ── Image resolution chain → absolute 1200x630 ────────────────────────────
+  const rawImage =
+    pageSeo?.openGraph?.image || pageSeo?.metaImage || fallbackImage || DEFAULT_OG_IMAGE
+  const image = ogImageUrl(rawImage)
+  const imageAlt = fallbackTitle?.trim() || documentTitle
+
+  const robots = resolveRobots(pageSeo)
+
+  // ── Task 5: og:type + article times ───────────────────────────────────────
+  const isProject = path.startsWith('/projects/')
+  const ogType = isProject ? 'article' : 'website'
+  const datePublished = pageSeo?.schemaOrg?.datePublished || undefined
+  const dateModified = pageSeo?.schemaOrg?.dateModified || undefined
 
   const tags: MetaDescriptor[] = [
-    { title: fullTitle },
+    { title: documentTitle },
     { name: 'description', content: description },
     { name: 'robots', content: robots },
     { tagName: 'link', rel: 'canonical', href: canonical },
 
-    { property: 'og:type', content: 'website' },
+    // Open Graph
+    { property: 'og:type', content: ogType },
     { property: 'og:site_name', content: siteName },
-    { property: 'og:title', content: pageSeo?.openGraph?.title || fullTitle },
-    { property: 'og:description', content: pageSeo?.openGraph?.description || description },
+    { property: 'og:locale', content: 'en_AU' },
+    { property: 'og:title', content: socialTitle },
+    { property: 'og:description', content: description },
     { property: 'og:url', content: canonical },
 
+    // Twitter
     { name: 'twitter:card', content: pageSeo?.twitter?.cardType || 'summary_large_image' },
-    { name: 'twitter:title', content: pageSeo?.openGraph?.title || fullTitle },
-    { name: 'twitter:description', content: pageSeo?.openGraph?.description || description },
+    { name: 'twitter:title', content: socialTitle },
+    { name: 'twitter:description', content: description },
   ]
 
-  // Responsive hero preload — matches the hero <img> (crossOrigin anonymous +
-  // 100vw srcset), so the LCP image starts downloading immediately without the
-  // browser waiting to discover it, and without over-fetching on mobile.
+  if (isProject && datePublished) tags.push({ property: 'article:published_time', content: datePublished })
+  if (isProject && dateModified) tags.push({ property: 'article:modified_time', content: dateModified })
+
+  if (image) {
+    tags.push({ property: 'og:image', content: image })
+    tags.push({ property: 'og:image:width', content: String(OG_W) })
+    tags.push({ property: 'og:image:height', content: String(OG_H) })
+    tags.push({ property: 'og:image:alt', content: imageAlt })
+    tags.push({ name: 'twitter:image', content: image })
+    tags.push({ name: 'twitter:image:alt', content: imageAlt })
+  }
+
+  // Only emit twitter:site / :creator when a REAL handle exists (never guess).
+  if (pageSeo?.twitter?.site) tags.push({ name: 'twitter:site', content: pageSeo.twitter.site })
+  if (pageSeo?.twitter?.creator) tags.push({ name: 'twitter:creator', content: pageSeo.twitter.creator })
+
+  // Task 8: intentionally NO <meta name="keywords"> — seoKeywords stays internal.
+
+  // ── Responsive hero preload (LCP) ─────────────────────────────────────────
   if (preloadImage) {
     tags.push({
       tagName: 'link',
@@ -102,39 +196,26 @@ export function buildMeta({
     } as MetaDescriptor)
   }
 
-  if (pageSeo?.seoKeywords?.length) tags.push({ name: 'keywords', content: pageSeo.seoKeywords.join(', ') })
-  if (image) {
-    tags.push({ property: 'og:image', content: image })
-    tags.push({ name: 'twitter:image', content: image })
-  }
-  if (pageSeo?.twitter?.site) tags.push({ name: 'twitter:site', content: pageSeo.twitter.site })
-  if (pageSeo?.twitter?.creator) tags.push({ name: 'twitter:creator', content: pageSeo.twitter.creator })
+  // ── Task 2: JSON-LD @graph ────────────────────────────────────────────────
+  const socialUrls: string[] = Array.isArray(navigation?.socialMenu)
+    ? navigation.socialMenu.map((s: any) => s?.url).filter((u: any): u is string => typeof u === 'string' && !!u)
+    : []
 
-  if (organization) {
-    tags.push({
-      'script:ld+json': {
-        '@context': 'https://schema.org',
-        '@type': 'GeneralContractor',
-        name: siteName,
-        url: SITE_URL || undefined,
-        image: image || undefined,
-        description: description || undefined,
-        telephone: settings?.phone || undefined,
-        email: settings?.email || undefined,
-        address: settings?.address
-          ? { '@type': 'PostalAddress', streetAddress: settings.address }
-          : undefined,
-        geo:
-          settings?.mapLocation?.lat != null && settings?.mapLocation?.lng != null
-            ? {
-                '@type': 'GeoCoordinates',
-                latitude: settings.mapLocation.lat,
-                longitude: settings.mapLocation.lng,
-              }
-            : undefined,
-      },
-    })
-  }
+  const graph = buildJsonLd({
+    siteUrl: SITE_URL,
+    settings,
+    socialUrls,
+    canonical,
+    title: fallbackTitle?.trim() || documentTitle,
+    description,
+    image,
+    schemaType: pageSeo?.schemaOrg?.schemaType,
+    path,
+    datePublished,
+    dateModified,
+    faqItems,
+  })
+  if (graph) tags.push({ 'script:ld+json': graph } as MetaDescriptor)
 
   return tags
 }
@@ -146,4 +227,16 @@ export function heroImageOf(page: any): string | undefined {
     (x: any) => x?._type === 'heroHome' || x?._type === 'heroInner',
   )
   return s?.backgroundImage || undefined
+}
+
+// Flattens every faqBlock on a page into a single Q&A list. This is the bridge
+// that makes FAQ "just work": the same visible block content that renders on
+// the page (FaqBlock accordion) also feeds the FAQPage JSON-LD, so dropping FAQ
+// blocks onto any page (e.g. /faq's five category groups) automatically emits
+// the structured data — all groups flatten into one mainEntity list.
+export function faqItemsOf(page: any): Array<{ question?: string | null; answer?: string | null }> {
+  return (page?.sections ?? [])
+    .filter((s: any) => s?._type === 'faqBlock')
+    .flatMap((s: any) => (Array.isArray(s?.items) ? s.items : []))
+    .map((i: any) => ({ question: i?.question ?? null, answer: i?.answer ?? null }))
 }
