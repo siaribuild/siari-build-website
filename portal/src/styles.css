@@ -7,6 +7,3 @@
 
 @import '../../styles/theme.css';
 @import '../../styles/brand.css';
-
-/* Portal-specific compositions of the above tokens. */
-@import './portal.css';

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { portal } from '../lib/portal-api'
-import { Centered } from './layout'
+import { Shell } from './layout'
 
-// Exchanges the single-use token for an HttpOnly session cookie, then strips it
-// from the address bar so it cannot be copied out of browser history.
+// Exchanges the single-use token in the URL for an HttpOnly session cookie, then
+// drops the token from the address bar so it cannot be copied out of history.
 export default function PortalVerify() {
   const [params] = useSearchParams()
   const navigate = useNavigate()
@@ -30,19 +30,20 @@ export default function PortalVerify() {
   }, [params, navigate])
 
   return (
-    <Centered>
-      <div className="max-w-md text-center">
+    <Shell>
+      <div className="max-w-md mx-auto">
         {error ? (
           <>
-            <div className="eyebrow text-xs mb-3">Client portal</div>
-            <h1 className="heading-display text-3xl mb-4">Link not valid</h1>
+            <h1 className="text-3xl mb-4" style={{ fontWeight: 700 }}>Link not valid</h1>
             <p className="opacity-70 mb-8">{error}</p>
-            <a href="/login" className="btn btn-bronze">Request a new link</a>
+            <a href="/login" className="btn-bronze inline-block px-9 py-4 text-sm tracking-wider uppercase">
+              Request a new link
+            </a>
           </>
         ) : (
-          <p className="opacity-60 text-sm uppercase tracking-[0.2em]">Signing you in…</p>
+          <p className="opacity-60">Signing you in…</p>
         )}
       </div>
-    </Centered>
+    </Shell>
   )
 }

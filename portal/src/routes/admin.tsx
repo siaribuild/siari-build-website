@@ -7,15 +7,13 @@ import { formatDate } from '../lib/portal-api'
 // tab and every API call returns 404.
 export default function PortalAdmin() {
   const { me, projectId } = usePortal()
-  if (!me.user.isAdmin) return <p className="opacity-60 text-sm">Not found.</p>
+  if (!me.user.isAdmin) return <p className="opacity-60">Not found.</p>
 
   return (
-    <div className="space-y-[18px]">
+    <div className="space-y-16">
       <PublishUpdate projectId={projectId} />
-      <div className="grid gap-[18px] lg:grid-cols-2">
-        <UploadDocument projectId={projectId} />
-        <InviteClient projectId={projectId} />
-      </div>
+      <UploadDocument projectId={projectId} />
+      <InviteClient projectId={projectId} />
       <AuditLog projectId={projectId} />
     </div>
   )
@@ -39,8 +37,7 @@ function useSubmit() {
   return { busy, msg, run }
 }
 
-// Reuses the site's .field (cream bg, hairline border, --cut-6 clipped corner).
-const field = 'field'
+const field = 'w-full border border-black/20 bg-transparent px-4 py-3'
 
 function Notice({ msg }: { msg: { ok: boolean; text: string } | null }) {
   if (!msg) return null
@@ -71,8 +68,8 @@ function PublishUpdate({ projectId }: { projectId: string }) {
     }, publish ? 'Update published.' : 'Draft saved.')
 
   return (
-    <section className="card portal-card">
-      <div className="portal-card-h"><h2>Publish an update</h2></div>
+    <section>
+      <h2 className="eyebrow text-xs mb-4">Publish an update</h2>
       <div className="space-y-4 max-w-2xl">
         <input className={field} placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
         <textarea className={field} rows={5} placeholder="What happened?" value={body} onChange={(e) => setBody(e.target.value)} />
@@ -83,10 +80,10 @@ function PublishUpdate({ projectId }: { projectId: string }) {
         </label>
         <Notice msg={msg} />
         <div className="flex gap-3">
-          <button disabled={busy || !title || !body} onClick={() => save(false)} className="btn btn-outline disabled:opacity-40">
+          <button disabled={busy || !title || !body} onClick={() => save(false)} className="border border-black/30 px-6 py-3 text-sm uppercase tracking-wider disabled:opacity-40">
             Save draft
           </button>
-          <button disabled={busy || !title || !body} onClick={() => save(true)} className="btn btn-bronze disabled:opacity-40">
+          <button disabled={busy || !title || !body} onClick={() => save(true)} className="btn-bronze px-6 py-3 text-sm uppercase tracking-wider disabled:opacity-40">
             Publish
           </button>
         </div>
@@ -127,9 +124,9 @@ function UploadDocument({ projectId }: { projectId: string }) {
     }, 'Document uploaded.')
 
   return (
-    <section className="card portal-card">
-      <div className="portal-card-h"><h2>Upload a document</h2></div>
-      <div className="space-y-4">
+    <section>
+      <h2 className="eyebrow text-xs mb-4">Upload a document</h2>
+      <div className="space-y-4 max-w-2xl">
         <input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="text-sm" />
         <input className={field} placeholder="Display name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
         <div className="grid gap-4 sm:grid-cols-2">
@@ -143,7 +140,7 @@ function UploadDocument({ projectId }: { projectId: string }) {
           Visible to the client
         </label>
         <Notice msg={msg} />
-        <button disabled={busy || !file} onClick={upload} className="btn btn-bronze disabled:opacity-40">
+        <button disabled={busy || !file} onClick={upload} className="btn-bronze px-6 py-3 text-sm uppercase tracking-wider disabled:opacity-40">
           Upload
         </button>
       </div>
@@ -170,13 +167,13 @@ function InviteClient({ projectId }: { projectId: string }) {
     }, 'Invitation sent.')
 
   return (
-    <section className="card portal-card">
-      <div className="portal-card-h"><h2>Invite a client</h2></div>
-      <div className="space-y-4">
+    <section>
+      <h2 className="eyebrow text-xs mb-4">Invite a client</h2>
+      <div className="space-y-4 max-w-2xl">
         <input className={field} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input className={field} placeholder="Name (optional)" value={name} onChange={(e) => setName(e.target.value)} />
         <Notice msg={msg} />
-        <button disabled={busy || !email} onClick={invite} className="btn btn-bronze disabled:opacity-40">
+        <button disabled={busy || !email} onClick={invite} className="btn-bronze px-6 py-3 text-sm uppercase tracking-wider disabled:opacity-40">
           Send invitation
         </button>
       </div>
@@ -205,16 +202,16 @@ function AuditLog({ projectId }: { projectId: string }) {
   }, [projectId])
 
   return (
-    <section className="card portal-card">
-      <div className="portal-card-h"><h2>Audit history</h2></div>
+    <section>
+      <h2 className="eyebrow text-xs mb-4">Audit history</h2>
       {rows.length === 0 ? (
         <p className="opacity-60 text-sm">No events recorded yet.</p>
       ) : (
-        <ul className="text-sm max-h-80 overflow-y-auto">
+        <ul className="text-sm divide-y divide-black/10 border-y border-black/10 max-h-80 overflow-y-auto">
           {rows.map((e) => (
-            <li key={e.id} className="portal-doc !py-2.5">
-              <span className="nm">{e.action}<span className="opacity-50 font-normal"> · {e.entity_type}</span></span>
-              <span className="ml-auto mt whitespace-nowrap">{e.actor_email ?? 'system'} · {formatDate(e.created_at)}</span>
+            <li key={e.id} className="py-2 flex justify-between gap-4">
+              <span><span style={{ fontWeight: 600 }}>{e.action}</span> · {e.entity_type}</span>
+              <span className="opacity-50 whitespace-nowrap">{e.actor_email ?? 'system'} · {formatDate(e.created_at)}</span>
             </li>
           ))}
         </ul>
