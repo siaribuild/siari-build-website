@@ -1,0 +1,41 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "siari-build-portal",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-03-01",
+  // `resend` uses Node APIs.
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Client-rendered SPA: unknown paths return index.html, not a 404.
+    "not_found_handling": "single-page-application",
+    // CRITICAL: Workers serve static assets BEFORE the Worker by default. Without
+    // this, /api/* would be answered by the asset server and no auth check would
+    // ever run. Scoped to /api/* so asset requests stay free and skip the Worker.
+    "run_worker_first": ["/api/*"]
+  },
+
+  // Same D1 as the marketing site's contact form; the portal tables live beside it.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "siari_build", "database_id": "a74bb8e1-3b61-4ff1-80d9-0350fa80b84d" }
+  ],
+
+  // PRIVATE files. Never served directly — every read streams through an
+  // authorising handler that checks membership and writes an audit event.
+  //   npx wrangler r2 bucket create siari-portal-files
+  "r2_buckets": [
+    { "binding": "PORTAL_FILES", "bucket_name": "siari-portal-files" }
+  ],
+
+  // Nightly housekeeping. This is the main thing Pages could not do.
+  "triggers": { "crons": ["0 17 * * *"] },
+
+  "vars": {
+    // Public. Used to build links in emails. Set to the portal's own origin.
+    "SITE_URL": "https://portal.siaribuild.com.au"
+  },
+
+  "observability": { "enabled": true }
+}

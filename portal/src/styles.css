@@ -1,0 +1,12 @@
+/* The portal reuses the marketing site's design system rather than forking it.
+   Only Tailwind's source glob differs: it scans this project, not the site. */
+@import '../../styles/fonts.css';
+
+@import 'tailwindcss' source(none);
+@source './**/*.{ts,tsx}';
+
+@import '../../styles/theme.css';
+@import '../../styles/brand.css';
+
+/* Portal-specific compositions of the above tokens. */
+@import './portal.css';
