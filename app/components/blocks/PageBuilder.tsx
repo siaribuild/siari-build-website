@@ -8,6 +8,7 @@ import { TextImage } from './TextImage'
 import { CardGridText } from './CardGridText'
 import { OurStory } from './OurStory'
 import { TestimonialsBlock } from './TestimonialsBlock'
+import { FaqBlock } from './FaqBlock'
 import { CtaBlock } from './CtaBlock'
 import { ContactFormBlock } from './ContactFormBlock'
 import { RichText } from './RichText'
@@ -141,6 +142,11 @@ export function PageBuilder({ sections, blockData }: Props) {
           case 'testimonialsBlock':
             return (
               <TestimonialsBlock key={key} theme={s.theme} eyebrow={s.eyebrow} heading={s.heading} testimonials={s.testimonials} joinTop={joinTop} joinBottom={joinBottom} />
+            )
+
+          case 'faqBlock':
+            return (
+              <FaqBlock key={key} theme={s.theme} title={s.title} items={s.items || []} joinTop={joinTop} joinBottom={joinBottom} />
             )
 
           case 'ctaBlock':

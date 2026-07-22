@@ -12,6 +12,7 @@ const pageBuilderBlocks = [
   defineArrayMember({type: 'textImage'}),
   defineArrayMember({type: 'ourStory'}),
   defineArrayMember({type: 'testimonialsBlock'}),
+  defineArrayMember({type: 'faqBlock'}),
   defineArrayMember({type: 'ctaBlock'}),
   defineArrayMember({type: 'contactFormBlock'}),
   defineArrayMember({type: 'mapBlock'}),

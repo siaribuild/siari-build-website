@@ -119,6 +119,8 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     buttonLabel,
     buttonLink ${LINK},
     body,
+    title,
+    items[] { question, answer },
     content[] {
       ...,
       _type == "image" => {

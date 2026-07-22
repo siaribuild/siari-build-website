@@ -411,6 +411,64 @@ export const testimonialsBlock = defineType({
 })
 
 // ─────────────────────────────────────────────
+// FAQ BLOCK
+// One FAQ group: section name on the left, accordion of
+// question/answer items on the right. Stack several blocks
+// to build a full FAQ page (consecutive same-background
+// blocks join automatically).
+// ─────────────────────────────────────────────
+export const faqBlock = defineType({
+  name: 'faqBlock',
+  title: 'FAQ',
+  type: 'object',
+  fields: [
+    themeField,
+    defineField({
+      name: 'title',
+      title: 'Section Name',
+      type: 'string',
+      description: 'Group label shown beside the questions, e.g. "Getting Started"',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'items',
+      title: 'Questions',
+      type: 'array',
+      description: 'Question / answer pairs — add as many as needed, drag to reorder',
+      validation: (Rule) => Rule.required().min(1),
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'question',
+              title: 'Question',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'answer',
+              title: 'Answer',
+              type: 'text',
+              rows: 4,
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {select: {title: 'question'}},
+        }),
+      ],
+    }),
+  ],
+  preview: {
+    select: {title: 'title', items: 'items'},
+    prepare({title, items}) {
+      const count = items?.length || 0
+      return {title: 'FAQ', subtitle: `${title || 'Untitled'} — ${count} question${count === 1 ? '' : 's'}`}
+    },
+  },
+})
+
+// ─────────────────────────────────────────────
 // CTA BLOCK
 // "Ready to start your project?" section
 // ─────────────────────────────────────────────

@@ -383,6 +383,16 @@
 .card-label { color: var(--ink); opacity: 0.1; font-weight: 700; line-height: 1; }
 .section--dark .card-label { color: var(--accent); opacity: 0.35; }
 
+/* FAQ accordion — quiet row divider + bordered toggle square. Both derive
+   from the section ink (--fg) so they read correctly on light AND dark
+   backgrounds; hover resolves to the section's on-light / on-dark accent. */
+.faq-divider { border-color: color-mix(in srgb, var(--fg) 10%, transparent); }
+.faq-toggle {
+  border: 1px solid color-mix(in srgb, var(--fg) 20%, transparent);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.group:hover .faq-toggle { border-color: var(--accent); color: var(--accent); }
+
 /* ============================================================================
    FORMS
    ============================================================================ */
