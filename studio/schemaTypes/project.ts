@@ -104,6 +104,15 @@ export const project = defineType({
       type: 'image',
       options: {hotspot: true},
       description: 'Main image — shown in project cards and at the top of the project page',
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+          description:
+            'Describe the image for search engines and screen readers. Leave blank on purely decorative images.',
+        }),
+      ],
       validation: (Rule) => Rule.required(),
       group: 'content',
     }),
@@ -125,6 +134,13 @@ export const project = defineType({
               title: 'Caption',
               type: 'string',
               description: 'Optional — shown below the image in the lightbox',
+            }),
+            defineField({
+              name: 'alt',
+              title: 'Alt text',
+              type: 'string',
+              description:
+                'Describe the image for search engines and screen readers. Falls back to the caption, then to an auto-generated project description.',
             }),
           ],
         },

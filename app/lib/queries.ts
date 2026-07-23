@@ -99,6 +99,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     eyebrow, heading, subheading,
     "backgroundImage": backgroundImage.asset->url,
     "backgroundImageHotspot": backgroundImage.hotspot,
+    "backgroundImageAlt": backgroundImage.alt,
     primaryButtonLabel,
     primaryButtonLink ${LINK},
     secondaryButtonLabel,
@@ -109,6 +110,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     imagePosition,
     imageSize,
     "image": image.asset->url,
+    "imageAlt": image.alt,
     text[]{
       ...,
       ${PT_MARKDEFS}
@@ -146,6 +148,12 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   ${SEO_FRAGMENT}
 }`)
 
+// ─── Home "What We Do" services (feeds the business schema's makesOffer) ──────
+// All cardGrids on the home page; the root loader picks the one whose heading
+// is "What we do" so the schema stays in lock-step with the visible section.
+export const HOME_SERVICES_QUERY = defineQuery(`*[_type == "page" && slug.current == "home"][0]
+  .sections[_type == "cardGrid"]{ heading, cards[]{ title, text } }`)
+
 // ─── All Projects (ordered) ───────────────────────────────────────────────────
 export const PROJECTS_QUERY = defineQuery(`*[_type == "project"] | order(orderRank) {
   _id,
@@ -153,6 +161,7 @@ export const PROJECTS_QUERY = defineQuery(`*[_type == "project"] | order(orderRa
   "slug": slug.current,
   "heroImage": heroImage.asset->url,
   "heroImageHotspot": heroImage.hotspot,
+  "heroImageAlt": heroImage.alt,
   description,
   details {
     year,
@@ -172,6 +181,7 @@ export const FEATURED_PROJECTS_QUERY = defineQuery(`*[_type == "project"] | orde
   "slug": slug.current,
   "heroImage": heroImage.asset->url,
   "heroImageHotspot": heroImage.hotspot,
+  "heroImageAlt": heroImage.alt,
   description,
   details {
     year,
@@ -205,6 +215,7 @@ export const PROJECT_QUERY = defineQuery(`*[_type == "project" && slug.current =
   },
   "heroImage": heroImage.asset->url,
   "heroImageHotspot": heroImage.hotspot,
+  "heroImageAlt": heroImage.alt,
   details {
     year,
     location,
@@ -217,7 +228,8 @@ export const PROJECT_QUERY = defineQuery(`*[_type == "project" && slug.current =
     "url": asset->url,
     "lqip": asset->metadata.lqip,
     "aspect": asset->metadata.dimensions.aspectRatio,
-    caption
+    caption,
+    alt
   },
   ${SEO_FRAGMENT}
 }`)
@@ -229,6 +241,7 @@ export const OTHER_PROJECTS_QUERY = defineQuery(`*[_type == "project" && slug.cu
   "slug": slug.current,
   "heroImage": heroImage.asset->url,
   "heroImageHotspot": heroImage.hotspot,
+  "heroImageAlt": heroImage.alt,
   details {
     year,
     location,

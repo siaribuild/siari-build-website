@@ -98,7 +98,7 @@ export function Header() {
         <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-5">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center">
-              <img src={logo} alt="SIARI BUILD" width={200} height={200} className="h-16 w-auto brightness-0 invert" />
+              <img src={logo} alt="SIARI Build" width={200} height={200} className="h-16 w-auto brightness-0 invert" />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-8">

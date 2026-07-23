@@ -273,6 +273,7 @@ export type TextImage = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
   imageSize?: "tall" | "medium" | "short";
@@ -341,6 +342,7 @@ export type HeroInner = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
 };
@@ -355,6 +357,7 @@ export type HeroHome = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
   primaryButtonLabel?: string;
@@ -418,6 +421,7 @@ export type Project = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    alt?: string;
     _type: "image";
   };
   gallery?: Array<{
@@ -426,6 +430,7 @@ export type Project = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     caption?: string;
+    alt?: string;
     _type: "image";
     _key: string;
   }>;
@@ -561,6 +566,7 @@ export type BlockContent = Array<
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
+      alt?: string;
       _type: "image";
       _key: string;
     }
@@ -807,7 +813,7 @@ export type NAVIGATION_QUERY_RESULT = {
 
 // Source: ../app/lib/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0] {  title,  "slug": slug.current,  sections[] {    _type,    _key,    eyebrow, heading, subheading,    "backgroundImage": backgroundImage.asset->url,    "backgroundImageHotspot": backgroundImage.hotspot,    primaryButtonLabel,    primaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    secondaryButtonLabel,    secondaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    height,    theme,    columns,    imagePosition,    imageSize,    "image": image.asset->url,    text[]{      ...,      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    ctaLabel,    ctaLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    stats[] { value, label },    cards[] {      "icon": icon.asset->url,      label,      title,      text    },    buttonLabel,    buttonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    body,    title,    items[] { question, answer },    content[] {      ...,      _type == "image" => {        ...,        "asset": asset->{ url }      },      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    testimonials[]-> {      _id,      quote,      clientName,      link->{ _type, "slug": slug.current, title }    },    formHeading, infoHeading,  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    robotsMeta,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    },    schemaOrg {      schemaType,      datePublished,      dateModified    }  }}
+// Query: *[_type == "page" && slug.current == $slug][0] {  title,  "slug": slug.current,  sections[] {    _type,    _key,    eyebrow, heading, subheading,    "backgroundImage": backgroundImage.asset->url,    "backgroundImageHotspot": backgroundImage.hotspot,    "backgroundImageAlt": backgroundImage.alt,    primaryButtonLabel,    primaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    secondaryButtonLabel,    secondaryButtonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    height,    theme,    columns,    imagePosition,    imageSize,    "image": image.asset->url,    "imageAlt": image.alt,    text[]{      ...,      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    ctaLabel,    ctaLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    stats[] { value, label },    cards[] {      "icon": icon.asset->url,      label,      title,      text    },    buttonLabel,    buttonLink {    kind,    href,    newTab,    internal->{ _type, "slug": slug.current }  },    body,    title,    items[] { question, answer },    content[] {      ...,      _type == "image" => {        ...,        "asset": asset->{ url }      },      markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }    },    testimonials[]-> {      _id,      quote,      clientName,      link->{ _type, "slug": slug.current, title }    },    formHeading, infoHeading,  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    robotsMeta,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    },    schemaOrg {      schemaType,      datePublished,      dateModified    }  }}
 export type PAGE_QUERY_RESULT = {
   title: string | null;
   slug: string | null;
@@ -820,6 +826,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -830,6 +837,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -858,6 +866,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -868,6 +877,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -896,6 +906,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -906,6 +917,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -929,6 +941,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -939,6 +952,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -976,6 +990,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -986,6 +1001,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1012,6 +1028,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1022,6 +1039,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: string | null;
         ctaLink: {
@@ -1059,6 +1077,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: string | null;
         backgroundImage: string | null;
         backgroundImageHotspot: SanityImageHotspot | null;
+        backgroundImageAlt: string | null;
         primaryButtonLabel: string | null;
         primaryButtonLink: {
           kind: "external" | "internal" | null;
@@ -1097,6 +1116,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1120,6 +1140,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: string | null;
         backgroundImage: string | null;
         backgroundImageHotspot: SanityImageHotspot | null;
+        backgroundImageAlt: string | null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1130,6 +1151,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1153,6 +1175,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1163,6 +1186,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1186,6 +1210,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1196,6 +1221,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: Array<
           | {
               children?: Array<{
@@ -1232,6 +1258,7 @@ export type PAGE_QUERY_RESULT = {
               media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
+              alt?: string;
               _type: "image";
               _key: string;
               markDefs: null;
@@ -1262,6 +1289,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1272,6 +1300,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1295,6 +1324,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1305,6 +1335,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1353,6 +1384,7 @@ export type PAGE_QUERY_RESULT = {
               media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
+              alt?: string;
               _type: "image";
               _key: string;
               markDefs: null;
@@ -1370,6 +1402,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1380,6 +1413,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: null;
         imageSize: null;
         image: null;
+        imageAlt: null;
         text: null;
         ctaLabel: null;
         ctaLink: null;
@@ -1419,6 +1453,7 @@ export type PAGE_QUERY_RESULT = {
         subheading: null;
         backgroundImage: null;
         backgroundImageHotspot: null;
+        backgroundImageAlt: null;
         primaryButtonLabel: null;
         primaryButtonLink: null;
         secondaryButtonLabel: null;
@@ -1429,6 +1464,7 @@ export type PAGE_QUERY_RESULT = {
         imagePosition: "left" | "right" | null;
         imageSize: "medium" | "short" | "tall" | null;
         image: string | null;
+        imageAlt: string | null;
         text: Array<
           | {
               children?: Array<{
@@ -1465,6 +1501,7 @@ export type PAGE_QUERY_RESULT = {
               media?: unknown;
               hotspot?: SanityImageHotspot;
               crop?: SanityImageCrop;
+              alt?: string;
               _type: "image";
               _key: string;
               markDefs: null;
@@ -1545,14 +1582,26 @@ export type PAGE_QUERY_RESULT = {
 } | null;
 
 // Source: ../app/lib/queries.ts
+// Variable: HOME_SERVICES_QUERY
+// Query: *[_type == "page" && slug.current == "home"][0]  .sections[_type == "cardGrid"]{ heading, cards[]{ title, text } }
+export type HOME_SERVICES_QUERY_RESULT = Array<{
+  heading: string | null;
+  cards: Array<{
+    title: string | null;
+    text: string | null;
+  }> | null;
+}> | null;
+
+// Source: ../app/lib/queries.ts
 // Variable: PROJECTS_QUERY
-// Query: *[_type == "project"] | order(orderRank) {  _id,  title,  "slug": slug.current,  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  description,  details {    year,    location,    "category": category->title,    "categorySlug": category->slug.current,    client,    duration,    size  }}
+// Query: *[_type == "project"] | order(orderRank) {  _id,  title,  "slug": slug.current,  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  "heroImageAlt": heroImage.alt,  description,  details {    year,    location,    "category": category->title,    "categorySlug": category->slug.current,    client,    duration,    size  }}
 export type PROJECTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: string | null;
   heroImage: string | null;
   heroImageHotspot: SanityImageHotspot | null;
+  heroImageAlt: string | null;
   description: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -1584,13 +1633,14 @@ export type PROJECTS_QUERY_RESULT = Array<{
 
 // Source: ../app/lib/queries.ts
 // Variable: FEATURED_PROJECTS_QUERY
-// Query: *[_type == "project"] | order(orderRank) [0..2] {  _id,  title,  "slug": slug.current,  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  description,  details {    year,    location,    "category": category->title  }}
+// Query: *[_type == "project"] | order(orderRank) [0..2] {  _id,  title,  "slug": slug.current,  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  "heroImageAlt": heroImage.alt,  description,  details {    year,    location,    "category": category->title  }}
 export type FEATURED_PROJECTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: string | null;
   heroImage: string | null;
   heroImageHotspot: SanityImageHotspot | null;
+  heroImageAlt: string | null;
   description: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -1636,7 +1686,7 @@ export type ALL_CATEGORIES_QUERY_RESULT = Array<{
 
 // Source: ../app/lib/queries.ts
 // Variable: PROJECT_QUERY
-// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  "slug": slug.current,  description[]{    ...,    markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }  },  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  details {    year,    location,    "category": category->title,    client,    duration,    size  },  gallery[] {    "url": asset->url,    "lqip": asset->metadata.lqip,    "aspect": asset->metadata.dimensions.aspectRatio,    caption  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    robotsMeta,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    },    schemaOrg {      schemaType,      datePublished,      dateModified    }  }}
+// Query: *[_type == "project" && slug.current == $slug][0] {  _id,  title,  "slug": slug.current,  description[]{    ...,    markDefs[]{    ...,    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }  }  },  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  "heroImageAlt": heroImage.alt,  details {    year,    location,    "category": category->title,    client,    duration,    size  },  gallery[] {    "url": asset->url,    "lqip": asset->metadata.lqip,    "aspect": asset->metadata.dimensions.aspectRatio,    caption,    alt  },    seo {    metaTitle,    metaDescription,    nofollowAttributes,    robotsMeta,    seoKeywords,    "metaImage": metaImage.asset->url,    openGraph {      title,      description,      siteName,      "image": image.asset->url    },    twitter {      cardType,      site,      creator,      handle    },    schemaOrg {      schemaType,      datePublished,      dateModified    }  }}
 export type PROJECT_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1662,6 +1712,7 @@ export type PROJECT_QUERY_RESULT = {
   }> | null;
   heroImage: string | null;
   heroImageHotspot: SanityImageHotspot | null;
+  heroImageAlt: string | null;
   details: {
     year: string | null;
     location: string | null;
@@ -1675,6 +1726,7 @@ export type PROJECT_QUERY_RESULT = {
     lqip: string | null;
     aspect: number | null;
     caption: string | null;
+    alt: string | null;
   }> | null;
   seo: {
     metaTitle: string | null;
@@ -1720,13 +1772,14 @@ export type PROJECT_QUERY_RESULT = {
 
 // Source: ../app/lib/queries.ts
 // Variable: OTHER_PROJECTS_QUERY
-// Query: *[_type == "project" && slug.current != $slug] | order(orderRank) {  _id,  title,  "slug": slug.current,  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  details {    year,    location,    "category": category->title  }}
+// Query: *[_type == "project" && slug.current != $slug] | order(orderRank) {  _id,  title,  "slug": slug.current,  "heroImage": heroImage.asset->url,  "heroImageHotspot": heroImage.hotspot,  "heroImageAlt": heroImage.alt,  details {    year,    location,    "category": category->title  }}
 export type OTHER_PROJECTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: string | null;
   heroImage: string | null;
   heroImageHotspot: SanityImageHotspot | null;
+  heroImageAlt: string | null;
   details: {
     year: string | null;
     location: string | null;
@@ -1740,12 +1793,13 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "siteSettings"][0] {\n  siteName,\n  tagline,\n  phone,\n  email,\n  address,\n  copyrightText,\n  legalLine,\n  workingHours,\n  maintenanceEnabled,\n  maintenanceHeading,\n  maintenanceMessage,\n  maintenanceShowContact,\n  "maintenanceImage": maintenanceImage.asset->url,\n  notFoundHeading,\n  notFoundMessage,\n  notFoundButtonLabel,\n  "notFoundImage": notFoundImage.asset->url,\n  mapLocation,\n  mapZoom,\n  mapAddressLabel,\n  mapHidePin,\n  mapAreaRadius\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "navigation"][0] {\n  headerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  headerCtaEnabled,\n  footerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  socialMenu[] {\n    label,\n    url,\n    "icon": icon.asset->url\n  }\n}': NAVIGATION_QUERY_RESULT;
-    '*[_type == "page" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  sections[] {\n    _type,\n    _key,\n    eyebrow, heading, subheading,\n    "backgroundImage": backgroundImage.asset->url,\n    "backgroundImageHotspot": backgroundImage.hotspot,\n    primaryButtonLabel,\n    primaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    secondaryButtonLabel,\n    secondaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    height,\n    theme,\n    columns,\n    imagePosition,\n    imageSize,\n    "image": image.asset->url,\n    text[]{\n      ...,\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    ctaLabel,\n    ctaLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    stats[] { value, label },\n    cards[] {\n      "icon": icon.asset->url,\n      label,\n      title,\n      text\n    },\n    buttonLabel,\n    buttonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    body,\n    title,\n    items[] { question, answer },\n    content[] {\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{ url }\n      },\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    testimonials[]-> {\n      _id,\n      quote,\n      clientName,\n      link->{ _type, "slug": slug.current, title }\n    },\n    formHeading, infoHeading,\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PAGE_QUERY_RESULT;
-    '*[_type == "project"] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title,\n    "categorySlug": category->slug.current,\n    client,\n    duration,\n    size\n  }\n}': PROJECTS_QUERY_RESULT;
-    '*[_type == "project"] | order(orderRank) [0..2] {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title\n  }\n}': FEATURED_PROJECTS_QUERY_RESULT;
+    '*[_type == "page" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  sections[] {\n    _type,\n    _key,\n    eyebrow, heading, subheading,\n    "backgroundImage": backgroundImage.asset->url,\n    "backgroundImageHotspot": backgroundImage.hotspot,\n    "backgroundImageAlt": backgroundImage.alt,\n    primaryButtonLabel,\n    primaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    secondaryButtonLabel,\n    secondaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    height,\n    theme,\n    columns,\n    imagePosition,\n    imageSize,\n    "image": image.asset->url,\n    "imageAlt": image.alt,\n    text[]{\n      ...,\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    ctaLabel,\n    ctaLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    stats[] { value, label },\n    cards[] {\n      "icon": icon.asset->url,\n      label,\n      title,\n      text\n    },\n    buttonLabel,\n    buttonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    body,\n    title,\n    items[] { question, answer },\n    content[] {\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{ url }\n      },\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    testimonials[]-> {\n      _id,\n      quote,\n      clientName,\n      link->{ _type, "slug": slug.current, title }\n    },\n    formHeading, infoHeading,\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PAGE_QUERY_RESULT;
+    '*[_type == "page" && slug.current == "home"][0]\n  .sections[_type == "cardGrid"]{ heading, cards[]{ title, text } }': HOME_SERVICES_QUERY_RESULT;
+    '*[_type == "project"] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  "heroImageAlt": heroImage.alt,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title,\n    "categorySlug": category->slug.current,\n    client,\n    duration,\n    size\n  }\n}': PROJECTS_QUERY_RESULT;
+    '*[_type == "project"] | order(orderRank) [0..2] {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  "heroImageAlt": heroImage.alt,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title\n  }\n}': FEATURED_PROJECTS_QUERY_RESULT;
     '*[_type == "projectCategory" && count(*[_type == "project" && references(^._id)]) > 0] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current\n}': CATEGORIES_QUERY_RESULT;
     '*[_type == "projectCategory"] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current\n}': ALL_CATEGORIES_QUERY_RESULT;
-    '*[_type == "project" && slug.current == $slug][0] {\n  _id,\n  title,\n  "slug": slug.current,\n  description[]{\n    ...,\n    markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n  },\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  details {\n    year,\n    location,\n    "category": category->title,\n    client,\n    duration,\n    size\n  },\n  gallery[] {\n    "url": asset->url,\n    "lqip": asset->metadata.lqip,\n    "aspect": asset->metadata.dimensions.aspectRatio,\n    caption\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PROJECT_QUERY_RESULT;
-    '*[_type == "project" && slug.current != $slug] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  details {\n    year,\n    location,\n    "category": category->title\n  }\n}': OTHER_PROJECTS_QUERY_RESULT;
+    '*[_type == "project" && slug.current == $slug][0] {\n  _id,\n  title,\n  "slug": slug.current,\n  description[]{\n    ...,\n    markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n  },\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  "heroImageAlt": heroImage.alt,\n  details {\n    year,\n    location,\n    "category": category->title,\n    client,\n    duration,\n    size\n  },\n  gallery[] {\n    "url": asset->url,\n    "lqip": asset->metadata.lqip,\n    "aspect": asset->metadata.dimensions.aspectRatio,\n    caption,\n    alt\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PROJECT_QUERY_RESULT;
+    '*[_type == "project" && slug.current != $slug] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  "heroImageAlt": heroImage.alt,\n  details {\n    year,\n    location,\n    "category": category->title\n  }\n}': OTHER_PROJECTS_QUERY_RESULT;
   }
 }

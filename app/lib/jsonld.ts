@@ -40,6 +40,8 @@ interface BuildJsonLdArgs {
   siteUrl: string
   settings: Settings
   socialUrls: string[]
+  /** Home "What we do" cards ({title, text}) — becomes #business.makesOffer. */
+  services?: Array<{ title?: string | null; text?: string | null }> | null
   canonical: string
   /** Clean display title for the current page (not the branded meta title). */
   title: string
@@ -210,6 +212,24 @@ function businessNode(args: BuildJsonLdArgs) {
   if (identifiers.length) node.identifier = identifiers
   const sameAs = normalizeSameAs(socialUrls)
   if (sameAs.length) node.sameAs = sameAs
+
+  // Offer catalogue from the visible "What we do" section (single source of
+  // truth — the CMS cards). Name + short description per Service; nothing
+  // invented, and removing a card removes its Offer on the next build.
+  const offers = (args.services ?? [])
+    .filter((s) => s?.title?.trim())
+    .map((s) => {
+      const service: Record<string, unknown> = {
+        '@type': 'Service',
+        name: s.title!.trim(),
+        areaServed: { '@type': 'City', name: 'Melbourne' },
+        provider: { '@id': `${siteUrl}/#business` },
+      }
+      if (s.text?.trim()) service.description = s.text.trim()
+      return { '@type': 'Offer', itemOffered: service }
+    })
+  if (offers.length) node.makesOffer = offers
+
   return node
 }
 

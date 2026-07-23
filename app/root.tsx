@@ -18,7 +18,7 @@ import spaceGrotesk700 from '@fontsource/space-grotesk/files/space-grotesk-latin
 import '../styles/index.css'
 
 import { client } from './lib/sanity'
-import { SITE_SETTINGS_QUERY, NAVIGATION_QUERY } from './lib/queries'
+import { SITE_SETTINGS_QUERY, NAVIGATION_QUERY, HOME_SERVICES_QUERY } from './lib/queries'
 import { inlineSanitySvgs } from './lib/block-data'
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
@@ -32,14 +32,22 @@ export async function loader() {
   const settings = await client.fetch(SITE_SETTINGS_QUERY)
 
   if (__MAINTENANCE__) {
-    return { settings, navigation: null }
+    return { settings, navigation: null, services: null }
   }
 
   const navigation = await client.fetch(NAVIGATION_QUERY)
   // Inline any Sanity-hosted SVG icons (e.g. footer social icons) so they don't
   // need a cross-origin browser fetch that 403s from non-allow-listed origins.
   await inlineSanitySvgs(navigation)
-  return { settings, navigation }
+
+  // The home page's "What we do" card grid doubles as the canonical service
+  // list for the business schema's makesOffer (see app/lib/jsonld.ts) — one
+  // source of truth, baked into every page's root data like settings/nav.
+  const cardGrids = await client.fetch(HOME_SERVICES_QUERY)
+  const services =
+    (cardGrids ?? []).find((g) => /what we do/i.test(g?.heading ?? ''))?.cards?.filter((c) => c?.title) ?? []
+
+  return { settings, navigation, services }
 }
 
 // Head resources. Preconnect to BOTH Sanity origins — the query API host

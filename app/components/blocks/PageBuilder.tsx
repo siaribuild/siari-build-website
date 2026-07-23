@@ -70,6 +70,7 @@ export function PageBuilder({ sections, blockData }: Props) {
                 subheading={s.subheading}
                 backgroundImage={s.backgroundImage}
                 backgroundImageHotspot={s.backgroundImageHotspot}
+                backgroundImageAlt={s.backgroundImageAlt}
                 primaryButtonLabel={s.primaryButtonLabel}
                 primaryButtonLink={s.primaryButtonLink}
                 secondaryButtonLabel={s.secondaryButtonLabel}
@@ -87,6 +88,7 @@ export function PageBuilder({ sections, blockData }: Props) {
                 subheading={s.subheading}
                 backgroundImage={s.backgroundImage}
                 backgroundImageHotspot={s.backgroundImageHotspot}
+                backgroundImageAlt={s.backgroundImageAlt}
               />
             )
 
@@ -124,6 +126,7 @@ export function PageBuilder({ sections, blockData }: Props) {
                 imagePosition={s.imagePosition}
                 imageSize={s.imageSize}
                 image={s.image}
+                imageAlt={s.imageAlt}
                 eyebrow={s.eyebrow}
                 heading={s.heading}
                 text={s.text}

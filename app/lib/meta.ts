@@ -101,10 +101,12 @@ export function buildMeta({
   matches,
 }: BuildMetaArgs): MetaDescriptor[] {
   const root = matches?.find((m) => m?.id === 'root')?.data as
-    | { settings?: any; navigation?: any }
+    | { settings?: any; navigation?: any; services?: any }
     | undefined
   const settings = root?.settings ?? {}
   const navigation = root?.navigation ?? {}
+  // Home "What we do" cards, baked into root data — feeds #business.makesOffer.
+  const services = Array.isArray(root?.services) ? root.services : []
 
   const siteName = pageSeo?.openGraph?.siteName || settings?.siteName || 'SIARI Build'
 
@@ -205,6 +207,7 @@ export function buildMeta({
     siteUrl: SITE_URL,
     settings,
     socialUrls,
+    services,
     canonical,
     title: fallbackTitle?.trim() || documentTitle,
     description,

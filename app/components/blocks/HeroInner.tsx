@@ -14,13 +14,15 @@ interface Props {
   subheading?: string
   backgroundImage: string
   backgroundImageHotspot?: { x?: number; y?: number } | null
+  /** Authored alt text; empty (decorative) when the editor leaves it blank. */
+  backgroundImageAlt?: string | null
 }
 
-export function HeroInner({ height = 'half', eyebrow, heading, subheading, backgroundImage, backgroundImageHotspot }: Props) {
+export function HeroInner({ height = 'half', eyebrow, heading, subheading, backgroundImage, backgroundImageHotspot, backgroundImageAlt }: Props) {
   return (
     <section className={`on-media section--dark relative ${heightMap[height]} flex items-center justify-center overflow-hidden`}>
       <div className="absolute inset-0 opacity-30 hero-zoom">
-        <CdnImage src={backgroundImage} hotspot={backgroundImageHotspot} alt="" fill priority sizes="100vw"
+        <CdnImage src={backgroundImage} hotspot={backgroundImageHotspot} alt={backgroundImageAlt || ''} fill priority sizes="100vw"
           widths={[768, 1024, 1366, 1600, 1920]} />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

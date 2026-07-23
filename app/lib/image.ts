@@ -68,3 +68,20 @@ export function localFallbackPath(url: string | undefined | null): string {
   if (!m) return ''
   return `/img-fallback/${m[1]}.${m[2].toLowerCase()}`
 }
+
+// ── Alt-text fallback for project imagery ───────────────────────────────────
+// Used when a project image has no authored alt (and, for gallery items, no
+// caption): builds a descriptive, project-specific alt from CMS facts only —
+// e.g. "Tarneit Cathedral Residence — Custom Home in Tarneit, VIC by SIARI
+// Build (photo 3)". `photo` (0-based) keeps multiple gallery images distinct.
+export function projectImageAlt(
+  p: {
+    title?: string | null
+    details?: { category?: string | null; location?: string | null } | null
+  },
+  photo?: number,
+): string {
+  const subject = [p.title, p.details?.category].filter(Boolean).join(' — ')
+  const base = `${subject || 'SIARI Build project'} in ${p.details?.location || 'Melbourne'} by SIARI Build`
+  return photo != null ? `${base} (photo ${photo + 1})` : base
+}

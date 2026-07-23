@@ -9,6 +9,8 @@ interface Props {
   subheading?: string
   backgroundImage: string
   backgroundImageHotspot?: { x?: number; y?: number } | null
+  /** Authored alt text; empty (decorative) when the editor leaves it blank. */
+  backgroundImageAlt?: string | null
   primaryButtonLabel?: string
   primaryButtonLink?: SanityLink | null
   secondaryButtonLabel?: string
@@ -16,7 +18,7 @@ interface Props {
 }
 
 export function HeroHome({
-  eyebrow, heading, subheading, backgroundImage, backgroundImageHotspot,
+  eyebrow, heading, subheading, backgroundImage, backgroundImageHotspot, backgroundImageAlt,
   primaryButtonLabel, primaryButtonLink,
   secondaryButtonLabel, secondaryButtonLink,
 }: Props) {
@@ -32,7 +34,7 @@ export function HeroHome({
         <CdnImage
           src={backgroundImage}
           hotspot={backgroundImageHotspot}
-          alt=""
+          alt={backgroundImageAlt || ''}
           fill
           priority
           sizes="100vw"

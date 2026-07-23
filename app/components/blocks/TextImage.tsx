@@ -26,6 +26,8 @@ interface Props {
   imagePosition?: 'left' | 'right'
   imageSize?: 'tall' | 'medium' | 'short'
   image: string
+  /** Authored alt text; when absent the image stays decorative (no img role). */
+  imageAlt?: string | null
   eyebrow?: string
   heading?: string
   text?: any[]
@@ -34,7 +36,7 @@ interface Props {
   ctaLink?: SanityLink | null
 }
 
-export function TextImage({ theme = 'light', imagePosition = 'left', imageSize = 'tall', image, eyebrow, heading, text, stats, ctaLabel, ctaLink, joinTop, joinBottom }: Props) {
+export function TextImage({ theme = 'light', imagePosition = 'left', imageSize = 'tall', image, imageAlt, eyebrow, heading, text, stats, ctaLabel, ctaLink, joinTop, joinBottom }: Props) {
   const imageCol = imagePosition === 'left' ? 'lg:order-1' : 'lg:order-2'
   const textCol = imagePosition === 'left' ? 'lg:order-2' : 'lg:order-1'
   // When the block is just a heading (no eyebrow, stats, or button), let it run large.
@@ -51,7 +53,13 @@ export function TextImage({ theme = 'light', imagePosition = 'left', imageSize =
             className={`relative ${imgHeightMap[imageSize] || imgHeightMap.tall} overflow-hidden order-1 ${imageCol}`}
             style={{ clipPath: 'polygon(0 0, calc(100% - 60px) 0, 100% 60px, 100% 100%, 0 100%)' }}
           >
-            <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${img(image, { w: 1200 })})` }}>
+            {/* CSS background, so alt is conveyed via role="img" + aria-label
+                when authored; without alt it stays decorative (no img role). */}
+            <div
+              className="absolute inset-0 bg-cover bg-center w-full h-full"
+              style={{ backgroundImage: `url(${img(image, { w: 1200 })})` }}
+              {...(imageAlt ? { role: 'img', 'aria-label': imageAlt } : {})}
+            >
               <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-transparent" />
             </div>
           </div>

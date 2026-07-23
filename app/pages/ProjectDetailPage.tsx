@@ -2,7 +2,7 @@ import { useNavigate, Link } from 'react-router'
 import { ArrowLeft, MapPin, Calendar, Ruler, User, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { PortableText } from '@portabletext/react'
-import { img as cdnImg, srcSet } from '../lib/image'
+import { img as cdnImg, srcSet, projectImageAlt } from '../lib/image'
 import { CdnImage } from '../components/CdnImage'
 import { BlurUpImage } from '../components/BlurUpImage'
 import type { PROJECT_QUERY_RESULT, OTHER_PROJECTS_QUERY_RESULT } from '../lib/sanity.types'
@@ -36,7 +36,8 @@ export function ProjectDetailPage({ project, otherProjects }: { project: NonNull
         <div
           className="absolute inset-0 hero-zoom"
         >
-          <CdnImage src={project.heroImage} hotspot={project.heroImageHotspot} alt="" fill priority sizes="100vw"
+          <CdnImage src={project.heroImage} hotspot={project.heroImageHotspot}
+            alt={project.heroImageAlt || projectImageAlt(project)} fill priority sizes="100vw"
             widths={[768, 1024, 1366, 1600, 1920, 2560]} />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60" />
         </div>
@@ -136,6 +137,7 @@ export function ProjectDetailPage({ project, otherProjects }: { project: NonNull
                   <BlurUpImage
                     url={img.url ?? ''}
                     lqip={img.lqip ?? undefined}
+                    alt={img.alt || img.caption || projectImageAlt(project, i)}
                     widths={[480, 768, 1000, 1400]}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     w={1000}
@@ -167,7 +169,7 @@ export function ProjectDetailPage({ project, otherProjects }: { project: NonNull
                     <img src={cdnImg(p.heroImage, { w: 800 })} crossOrigin="anonymous"
                       srcSet={srcSet(p.heroImage, { widths: [400, 600, 800] }) || undefined}
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      alt={p.title ?? ''} width={800} height={350} loading="lazy" decoding="async"
+                      alt={p.heroImageAlt || projectImageAlt(p)} width={800} height={350} loading="lazy" decoding="async"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     <div className="absolute top-0 left-0 p-4 text-[#F5F3EF] text-sm opacity-90">{p.details?.location} • {p.details?.year}</div>
@@ -194,7 +196,7 @@ export function ProjectDetailPage({ project, otherProjects }: { project: NonNull
           <button aria-label="Previous image" className="absolute left-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i - 1 + gallery.length) % gallery.length : null) }}><ChevronLeft size={32} /></button>
           <button aria-label="Next image" className="absolute right-6 top-1/2 -translate-y-1/2 text-white hover-accent z-10 p-3 bg-black/50" style={{ clipPath: 'polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%)' }} onClick={(e) => { e.stopPropagation(); setLightboxImage(i => i !== null ? (i + 1) % gallery.length : null) }}><ChevronRight size={32} /></button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-sm bg-black/50 px-4 py-2">{lightboxImage + 1} / {gallery.length}</div>
-          <img src={cdnImg(gallery[lightboxImage].url, { w: 2000, q: 82 })} crossOrigin="anonymous" alt={`${project.title} — image ${lightboxImage + 1}`} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
+          <img src={cdnImg(gallery[lightboxImage].url, { w: 2000, q: 82 })} crossOrigin="anonymous" alt={gallery[lightboxImage].alt || gallery[lightboxImage].caption || projectImageAlt(project, lightboxImage)} decoding="async" className="max-w-full max-h-full object-contain" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </>

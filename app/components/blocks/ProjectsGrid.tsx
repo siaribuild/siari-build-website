@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { themeBg, type Theme } from './themeUtils'
-import { img, srcSet } from '../../lib/image'
+import { img, srcSet, projectImageAlt } from '../../lib/image'
 import type { PROJECTS_QUERY_RESULT, CATEGORIES_QUERY_RESULT } from '../../lib/sanity.types'
 
 interface Props { theme?: Theme; joinTop?: boolean; joinBottom?: boolean; projects?: PROJECTS_QUERY_RESULT | null; categories?: CATEGORIES_QUERY_RESULT | null }
@@ -85,7 +85,7 @@ export function ProjectsGrid({ theme = 'light', joinTop, joinBottom, projects, c
                     src={img(project.heroImage, { w: 800 })}
                     srcSet={srcSet(project.heroImage, { widths: [400, 600, 800, 1000] }) || undefined}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    alt={project.title ?? ''}
+                    alt={project.heroImageAlt || projectImageAlt(project)}
                     width={800}
                     height={400}
                     loading="lazy"

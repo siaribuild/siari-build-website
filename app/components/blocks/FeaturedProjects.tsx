@@ -4,6 +4,7 @@ import type { SanityLink } from '../../lib/links'
 import { themeBg, sectionPad, type Theme } from './themeUtils'
 import { renderMultiline } from './renderMultiline'
 import { CdnImage } from '../CdnImage'
+import { projectImageAlt } from '../../lib/image'
 import type { FEATURED_PROJECTS_QUERY_RESULT } from '../../lib/sanity.types'
 
 interface Props {
@@ -60,7 +61,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
             onClick={() => navigate(`/projects/${first.slug}`)}
             style={{ clipPath: 'polygon(0 0, calc(100% - 60px) 0, 100% 60px, 100% 100%, 0 100%)' }}
           >
-            <CdnImage src={first.heroImage ?? ''} alt={first.title ?? ''}
+            <CdnImage src={first.heroImage ?? ''} alt={first.heroImageAlt || projectImageAlt(first)}
               className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
               fill sizes="(max-width: 1024px) 100vw, 50vw" widths={[640, 768, 1024, 1400]} />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
@@ -83,7 +84,7 @@ export function FeaturedProjects({ theme = 'dark', eyebrow, heading, ctaLabel, c
                 onClick={() => navigate(`/projects/${project.slug}`)}
                 style={{ clipPath: 'polygon(0 0, calc(100% - 45px) 0, 100% 45px, 100% 100%, 0 100%)' }}
               >
-                <CdnImage src={project.heroImage ?? ''} alt={project.title ?? ''}
+                <CdnImage src={project.heroImage ?? ''} alt={project.heroImageAlt || projectImageAlt(project)}
                   className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                   fill sizes="(max-width: 767px) 100vw, 50vw" widths={[480, 640, 768, 1000]} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />

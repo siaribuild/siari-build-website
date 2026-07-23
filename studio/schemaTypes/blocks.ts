@@ -2,6 +2,17 @@ import {defineField, defineType, defineArrayMember} from 'sanity'
 import {headingField} from './headingField'
 
 // ─────────────────────────────────────────────
+// Shared alt-text field for content images (reused across blocks)
+// ─────────────────────────────────────────────
+const altField = defineField({
+  name: 'alt',
+  title: 'Alt text',
+  type: 'string',
+  description:
+    'Describe the image for search engines and screen readers. Leave blank on purely decorative images.',
+})
+
+// ─────────────────────────────────────────────
 // Shared theme field (reused across all blocks)
 // ─────────────────────────────────────────────
 const themeField = defineField({
@@ -47,6 +58,7 @@ export const heroHome = defineType({
       title: 'Background Image',
       type: 'image',
       options: {hotspot: true},
+      fields: [altField],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -114,6 +126,7 @@ export const heroInner = defineType({
       title: 'Background Image',
       type: 'image',
       options: {hotspot: true},
+      fields: [altField],
       validation: (Rule) => Rule.required(),
     }),
   ],
@@ -297,7 +310,7 @@ export const textImage = defineType({
       },
       initialValue: 'left',
     }),
-    defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, validation: (Rule) => Rule.required()}),
+    defineField({name: 'image', title: 'Image', type: 'image', options: {hotspot: true}, fields: [altField], validation: (Rule) => Rule.required()}),
     defineField({
       name: 'imageSize',
       title: 'Image Height',
