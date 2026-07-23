@@ -20,12 +20,14 @@ export function RichText({ theme = 'light', eyebrow, heading, content, joinTop, 
           <div className="mb-4 text-sm tracking-[0.3em] uppercase text-accent">{eyebrow}</div>
         )}
         {heading && (
-          <h1
+          // Section heading — NOT the page title (the hero supplies the single
+          // <h1>). Kept visually identical via the classes/inline styles below.
+          <h2
             className="mb-10 uppercase"
             style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 700, lineHeight: 1.05, letterSpacing: '-0.02em' }}
           >
             {renderMultiline(heading)}
-          </h1>
+          </h2>
         )}
         {content && (
           <div className="text-lg">

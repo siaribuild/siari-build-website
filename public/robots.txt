@@ -1,3 +1,19 @@
+# ── SIARI Build — robots.txt ────────────────────────────────────────────────
+# Policy: OPEN. All crawlers are allowed, including AI answer-engine and
+# training crawlers (e.g. GPTBot, ClaudeBot, OAI-SearchBot, PerplexityBot,
+# CCBot). This maximises BOTH traditional search and AEO (answer-engine)
+# visibility, so the site can be read and cited by ChatGPT, Perplexity, etc.
+#
+# Task 9 of the SEO/AEO brief is a STRATEGIC/owner decision — change this file
+# only by owner sign-off. To opt out of AI *training* while still allowing
+# live-retrieval/answer crawlers (keeping citation reach), add targeted blocks
+# below, e.g.:
+#     User-agent: GPTBot
+#     Disallow: /
+#     User-agent: CCBot
+#     Disallow: /
+# and leave the retrieval bots (OAI-SearchBot, PerplexityBot, ClaudeBot) allowed.
+
 User-agent: *
 Allow: /
 

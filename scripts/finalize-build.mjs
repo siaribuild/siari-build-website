@@ -9,6 +9,15 @@
 
 import { readdir, readFile, writeFile, mkdir, stat } from 'node:fs/promises'
 import { join, relative } from 'node:path'
+import { createClient } from '@sanity/client'
+import { config as loadEnv } from 'dotenv'
+
+// This runs as a SEPARATE node process after `react-router build`, so — unlike
+// vite.config.ts / maintenance.ts — Vite hasn't populated env for us. Load
+// .env.local then .env (dotenv won't override already-set vars, so .env.local
+// wins, matching Vite's precedence) before reading any VITE_* value.
+loadEnv({ path: '.env.local' })
+loadEnv()
 
 const OUT = 'build/client'
 const SITE_URL = (process.env.VITE_SITE_URL || '').replace(/\/$/, '')
@@ -87,28 +96,78 @@ async function main() {
   }
 
   // ── 2. sitemap.xml ────────────────────────────────────────────────────────
+  // Sanity-driven so it can (a) carry a real <lastmod> from each document's
+  // _updatedAt and (b) EXCLUDE noindex URLs (e.g. Privacy Policy) — neither of
+  // which the filesystem walk can know. Includes every page + every project
+  // detail page. Falls back to the filesystem list only if Sanity is
+  // unreachable, so a transient blip never ships a site with no sitemap.
   if (!SITE_URL) {
     console.warn('sitemap: VITE_SITE_URL not set — skipping sitemap.xml')
     return
   }
-  const htmlFiles = files.filter((f) => f.endsWith('index.html'))
-  const paths = new Set()
-  for (const f of htmlFiles) {
-    // build/client/index.html -> ""  |  build/client/about/index.html -> "about"
-    const rel = relative(OUT, f).replace(/\\/g, '/').replace(/\/?index\.html$/, '')
-    if (rel.startsWith('__')) continue // skip SPA fallback / error shells
-    paths.add(rel)
+
+  // W3C date (YYYY-MM-DD) is a valid <lastmod>; drop the time for stability.
+  const lastmod = (iso) => (iso ? String(iso).slice(0, 10) : undefined)
+  const urlEntry = (loc, mod) =>
+    `  <url><loc>${loc}</loc>${mod ? `<lastmod>${mod}</lastmod>` : ''}</url>`
+
+  let entries = []
+  try {
+    const projectId = process.env.VITE_SANITY_PROJECT_ID
+    const dataset = process.env.VITE_SANITY_DATASET
+    if (!projectId || !dataset) throw new Error('VITE_SANITY_PROJECT_ID / VITE_SANITY_DATASET not set')
+
+    const sanity = createClient({
+      projectId,
+      dataset,
+      apiVersion: process.env.VITE_SANITY_API_VERSION || '2025-06-18',
+      useCdn: true,
+      perspective: 'published',
+    })
+
+    // `noindex` mirrors resolveRobots() in app/lib/meta.ts: the Noindex toggle
+    // OR an explicit "noindex" in robotsMeta[].
+    const NOINDEX = `(seo.nofollowAttributes == true || "noindex" in (seo.robotsMeta[]))`
+    const { pages, projects } = await sanity.fetch(
+      `{
+        "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt, "noindex": ${NOINDEX} },
+        "projects": *[_type == "project" && defined(slug.current)]{ "slug": slug.current, _updatedAt, "noindex": ${NOINDEX} }
+      }`,
+    )
+
+    for (const p of pages ?? []) {
+      if (p.noindex) continue
+      // "home" is the site root; every other page is /<slug> (no trailing slash,
+      // matching the canonical in app/lib/meta.ts).
+      const loc = p.slug === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${p.slug}`
+      entries.push({ loc, mod: lastmod(p._updatedAt), sort: p.slug === 'home' ? '' : p.slug })
+    }
+    for (const pr of projects ?? []) {
+      if (pr.noindex) continue
+      entries.push({ loc: `${SITE_URL}/projects/${pr.slug}`, mod: lastmod(pr._updatedAt), sort: `projects/${pr.slug}` })
+    }
+    console.log(`sitemap: built from Sanity (${entries.length} indexable urls)`)
+  } catch (err) {
+    // Fallback: derive from prerendered output (no lastmod, no noindex filter).
+    console.warn(`sitemap: Sanity fetch failed (${err.message}) — falling back to filesystem list`)
+    const htmlFiles = files.filter((f) => f.endsWith('index.html'))
+    const seen = new Set()
+    for (const f of htmlFiles) {
+      const rel = relative(OUT, f).replace(/\\/g, '/').replace(/\/?index\.html$/, '')
+      if (rel.startsWith('__')) continue
+      if (seen.has(rel)) continue
+      seen.add(rel)
+      entries.push({ loc: `${SITE_URL}/${rel}`, mod: undefined, sort: rel })
+    }
   }
-  const body = [...paths]
-    .sort()
-    // Emit URLs WITHOUT a trailing slash (except root) to match the route
-    // canonicals in app/lib/meta.ts (e.g. /about, /projects/<slug>). Keeping the
-    // sitemap and <link rel="canonical"> identical avoids duplicate-URL signals.
-    .map((p) => `  <url><loc>${SITE_URL}/${p}</loc></url>`)
+
+  const body = entries
+    .sort((a, b) => a.sort.localeCompare(b.sort))
+    .map((e) => urlEntry(e.loc, e.mod))
     .join('\n')
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`
   await writeFile(join(OUT, 'sitemap.xml'), xml)
-  console.log(`sitemap: ${paths.size} urls -> ${join(OUT, 'sitemap.xml')}`)
+  console.log(`sitemap: ${entries.length} urls -> ${join(OUT, 'sitemap.xml')}`)
 }
 
 main().catch((err) => {
