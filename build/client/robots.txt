@@ -1,19 +1,68 @@
 # ── SIARI Build — robots.txt ────────────────────────────────────────────────
-# Policy: OPEN. All crawlers are allowed, including AI answer-engine and
-# training crawlers (e.g. GPTBot, ClaudeBot, OAI-SearchBot, PerplexityBot,
-# CCBot). This maximises BOTH traditional search and AEO (answer-engine)
-# visibility, so the site can be read and cited by ChatGPT, Perplexity, etc.
+# Policy: OPTION 1 — "allow AI answers, block AI training" (owner-approved
+# 23 Jul 2026). AI *retrieval/answer* crawlers may read pages so SIARI can be
+# cited in AI answers (ChatGPT Search, Perplexity, Claude, Google AI
+# Overviews); AI *training* crawlers may not use the content to train models.
 #
-# Task 9 of the SEO/AEO brief is a STRATEGIC/owner decision — change this file
-# only by owner sign-off. To opt out of AI *training* while still allowing
-# live-retrieval/answer crawlers (keeping citation reach), add targeted blocks
-# below, e.g.:
-#     User-agent: GPTBot
-#     Disallow: /
-#     User-agent: CCBot
-#     Disallow: /
-# and leave the retrieval bots (OAI-SearchBot, PerplexityBot, ClaudeBot) allowed.
+# NOTE: Cloudflare's "AI Crawl Control" prepends its own managed rules and can
+# 403 AI bots at the WAF regardless of this file. For this policy to take
+# effect, the Cloudflare setting must allow the retrieval bots listed below
+# (see the deployment notes). Keep the two in sync.
+#
+# Content signals (see contentsignals.org): search + AI answers allowed,
+# training opted out.
 
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# --- AI answer/retrieval crawlers: ALLOWED (cite SIARI in AI answers) -------
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Google-Extended ALLOWED (owner decision): permits Gemini / AI Overviews
+# grounding, maximising visibility in Google's AI answers. Normal Google
+# Search crawling is governed by Googlebot, not this token.
+User-agent: Google-Extended
+Allow: /
+
+# --- AI training crawlers: DISALLOWED (content not for model training) ------
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+# --- Everyone else (incl. Googlebot / Bingbot): ALLOWED ---------------------
 User-agent: *
 Allow: /
 
