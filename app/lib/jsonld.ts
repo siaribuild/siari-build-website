@@ -152,6 +152,27 @@ function parseAddress(address?: string | null) {
   return { locality, region }
 }
 
+/**
+ * Normalise the CMS social links (navigation.socialMenu[].url) into a clean
+ * `sameAs` list: trimmed, absolute http(s) URLs only, de-duplicated
+ * case-insensitively (ignoring a trailing slash), original casing kept.
+ * The CMS is the single source of truth — like the sitemap, `sameAs` is
+ * derived from content, never hand-maintained.
+ */
+function normalizeSameAs(urls: string[]): string[] {
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const raw of urls) {
+    const u = (raw ?? '').trim()
+    if (!/^https?:\/\//i.test(u)) continue
+    const key = u.toLowerCase().replace(/\/+$/, '')
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(u)
+  }
+  return out
+}
+
 // ── Node builders ────────────────────────────────────────────────────────────
 
 function businessNode(args: BuildJsonLdArgs) {
@@ -187,7 +208,8 @@ function businessNode(args: BuildJsonLdArgs) {
   node.areaServed = { '@type': 'City', name: 'Melbourne' }
   if (hours.length) node.openingHoursSpecification = hours
   if (identifiers.length) node.identifier = identifiers
-  if (socialUrls.length) node.sameAs = socialUrls
+  const sameAs = normalizeSameAs(socialUrls)
+  if (sameAs.length) node.sameAs = sameAs
   return node
 }
 
