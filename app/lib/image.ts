@@ -69,6 +69,23 @@ export function localFallbackPath(url: string | undefined | null): string {
   return `/img-fallback/${m[1]}.${m[2].toLowerCase()}`
 }
 
+// ── Multi-aspect-ratio crops for structured data (Google search thumbnails) ──
+// Google recommends supplying the SAME photo at 16:9, 4:3 and 1:1 (min 1200px
+// wide) in Schema.org `image`, so it can pick the right crop per surface. We
+// emit 1:1 FIRST because the square search-result slot is the one that
+// letterboxes a 1.91:1 card. Sanity crops these on the fly; a non-Sanity URL
+// can't be cropped, so it's passed through unchanged rather than emitting a
+// broken transform. Returns undefined for empty input (caller omits the field).
+export function imageSet(src?: string | null): string[] | undefined {
+  if (!src) return undefined
+  if (!src.includes('cdn.sanity.io')) return [src]
+  return [
+    img(src, { w: 1200, h: 1200, fit: 'crop' }), // 1:1
+    img(src, { w: 1200, h: 900, fit: 'crop' }), // 4:3
+    img(src, { w: 1200, h: 675, fit: 'crop' }), // 16:9
+  ]
+}
+
 // ── Alt-text fallback for project imagery ───────────────────────────────────
 // Used when a project image has no authored alt (and, for gallery items, no
 // caption): builds a descriptive, project-specific alt from CMS facts only —

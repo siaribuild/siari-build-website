@@ -32,7 +32,7 @@ export async function loader() {
   const settings = await client.fetch(SITE_SETTINGS_QUERY)
 
   if (__MAINTENANCE__) {
-    return { settings, navigation: null, services: null }
+    return { settings, navigation: null, services: null, businessImage: null }
   }
 
   const navigation = await client.fetch(NAVIGATION_QUERY)
@@ -47,7 +47,12 @@ export async function loader() {
   const services =
     (cardGrids ?? []).find((g) => /what we do/i.test(g?.heading ?? ''))?.cards?.filter((c) => c?.title) ?? []
 
-  return { settings, navigation, services }
+  // Site-wide brand image for GeneralContractor.image: the editor-chosen
+  // businessImage (a square brand tile) when set, else the branded OG card
+  // (handled in jsonld.ts). Baked once so every page's business node matches.
+  const businessImage = settings?.businessImage || null
+
+  return { settings, navigation, services, businessImage }
 }
 
 // Head resources. Preconnect to BOTH Sanity origins — the query API host

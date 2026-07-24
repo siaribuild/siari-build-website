@@ -41,6 +41,30 @@ export const siteSettings = defineType({
       description: 'Footer small print at the very bottom, e.g. "ABN 12 345 678 901 | Builder License VIC 123456"',
     }),
 
+    // ── Search / structured data ──
+    defineField({
+      name: 'businessImage',
+      title: 'Business Image (search results)',
+      type: 'image',
+      options: {hotspot: true},
+      description:
+        'Representative image used as the business image in search results. Upload a SQUARE master ' +
+        'at least 1200×1200 (1600×1600 preferred) — it is auto-cropped to 1:1, 4:3 and 16:9. Keep key ' +
+        'content inside the centred horizontal band (~56% of height) so nothing is trimmed. Use a SOLID ' +
+        'background — transparency renders unpredictably in Google surfaces. Separate from the logo field. ' +
+        'Set the image hotspot after upload to control crop centring. If left blank, the branded card is used.',
+      group: 'general',
+    }),
+    defineField({
+      name: 'logo',
+      title: 'Logo (search results)',
+      type: 'image',
+      description:
+        'Optional raster logo (PNG/JPG/WebP — NOT SVG) used in structured data. ' +
+        'Leave blank to use the built-in icon. Does not change the logo shown on the site.',
+      group: 'general',
+    }),
+
     // ── Maintenance Mode (just the toggle) ──
     defineField({
       name: 'maintenanceEnabled',

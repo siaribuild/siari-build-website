@@ -53,6 +53,8 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings"][0] {
   copyrightText,
   legalLine,
   workingHours,
+  "businessImage": businessImage.asset->url,
+  "logo": logo.asset->url,
   maintenanceEnabled,
   maintenanceHeading,
   maintenanceMessage,

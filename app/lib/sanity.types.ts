@@ -139,6 +139,20 @@ export type SiteSettings = {
   workingHours?: string;
   copyrightText?: string;
   legalLine?: string;
+  businessImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  logo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   maintenanceEnabled?: boolean;
   maintenanceHeading?: string;
   maintenanceMessage?: string;
@@ -764,7 +778,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../app/lib/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings"][0] {  siteName,  tagline,  phone,  email,  address,  copyrightText,  legalLine,  workingHours,  maintenanceEnabled,  maintenanceHeading,  maintenanceMessage,  maintenanceShowContact,  "maintenanceImage": maintenanceImage.asset->url,  notFoundHeading,  notFoundMessage,  notFoundButtonLabel,  "notFoundImage": notFoundImage.asset->url,  mapLocation,  mapZoom,  mapAddressLabel,  mapHidePin,  mapAreaRadius}
+// Query: *[_type == "siteSettings"][0] {  siteName,  tagline,  phone,  email,  address,  copyrightText,  legalLine,  workingHours,  "businessImage": businessImage.asset->url,  "logo": logo.asset->url,  maintenanceEnabled,  maintenanceHeading,  maintenanceMessage,  maintenanceShowContact,  "maintenanceImage": maintenanceImage.asset->url,  notFoundHeading,  notFoundMessage,  notFoundButtonLabel,  "notFoundImage": notFoundImage.asset->url,  mapLocation,  mapZoom,  mapAddressLabel,  mapHidePin,  mapAreaRadius}
 export type SITE_SETTINGS_QUERY_RESULT = {
   siteName: string | null;
   tagline: string | null;
@@ -774,6 +788,8 @@ export type SITE_SETTINGS_QUERY_RESULT = {
   copyrightText: string | null;
   legalLine: string | null;
   workingHours: string | null;
+  businessImage: string | null;
+  logo: string | null;
   maintenanceEnabled: boolean | null;
   maintenanceHeading: string | null;
   maintenanceMessage: string | null;
@@ -1793,7 +1809,7 @@ export type OTHER_PROJECTS_QUERY_RESULT = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "siteSettings"][0] {\n  siteName,\n  tagline,\n  phone,\n  email,\n  address,\n  copyrightText,\n  legalLine,\n  workingHours,\n  maintenanceEnabled,\n  maintenanceHeading,\n  maintenanceMessage,\n  maintenanceShowContact,\n  "maintenanceImage": maintenanceImage.asset->url,\n  notFoundHeading,\n  notFoundMessage,\n  notFoundButtonLabel,\n  "notFoundImage": notFoundImage.asset->url,\n  mapLocation,\n  mapZoom,\n  mapAddressLabel,\n  mapHidePin,\n  mapAreaRadius\n}': SITE_SETTINGS_QUERY_RESULT;
+    '*[_type == "siteSettings"][0] {\n  siteName,\n  tagline,\n  phone,\n  email,\n  address,\n  copyrightText,\n  legalLine,\n  workingHours,\n  "businessImage": businessImage.asset->url,\n  "logo": logo.asset->url,\n  maintenanceEnabled,\n  maintenanceHeading,\n  maintenanceMessage,\n  maintenanceShowContact,\n  "maintenanceImage": maintenanceImage.asset->url,\n  notFoundHeading,\n  notFoundMessage,\n  notFoundButtonLabel,\n  "notFoundImage": notFoundImage.asset->url,\n  mapLocation,\n  mapZoom,\n  mapAddressLabel,\n  mapHidePin,\n  mapAreaRadius\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "navigation"][0] {\n  headerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  headerCtaEnabled,\n  footerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  socialMenu[] {\n    label,\n    url,\n    "icon": icon.asset->url,\n    hideFromMenu\n  }\n}': NAVIGATION_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  sections[] {\n    _type,\n    _key,\n    eyebrow, heading, subheading,\n    "backgroundImage": backgroundImage.asset->url,\n    "backgroundImageHotspot": backgroundImage.hotspot,\n    "backgroundImageAlt": backgroundImage.alt,\n    primaryButtonLabel,\n    primaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    secondaryButtonLabel,\n    secondaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    height,\n    theme,\n    columns,\n    imagePosition,\n    imageSize,\n    "image": image.asset->url,\n    "imageAlt": image.alt,\n    text[]{\n      ...,\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    ctaLabel,\n    ctaLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    stats[] { value, label },\n    cards[] {\n      "icon": icon.asset->url,\n      label,\n      title,\n      text\n    },\n    buttonLabel,\n    buttonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    body,\n    title,\n    items[] { question, answer },\n    content[] {\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{ url }\n      },\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    testimonials[]-> {\n      _id,\n      quote,\n      clientName,\n      link->{ _type, "slug": slug.current, title }\n    },\n    formHeading, infoHeading,\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PAGE_QUERY_RESULT;
     '*[_type == "page" && slug.current == "home"][0]\n  .sections[_type == "cardGrid"]{ heading, cards[]{ title, text } }': HOME_SERVICES_QUERY_RESULT;

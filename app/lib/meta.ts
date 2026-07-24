@@ -55,6 +55,9 @@ interface BuildMetaArgs {
   preloadWidths?: number[]
   /** Q&A pairs from the page's visible FAQ block(s) — see faqItemsOf(). */
   faqItems?: Array<{ question?: string | null; answer?: string | null }> | null
+  /** This page's representative photo (its hero) — drives WebPage.primaryImageOfPage.
+   *  JSON-LD only; never affects og:image. */
+  pagePhoto?: string | null
   /** RR passes `matches`; we read the root loader's baked settings + nav from it. */
   matches?: Array<{ id: string; data?: unknown }>
 }
@@ -98,13 +101,17 @@ export function buildMeta({
   preloadImage,
   preloadWidths,
   faqItems,
+  pagePhoto,
   matches,
 }: BuildMetaArgs): MetaDescriptor[] {
   const root = matches?.find((m) => m?.id === 'root')?.data as
-    | { settings?: any; navigation?: any; services?: any }
+    | { settings?: any; navigation?: any; services?: any; businessImage?: string | null }
     | undefined
   const settings = root?.settings ?? {}
   const navigation = root?.navigation ?? {}
+  // Site-wide brand image (settings.businessImage), resolved once in the root
+  // loader and baked into every page — drives GeneralContractor.image.
+  const businessImage = root?.businessImage ?? null
   // Home "What we do" cards, baked into root data — feeds #business.makesOffer.
   const services = Array.isArray(root?.services) ? root.services : []
 
@@ -221,6 +228,8 @@ export function buildMeta({
     datePublished,
     dateModified,
     faqItems,
+    businessImage,
+    pagePhoto,
   })
   if (graph) tags.push({ 'script:ld+json': graph } as MetaDescriptor)
 

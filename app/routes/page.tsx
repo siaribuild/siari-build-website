@@ -36,6 +36,7 @@ export function meta({ data, matches, params }: MetaArgs<typeof loader>) {
     fallbackTitle: data?.page?.title,
     path: `/${params.slug}`,
     preloadImage: heroImageOf(data?.page),
+    pagePhoto: heroImageOf(data?.page),
     faqItems: faqItemsOf(data?.page),
     matches,
   })

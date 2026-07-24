@@ -34,6 +34,7 @@ export function meta({ data, matches }: MetaArgs<typeof loader>) {
     fallbackImage: p?.heroImage,
     path: p ? `/projects/${p.slug}` : '',
     preloadImage: p?.heroImage,
+    pagePhoto: p?.heroImage,
     matches,
   })
 }
