@@ -25,6 +25,7 @@ export function meta({ data, matches }: MetaArgs<typeof loader>) {
     fallbackTitle: data?.page?.title,
     path: '',
     preloadImage: heroImageOf(data?.page),
+    pagePhoto: heroImageOf(data?.page),
     faqItems: faqItemsOf(data?.page),
     matches,
   })

@@ -53,6 +53,8 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings"][0] {
   copyrightText,
   legalLine,
   workingHours,
+  "businessPhoto": businessPhoto.asset->url,
+  "logo": logo.asset->url,
   maintenanceEnabled,
   maintenanceHeading,
   maintenanceMessage,
@@ -148,6 +150,12 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   },
   ${SEO_FRAGMENT}
 }`)
+
+// ─── Home hero image URL (site-wide business photo fallback for JSON-LD) ──────
+// Used when siteSettings.businessPhoto is empty, so the GeneralContractor image
+// is still a real photograph rather than the branded OG card.
+export const HOME_HERO_QUERY = defineQuery(`*[_type == "page" && slug.current == "home"][0]
+  .sections[_type == "heroHome" || _type == "heroInner"][0].backgroundImage.asset->url`)
 
 // ─── Home "What We Do" services (feeds the business schema's makesOffer) ──────
 // All cardGrids on the home page; the root loader picks the one whose heading

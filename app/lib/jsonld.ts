@@ -26,6 +26,8 @@
 //  so it's absent).
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { imageSet } from './image'
+
 interface Settings {
   siteName?: string | null
   phone?: string | null
@@ -34,6 +36,8 @@ interface Settings {
   legalLine?: string | null
   workingHours?: string | null
   mapLocation?: { lat?: number | null; lng?: number | null } | null
+  /** Optional raster logo asset URL (SVG is rejected — see logoUrl()). */
+  logo?: string | null
 }
 
 interface BuildJsonLdArgs {
@@ -48,6 +52,10 @@ interface BuildJsonLdArgs {
   description?: string
   /** Absolute OG image URL (already resolved by buildMeta). */
   image?: string
+  /** Real photograph for the site-wide business entity (NOT the branded OG card). */
+  businessPhoto?: string | null
+  /** Real photograph representing this page (typically its hero). */
+  pagePhoto?: string | null
   /** seo.schemaOrg.schemaType, if set. */
   schemaType?: string | null
   /** Path portion of the canonical, e.g. '', '/about', '/projects/slug'. */
@@ -175,6 +183,14 @@ function normalizeSameAs(urls: string[]): string[] {
   return out
 }
 
+// Google requires a RASTER logo (JPG/PNG/WebP) — SVG is rejected. Use the
+// uploaded logo only when it's a raster asset; otherwise fall back to the
+// packaged icon so the field always resolves to something Google accepts.
+function logoUrl(siteUrl: string, logo?: string | null): string {
+  if (logo && !/\.svg($|\?)/i.test(logo)) return logo
+  return `${siteUrl}/icon-512.png`
+}
+
 // ── Node builders ────────────────────────────────────────────────────────────
 
 function businessNode(args: BuildJsonLdArgs) {
@@ -191,8 +207,11 @@ function businessNode(args: BuildJsonLdArgs) {
     '@id': `${siteUrl}/#business`,
     name: settings.siteName || 'SIARI Build',
     url: `${siteUrl}/`,
-    image: `${siteUrl}/og-default.png`,
-    logo: `${siteUrl}/icon-512.png`,
+    // A real photograph in 3 crops (1:1, 4:3, 16:9) so Google's square search
+    // thumbnail slot no longer letterboxes a 1.91:1 branded card. Falls back to
+    // the branded OG card only when no business/home-hero photo is available.
+    image: imageSet(args.businessPhoto) ?? `${siteUrl}/og-default.png`,
+    logo: logoUrl(siteUrl, settings.logo),
   }
   if (telephone) node.telephone = telephone
   if (settings.email) node.email = settings.email
@@ -248,7 +267,7 @@ function websiteNode(args: BuildJsonLdArgs) {
 /** WebPage / ContactPage / AboutPage / CollectionPage, chosen from schemaType.
  *  Also becomes an FAQPage (adding mainEntity) when the page has a visible FAQ. */
 function webPageNode(args: BuildJsonLdArgs) {
-  const { siteUrl, canonical, title, description, image, schemaType, path, datePublished, dateModified, faqItems } = args
+  const { siteUrl, canonical, title, description, image, schemaType, path, datePublished, dateModified, faqItems, pagePhoto } = args
 
   let type: string | string[] = 'WebPage'
   if (schemaType === 'Organization' || /^\/about\b/.test(path)) type = 'AboutPage'
@@ -272,7 +291,11 @@ function webPageNode(args: BuildJsonLdArgs) {
     inLanguage: 'en-AU',
   }
   if (description) node.description = description
-  if (image) node.primaryImageOfPage = image
+  // This page's own hero photo in 3 crops (1:1, 4:3, 16:9); falls back to the
+  // page's branded OG card only when it has no hero photograph.
+  const photos = imageSet(pagePhoto)
+  if (photos) node.primaryImageOfPage = photos
+  else if (image) node.primaryImageOfPage = image
   if (datePublished) node.datePublished = datePublished
   if (dateModified) node.dateModified = dateModified
   if (qas.length) {

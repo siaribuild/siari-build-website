@@ -18,7 +18,7 @@ import spaceGrotesk700 from '@fontsource/space-grotesk/files/space-grotesk-latin
 import '../styles/index.css'
 
 import { client } from './lib/sanity'
-import { SITE_SETTINGS_QUERY, NAVIGATION_QUERY, HOME_SERVICES_QUERY } from './lib/queries'
+import { SITE_SETTINGS_QUERY, NAVIGATION_QUERY, HOME_SERVICES_QUERY, HOME_HERO_QUERY } from './lib/queries'
 import { inlineSanitySvgs } from './lib/block-data'
 import { Header } from './components/Header'
 import { Footer } from './components/Footer'
@@ -32,7 +32,7 @@ export async function loader() {
   const settings = await client.fetch(SITE_SETTINGS_QUERY)
 
   if (__MAINTENANCE__) {
-    return { settings, navigation: null, services: null }
+    return { settings, navigation: null, services: null, businessPhoto: null }
   }
 
   const navigation = await client.fetch(NAVIGATION_QUERY)
@@ -47,7 +47,13 @@ export async function loader() {
   const services =
     (cardGrids ?? []).find((g) => /what we do/i.test(g?.heading ?? ''))?.cards?.filter((c) => c?.title) ?? []
 
-  return { settings, navigation, services }
+  // Site-wide business photo for GeneralContractor.image: the editor-chosen
+  // businessPhoto if set, else the home hero photo. Resolved once here so every
+  // page's business node shows the same real photograph (never a per-page one).
+  const homeHero = await client.fetch(HOME_HERO_QUERY)
+  const businessPhoto = settings?.businessPhoto || homeHero || null
+
+  return { settings, navigation, services, businessPhoto }
 }
 
 // Head resources. Preconnect to BOTH Sanity origins — the query API host

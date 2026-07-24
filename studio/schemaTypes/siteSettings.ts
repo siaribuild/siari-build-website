@@ -41,6 +41,28 @@ export const siteSettings = defineType({
       description: 'Footer small print at the very bottom, e.g. "ABN 12 345 678 901 | Builder License VIC 123456"',
     }),
 
+    // ── Search / structured data ──
+    defineField({
+      name: 'businessPhoto',
+      title: 'Business Photo (search results)',
+      type: 'image',
+      options: {hotspot: true},
+      description:
+        'A representative photo of completed work, used as the business image in Google search results. ' +
+        'Use a high-quality landscape photo at least 1200px wide — it is auto-cropped to 1:1, 4:3 and 16:9. ' +
+        'Not the logo, and not a graphic with text. If left blank, the home page hero photo is used.',
+      group: 'general',
+    }),
+    defineField({
+      name: 'logo',
+      title: 'Logo (search results)',
+      type: 'image',
+      description:
+        'Optional raster logo (PNG/JPG/WebP — NOT SVG) used in structured data. ' +
+        'Leave blank to use the built-in icon. Does not change the logo shown on the site.',
+      group: 'general',
+    }),
+
     // ── Maintenance Mode (just the toggle) ──
     defineField({
       name: 'maintenanceEnabled',
