@@ -52,9 +52,9 @@ interface BuildJsonLdArgs {
   description?: string
   /** Absolute OG image URL (already resolved by buildMeta). */
   image?: string
-  /** Real photograph for the site-wide business entity (NOT the branded OG card). */
-  businessPhoto?: string | null
-  /** Real photograph representing this page (typically its hero). */
+  /** Site-level brand image for the business entity (square master; see siteSettings). */
+  businessImage?: string | null
+  /** Photograph representing this page (typically its hero). */
   pagePhoto?: string | null
   /** seo.schemaOrg.schemaType, if set. */
   schemaType?: string | null
@@ -207,10 +207,11 @@ function businessNode(args: BuildJsonLdArgs) {
     '@id': `${siteUrl}/#business`,
     name: settings.siteName || 'SIARI Build',
     url: `${siteUrl}/`,
-    // A real photograph in 3 crops (1:1, 4:3, 16:9) so Google's square search
-    // thumbnail slot no longer letterboxes a 1.91:1 branded card. Falls back to
-    // the branded OG card only when no business/home-hero photo is available.
-    image: imageSet(args.businessPhoto) ?? `${siteUrl}/og-default.png`,
+    // The site-level brand image in 3 crops (1:1, 4:3, 16:9) so Google's square
+    // search thumbnail slot no longer letterboxes a 1.91:1 card. A square master
+    // (businessImage) keeps full width and trims only height across all ratios.
+    // Falls back to the single branded OG card when no businessImage is set.
+    image: imageSet(args.businessImage) ?? `${siteUrl}/og-default.png`,
     logo: logoUrl(siteUrl, settings.logo),
   }
   if (telephone) node.telephone = telephone

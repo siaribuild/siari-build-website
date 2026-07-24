@@ -43,14 +43,16 @@ export const siteSettings = defineType({
 
     // ── Search / structured data ──
     defineField({
-      name: 'businessPhoto',
-      title: 'Business Photo (search results)',
+      name: 'businessImage',
+      title: 'Business Image (search results)',
       type: 'image',
       options: {hotspot: true},
       description:
-        'A representative photo of completed work, used as the business image in Google search results. ' +
-        'Use a high-quality landscape photo at least 1200px wide — it is auto-cropped to 1:1, 4:3 and 16:9. ' +
-        'Not the logo, and not a graphic with text. If left blank, the home page hero photo is used.',
+        'Representative image used as the business image in search results. Upload a SQUARE master ' +
+        'at least 1200×1200 (1600×1600 preferred) — it is auto-cropped to 1:1, 4:3 and 16:9. Keep key ' +
+        'content inside the centred horizontal band (~56% of height) so nothing is trimmed. Use a SOLID ' +
+        'background — transparency renders unpredictably in Google surfaces. Separate from the logo field. ' +
+        'Set the image hotspot after upload to control crop centring. If left blank, the branded card is used.',
       group: 'general',
     }),
     defineField({

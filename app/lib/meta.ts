@@ -105,13 +105,13 @@ export function buildMeta({
   matches,
 }: BuildMetaArgs): MetaDescriptor[] {
   const root = matches?.find((m) => m?.id === 'root')?.data as
-    | { settings?: any; navigation?: any; services?: any; businessPhoto?: string | null }
+    | { settings?: any; navigation?: any; services?: any; businessImage?: string | null }
     | undefined
   const settings = root?.settings ?? {}
   const navigation = root?.navigation ?? {}
-  // Site-wide business photo (settings.businessPhoto → home hero), resolved once
-  // in the root loader and baked into every page — drives GeneralContractor.image.
-  const businessPhoto = root?.businessPhoto ?? null
+  // Site-wide brand image (settings.businessImage), resolved once in the root
+  // loader and baked into every page — drives GeneralContractor.image.
+  const businessImage = root?.businessImage ?? null
   // Home "What we do" cards, baked into root data — feeds #business.makesOffer.
   const services = Array.isArray(root?.services) ? root.services : []
 
@@ -228,7 +228,7 @@ export function buildMeta({
     datePublished,
     dateModified,
     faqItems,
-    businessPhoto,
+    businessImage,
     pagePhoto,
   })
   if (graph) tags.push({ 'script:ld+json': graph } as MetaDescriptor)
