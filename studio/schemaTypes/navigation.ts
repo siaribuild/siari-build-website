@@ -56,20 +56,20 @@ const socialItem = defineArrayMember({
       description: 'Optional — upload an SVG or PNG icon. If left blank, only the platform name is shown.',
     }),
     defineField({
-      name: 'showInMenu',
-      title: 'Show in Follow menu',
+      name: 'hideFromMenu',
+      title: 'Hide from Follow menu',
       type: 'boolean',
-      initialValue: true,
+      initialValue: false,
       description:
-        'On = shown in the site’s Follow/social menu. Off = hidden from the menu but still used for SEO (added to the site’s sameAs structured data). Use Off for a Google Business Profile.',
+        'Leave off for normal social links. Turn on to keep the profile out of the site’s Follow menu while still using it for SEO (it stays in the site’s sameAs structured data) — e.g. a Google Business Profile.',
     }),
   ],
   preview: {
-    select: {title: 'label', subtitle: 'url', media: 'icon', showInMenu: 'showInMenu'},
-    prepare({title, subtitle, media, showInMenu}) {
+    select: {title: 'label', subtitle: 'url', media: 'icon', hideFromMenu: 'hideFromMenu'},
+    prepare({title, subtitle, media, hideFromMenu}) {
       return {
         // Flag the SEO-only items so the hidden state is obvious in the list.
-        title: showInMenu === false ? `${title} (SEO only)` : title,
+        title: hideFromMenu === true ? `${title} (SEO only)` : title,
         subtitle,
         media,
       }
