@@ -199,6 +199,10 @@ export function buildMeta({
   }
 
   // ── Task 2: JSON-LD @graph ────────────────────────────────────────────────
+  // EVERY social link feeds sameAs — deliberately NOT filtered by showInMenu.
+  // That toggle controls the visible Follow menu only (see Footer.tsx), so a
+  // profile can strengthen the entity (e.g. Google Business Profile) without
+  // appearing as a "follow us" link. Never add a showInMenu filter here.
   const socialUrls: string[] = Array.isArray(navigation?.socialMenu)
     ? navigation.socialMenu.map((s: any) => s?.url).filter((u: any): u is string => typeof u === 'string' && !!u)
     : []

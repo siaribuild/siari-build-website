@@ -103,6 +103,7 @@ export type Navigation = {
       crop?: SanityImageCrop;
       _type: "image";
     };
+    showInMenu?: boolean;
     _type: "socialItem";
     _key: string;
   }>;
@@ -791,7 +792,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../app/lib/queries.ts
 // Variable: NAVIGATION_QUERY
-// Query: *[_type == "navigation"][0] {  headerMenu[] {    "pageSlug": page->slug.current,    "pageTitle": page->title,    label  },  headerCtaEnabled,  footerMenu[] {    "pageSlug": page->slug.current,    "pageTitle": page->title,    label  },  socialMenu[] {    label,    url,    "icon": icon.asset->url  }}
+// Query: *[_type == "navigation"][0] {  headerMenu[] {    "pageSlug": page->slug.current,    "pageTitle": page->title,    label  },  headerCtaEnabled,  footerMenu[] {    "pageSlug": page->slug.current,    "pageTitle": page->title,    label  },  socialMenu[] {    label,    url,    "icon": icon.asset->url,    showInMenu  }}
 export type NAVIGATION_QUERY_RESULT = {
   headerMenu: Array<{
     pageSlug: string | null;
@@ -808,6 +809,7 @@ export type NAVIGATION_QUERY_RESULT = {
     label: string | null;
     url: string | null;
     icon: string | null;
+    showInMenu: boolean | null;
   }> | null;
 } | null;
 
@@ -1792,7 +1794,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "siteSettings"][0] {\n  siteName,\n  tagline,\n  phone,\n  email,\n  address,\n  copyrightText,\n  legalLine,\n  workingHours,\n  maintenanceEnabled,\n  maintenanceHeading,\n  maintenanceMessage,\n  maintenanceShowContact,\n  "maintenanceImage": maintenanceImage.asset->url,\n  notFoundHeading,\n  notFoundMessage,\n  notFoundButtonLabel,\n  "notFoundImage": notFoundImage.asset->url,\n  mapLocation,\n  mapZoom,\n  mapAddressLabel,\n  mapHidePin,\n  mapAreaRadius\n}': SITE_SETTINGS_QUERY_RESULT;
-    '*[_type == "navigation"][0] {\n  headerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  headerCtaEnabled,\n  footerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  socialMenu[] {\n    label,\n    url,\n    "icon": icon.asset->url\n  }\n}': NAVIGATION_QUERY_RESULT;
+    '*[_type == "navigation"][0] {\n  headerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  headerCtaEnabled,\n  footerMenu[] {\n    "pageSlug": page->slug.current,\n    "pageTitle": page->title,\n    label\n  },\n  socialMenu[] {\n    label,\n    url,\n    "icon": icon.asset->url,\n    showInMenu\n  }\n}': NAVIGATION_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0] {\n  title,\n  "slug": slug.current,\n  sections[] {\n    _type,\n    _key,\n    eyebrow, heading, subheading,\n    "backgroundImage": backgroundImage.asset->url,\n    "backgroundImageHotspot": backgroundImage.hotspot,\n    "backgroundImageAlt": backgroundImage.alt,\n    primaryButtonLabel,\n    primaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    secondaryButtonLabel,\n    secondaryButtonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    height,\n    theme,\n    columns,\n    imagePosition,\n    imageSize,\n    "image": image.asset->url,\n    "imageAlt": image.alt,\n    text[]{\n      ...,\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    ctaLabel,\n    ctaLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    stats[] { value, label },\n    cards[] {\n      "icon": icon.asset->url,\n      label,\n      title,\n      text\n    },\n    buttonLabel,\n    buttonLink {\n    kind,\n    href,\n    newTab,\n    internal->{ _type, "slug": slug.current }\n  },\n    body,\n    title,\n    items[] { question, answer },\n    content[] {\n      ...,\n      _type == "image" => {\n        ...,\n        "asset": asset->{ url }\n      },\n      markDefs[]{\n    ...,\n    _type == "link" => { ..., internal->{ _type, "slug": slug.current } }\n  }\n    },\n    testimonials[]-> {\n      _id,\n      quote,\n      clientName,\n      link->{ _type, "slug": slug.current, title }\n    },\n    formHeading, infoHeading,\n  },\n  \n  seo {\n    metaTitle,\n    metaDescription,\n    nofollowAttributes,\n    robotsMeta,\n    seoKeywords,\n    "metaImage": metaImage.asset->url,\n    openGraph {\n      title,\n      description,\n      siteName,\n      "image": image.asset->url\n    },\n    twitter {\n      cardType,\n      site,\n      creator,\n      handle\n    },\n    schemaOrg {\n      schemaType,\n      datePublished,\n      dateModified\n    }\n  }\n\n}': PAGE_QUERY_RESULT;
     '*[_type == "page" && slug.current == "home"][0]\n  .sections[_type == "cardGrid"]{ heading, cards[]{ title, text } }': HOME_SERVICES_QUERY_RESULT;
     '*[_type == "project"] | order(orderRank) {\n  _id,\n  title,\n  "slug": slug.current,\n  "heroImage": heroImage.asset->url,\n  "heroImageHotspot": heroImage.hotspot,\n  "heroImageAlt": heroImage.alt,\n  description,\n  details {\n    year,\n    location,\n    "category": category->title,\n    "categorySlug": category->slug.current,\n    client,\n    duration,\n    size\n  }\n}': PROJECTS_QUERY_RESULT;

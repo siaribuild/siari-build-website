@@ -7,7 +7,11 @@ export function Footer() {
   const { settings, navigation: nav } = useRootData()
 
   const footerItems = nav?.footerMenu || []
-  const socialItems = nav?.socialMenu || []
+  // Display-only filter: items with "Show in Follow menu" off are hidden here
+  // but still feed the business schema's sameAs (see app/lib/meta.ts) — that's
+  // how an SEO-only profile (e.g. Google Business Profile) is managed. Missing
+  // showInMenu means "on" (pre-existing items never saved with the field).
+  const socialItems = (nav?.socialMenu || []).filter((s: any) => s?.showInMenu !== false && s?.url)
 
   const hrefFor = (slug?: string | null) => (!slug || slug === 'home' ? '/' : `/${slug}`)
 

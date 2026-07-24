@@ -85,7 +85,8 @@ export const NAVIGATION_QUERY = defineQuery(`*[_type == "navigation"][0] {
   socialMenu[] {
     label,
     url,
-    "icon": icon.asset->url
+    "icon": icon.asset->url,
+    showInMenu
   }
 }`)
 
