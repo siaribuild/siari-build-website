@@ -1,0 +1,15 @@
+# Cloudflare Pages redirects. Served from build/client/_redirects
+# (Vite copies public/ into the build output). See:
+# https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# Trailing-slash normalisation → no-slash canonical (matches <link rel="canonical">
+# and sitemap.xml). The build flattens every inner page to a flat *.html file
+# (see scripts/finalize-build.mjs → flattenCleanUrls), so the no-slash form is a
+# real asset that serves 200. This rule upgrades the slash → no-slash hop to a
+# single 301. It does NOT match the homepage ("/" has no inner segment), so the
+# root keeps its single trailing slash, and it can't loop because the target
+# ("/:splat", no slash) is a flat file CF serves directly rather than redirecting.
+#   /projects/                       → 301 → /projects
+#   /about/  /contact/  /faq/        → 301 → /about /contact /faq
+#   /projects/<slug>/                → 301 → /projects/<slug>
+/*/  /:splat  301

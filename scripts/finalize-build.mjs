@@ -7,7 +7,7 @@
 //
 // Node 20+ (global fetch). No extra dependencies.
 
-import { readdir, readFile, writeFile, mkdir, stat } from 'node:fs/promises'
+import { readdir, readFile, writeFile, mkdir, stat, rename, rmdir } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { createClient } from '@sanity/client'
 import { config as loadEnv } from 'dotenv'
@@ -30,6 +30,36 @@ async function walk(dir) {
     else out.push(p)
   }
   return out
+}
+
+// ── Clean, no-slash URLs on Cloudflare Pages ────────────────────────────────
+// Cloudflare Pages derives its trailing-slash canonical from the file layout:
+//   dir/index.html  →  /dir/ serves 200,  /dir  → 308 → /dir/   (slash form)
+//   dir.html        →  /dir  serves 200,  /dir/ → 308 → /dir     (no-slash form)
+// Our <link rel="canonical"> and sitemap use the NO-SLASH form, so we move every
+// non-root  X/index.html → X.html  to make CF serve no-slash natively. Combined
+// with the public/_redirects rule ("/*/ → /:splat 301") this gives a clean
+// single 301 from the slash form to the no-slash form with no redirect loop
+// (the no-slash target is a real flat file, so CF doesn't re-add the slash).
+// The root index.html is left untouched, so the homepage keeps its single "/".
+async function flattenCleanUrls() {
+  const htmls = (await walk(OUT)).filter(
+    (f) => relative(OUT, f).replace(/\\/g, '/').endsWith('/index.html'),
+  )
+  let moved = 0
+  for (const f of htmls) {
+    const rel = relative(OUT, f).replace(/\\/g, '/')
+    const dir = rel.slice(0, -'/index.html'.length) // "projects" | "projects/<slug>"
+    if (!dir || dir.startsWith('__')) continue // safety (root handled by the filter)
+    await rename(f, join(OUT, `${dir}.html`))
+    // Drop the directory if flattening emptied it (leaf slug dirs); parent dirs
+    // that still hold siblings (.data, nested .html) simply fail rmdir → ignored.
+    try {
+      await rmdir(join(OUT, dir))
+    } catch {}
+    moved++
+  }
+  console.log(`clean-urls: flattened ${moved} index.html → *.html (no-slash canonical)`)
 }
 
 async function main() {
@@ -103,6 +133,7 @@ async function main() {
   // unreachable, so a transient blip never ships a site with no sitemap.
   if (!SITE_URL) {
     console.warn('sitemap: VITE_SITE_URL not set — skipping sitemap.xml')
+    await flattenCleanUrls()
     return
   }
 
@@ -168,6 +199,9 @@ async function main() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`
   await writeFile(join(OUT, 'sitemap.xml'), xml)
   console.log(`sitemap: ${entries.length} urls -> ${join(OUT, 'sitemap.xml')}`)
+
+  // ── 3. clean, no-slash URLs (must run AFTER the sitemap's filesystem walk) ──
+  await flattenCleanUrls()
 }
 
 main().catch((err) => {
